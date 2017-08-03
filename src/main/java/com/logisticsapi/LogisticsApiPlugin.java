@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.logisticsapi.energy.EnergyManager;
 import com.logisticsapi.energy.wire.WireManager;
+import com.logisticsapi.liquid.FluidManager;
 import com.logisticsapi.util.console.Tracer;
 import com.logisticsapi.util.nms.NmsHelper;
 import com.logisticsapi.util.nms.bossbar.BossBarManager;
@@ -53,6 +54,14 @@ public class LogisticsApiPlugin extends JavaPlugin {
 
         Tracer.msg("EnergyManagers has been enabled");
     }
+    
+    private static void enableFluidManager() {
+        Tracer.msg("Enabling FluidManager...");
+
+        FluidManager.getFluid("water");
+
+        Tracer.msg("FluidManager has been enabled");
+    }
 
     @Override
     public void onEnable() {
@@ -66,6 +75,7 @@ public class LogisticsApiPlugin extends JavaPlugin {
 
         enableNms();
         enableEnergyManagers();
+        enableFluidManager();
 
         PluginDescriptionFile description = getDescription();
         Tracer.msg(description.getName() + " (v" + description.getVersion() + ") has been enabled.");

@@ -19,7 +19,7 @@ public class BossBarManager {
         Tracer.msg("Enabling BossBar Manager...");
         try {
             setProvider((BossBarProvider) NmsHelper.getNmsProvider(
-                    "ru.progrm_jarvis.logistics_api.util.nms.bossbar.BossBarProvider").newInstance()
+                    "com.logisticsapi.util.nms.bossbar.BossBarProvider").newInstance()
             );
         } catch (InstantiationException | IllegalAccessException | NullPointerException e) {
             Tracer.msg("Error while enabling BossBarManager:");

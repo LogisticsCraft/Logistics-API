@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.energy_api.energy;
+package ru.progrm_jarvis.logistics_api.energy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,8 +7,9 @@ import org.bukkit.block.Block;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import ru.progrm_jarvis.energy_api.EnergyApi;
-import ru.progrm_jarvis.energy_api.util.console.Tracer;
+import org.bukkit.util.Vector;
+import ru.progrm_jarvis.logistics_api.LogisticsApiPlugin;
+import ru.progrm_jarvis.logistics_api.util.console.Tracer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,13 +23,15 @@ import java.util.Set;
  */
 public class EnergyManager {
 
-    public static void init() {
-        setShowEnergyBarTask(Bukkit.getScheduler().runTaskTimer(EnergyApi.getInstance(), () -> {
-                    undisplayEnergyBarAll();
-                    displayEnergyBarAll();
-                    }, 30L, 30L)
-        );
-    }
+    public static final Map<BlockSides, Vector> SIDE_VECTORS = new HashMap<BlockSides, Vector>() {{
+        put(BlockSides.EAST, new Vector(1.0, 0.0, 0.0));
+        put(BlockSides.WEST, new Vector(-1.0, 0.0, 0.0));
+        put(BlockSides.UP, new Vector(0.0, 1.0, 0.0));
+        put(BlockSides.DOWN, new Vector(0.0, -1.0, 0.0));
+        put(BlockSides.SOUTH, new Vector(0.0, 0.0, 1.0));
+        put(BlockSides.NORTH, new Vector(0.0, 0.0, -1.0));
+
+    }};
 
     ///////////////////////////////////////////////////////////////////////////
     // Main EnergyManaging
@@ -68,6 +71,22 @@ public class EnergyManager {
         for (Map.Entry<Location, EnergyStorage> entry : energyStorages.entrySet()) if (entry.getValue()
                 == energyStorage) return entry.getKey();
         return null;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Sides
+    ///////////////////////////////////////////////////////////////////////////
+
+    public static void init() {
+        setShowEnergyBarTask(Bukkit.getScheduler().runTaskTimer(LogisticsApiPlugin.getInstance(), () -> {
+                    undisplayEnergyBarAll();
+                    displayEnergyBarAll();
+                }, 30L, 30L)
+        );
+    }
+
+    public enum BlockSides {
+        EAST, WEST, UP, DOWN, SOUTH, NORTH
     }
 
     ///////////////////////////////////////////////////////////////////////////

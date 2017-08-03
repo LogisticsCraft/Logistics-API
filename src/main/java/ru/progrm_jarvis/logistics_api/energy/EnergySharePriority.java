@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.energy_api.energy;
+package ru.progrm_jarvis.logistics_api.energy;
 
 /**
  * @author JARvis (Пётр) PROgrammer

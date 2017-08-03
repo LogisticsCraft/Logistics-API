@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.energy_api.util.nms.bossbar;
+package ru.progrm_jarvis.logistics_api.util.nms.bossbar;
 
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;

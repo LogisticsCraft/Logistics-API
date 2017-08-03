@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.energy_api.energy;
+package ru.progrm_jarvis.logistics_api.energy;
 
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
@@ -8,7 +8,7 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.util.Vector;
-import ru.progrm_jarvis.energy_api.util.nms.bossbar.BossBarManager;
+import ru.progrm_jarvis.logistics_api.util.nms.bossbar.BossBarManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -146,15 +146,6 @@ public interface EnergyStorage {
     Location[] getSideLocations();
     void setSideLocations(@Nonnull Location[] sideLocations);
 
-    Vector[] SIDE_VECTORS = {
-            new Vector(1.0, 0.0, 0.0),
-            new Vector(-1.0, 0.0, 0.0),
-            new Vector(0.0, 1.0, 0.0),
-            new Vector(0.0, -1.0, 0.0),
-            new Vector(0.0, 0.0, 1.0),
-            new Vector(0.0, 0.0, -1.0)
-    };
-
     /**
      * Sets up all SideLocations according to the location given
      * @param location {@link Location} from which to calculate SideLocations
@@ -162,7 +153,11 @@ public interface EnergyStorage {
     default void setupSideLocations(Location location) {
         Location[] sideLocations = new Location[6];
 
-        for (int i = 0; i < sideLocations.length; i++) sideLocations[i] = location.clone().add(SIDE_VECTORS[i]);
+        int i = 0;
+        for (Vector vector : EnergyManager.SIDE_VECTORS.values()) {
+            sideLocations[i] = location.clone().add(vector);
+            i++;
+        }
 
         setSideLocations(sideLocations);
     }
@@ -284,6 +279,14 @@ public interface EnergyStorage {
         return BarStyle.SEGMENTED_20;
     }
 
+    /**
+     * Gets Flags for the EnergyBar.
+     * Is used by default with .updateEnergyBar() so it can be dynamic.
+     * By default uses null (no additional styles) and is not recommended to be changed
+     * as this is mostly for actual Bosses
+     *
+     * @return {@link BarFlag}[] to be used for EnergyBar
+     */
     @Nullable
     @Getter
     default BarFlag[] getEnergyBarFlags() {

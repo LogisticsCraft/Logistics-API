@@ -4,15 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.progrm-jarvis</groupId>
-    <artifactId>energy-api</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <groupId>ru.progrm-jarvis.spigot</groupId>
+    <artifactId>logistics-api</artifactId>
+    <version>0.3-SNAPSHOT</version>
 
-    <!--Output as .jar-->
     <packaging>jar</packaging>
 
     <dependencies>
-        <!--Spigot API-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>

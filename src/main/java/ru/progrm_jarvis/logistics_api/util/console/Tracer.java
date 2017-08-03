@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.energy_api.util.console;
+package ru.progrm_jarvis.logistics_api.util.console;
 
 import org.bukkit.ChatColor;
 
@@ -8,6 +8,7 @@ import java.util.logging.Logger;
  * Created by PROgrm_JARvis on 14.04.2017.
  */
 public final class Tracer {
+    //TODO debug from config
     //public static boolean debug;
     private static Logger logger;
 
@@ -32,6 +33,7 @@ public final class Tracer {
         logger.warning(ChatColor.DARK_RED + message);
     }
 
+    //TODO open when debug is made to be loaded from config
     /*
     public static void debug(String message) {
         if (debug) logger.info(ChatColor.YELLOW + "Debug-Info: " + ChatColor.ITALIC + message);

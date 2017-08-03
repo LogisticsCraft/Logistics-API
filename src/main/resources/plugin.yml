@@ -1,4 +1,4 @@
-name: EnergyApi
-main: ru.progrm_jarvis.energy_api.EnergyApi
+name: LogisticsApiPlugin
+main: ru.progrm_jarvis.logistics_apiapi.LogisticsApiPlugin
 version: 0.1-Beta
 author: PROgrm_JARvis (JARvis (Пётр) PROgrammer)

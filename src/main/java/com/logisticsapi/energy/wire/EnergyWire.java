@@ -1,9 +1,10 @@
-package ru.progrm_jarvis.logistics_api.energy.wire;
+package com.logisticsapi.energy.wire;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
-import ru.progrm_jarvis.logistics_api.energy.EnergyManager;
-import ru.progrm_jarvis.logistics_api.util.console.Tracer;
+
+import com.logisticsapi.energy.EnergyManager;
+import com.logisticsapi.util.console.Tracer;
 
 import javax.annotation.Nonnull;
 

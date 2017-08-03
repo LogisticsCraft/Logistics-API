@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.logistics_api.energy;
+package com.logisticsapi.energy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,8 +8,9 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import ru.progrm_jarvis.logistics_api.LogisticsApiPlugin;
-import ru.progrm_jarvis.logistics_api.util.console.Tracer;
+
+import com.logisticsapi.LogisticsApiPlugin;
+import com.logisticsapi.util.console.Tracer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

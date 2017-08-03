@@ -1,20 +1,20 @@
-package ru.progrm_jarvis.logistics_api.energy;
+package com.logisticsapi.energy;
 
 import javax.annotation.Nonnull;
 
 /**
  * @author JARvis (Пётр) PROgrammer
  */
-public interface EnergyConsumer extends EnergyStorage {
+public interface EnergyProducer extends EnergyStorage {
 
     @Override
-    default long getMaxInput() {
+    default long getMaxOutput() {
         return 0;
     }
 
     @Nonnull
     @Override
     default EnergySharePriority getSharePriority() {
-        return EnergySharePriority.NEVER;
+        return EnergySharePriority.ALWAYS;
     }
 }

@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.logistics_api.energy;
+package com.logisticsapi.energy;
 
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
@@ -8,7 +8,8 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.util.Vector;
-import ru.progrm_jarvis.logistics_api.util.nms.bossbar.BossBarManager;
+
+import com.logisticsapi.util.nms.bossbar.BossBarManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

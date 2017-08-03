@@ -1,4 +1,4 @@
-package ru.progrm_jarvis.logistics_api.util.console;
+package com.logisticsapi.util.console;
 
 import org.bukkit.ChatColor;
 

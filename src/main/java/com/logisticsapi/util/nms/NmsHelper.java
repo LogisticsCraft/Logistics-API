@@ -1,7 +1,8 @@
-package ru.progrm_jarvis.logistics_api.util.nms;
+package com.logisticsapi.util.nms;
 
 import org.bukkit.Bukkit;
-import ru.progrm_jarvis.logistics_api.util.console.Tracer;
+
+import com.logisticsapi.util.console.Tracer;
 
 import javax.annotation.Nullable;
 

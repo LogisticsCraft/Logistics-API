@@ -1,8 +1,9 @@
-package ru.progrm_jarvis.logistics_api.util.nms.bossbar;
+package com.logisticsapi.util.nms.bossbar;
 
 import org.bukkit.boss.BossBar;
-import ru.progrm_jarvis.logistics_api.util.console.Tracer;
-import ru.progrm_jarvis.logistics_api.util.nms.NmsHelper;
+
+import com.logisticsapi.util.console.Tracer;
+import com.logisticsapi.util.nms.NmsHelper;
 
 import java.util.HashMap;
 import java.util.Map;

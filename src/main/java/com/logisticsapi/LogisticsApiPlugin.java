@@ -1,12 +1,13 @@
-package ru.progrm_jarvis.logistics_api;
+package com.logisticsapi;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.progrm_jarvis.logistics_api.energy.EnergyManager;
-import ru.progrm_jarvis.logistics_api.energy.wire.WireManager;
-import ru.progrm_jarvis.logistics_api.util.console.Tracer;
-import ru.progrm_jarvis.logistics_api.util.nms.NmsHelper;
-import ru.progrm_jarvis.logistics_api.util.nms.bossbar.BossBarManager;
+
+import com.logisticsapi.energy.EnergyManager;
+import com.logisticsapi.energy.wire.WireManager;
+import com.logisticsapi.util.console.Tracer;
+import com.logisticsapi.util.nms.NmsHelper;
+import com.logisticsapi.util.nms.bossbar.BossBarManager;
 
 /**
  * @author JARvis (Пётр) PROgrammer
@@ -21,7 +22,7 @@ public class LogisticsApiPlugin extends JavaPlugin {
     private static void disableAll() {
         Tracer.msg("Undisplaying EnergyBar for all Players...");
         EnergyManager.undisplayEnergyBarAll();
-        Tracer.msg("EnergyBar for all Players has been displayed");
+        Tracer.msg("EnergyBar for all Players has been undisplayed");
     }
 
     @Override

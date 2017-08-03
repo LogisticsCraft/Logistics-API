@@ -1,10 +1,9 @@
-package com.logisticsapi.items;
+package com.logisticsapi.item;
 
+import de.tr7zw.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
-import de.tr7zw.itemnbtapi.NBTItem;
 
 public class ItemManager {
 

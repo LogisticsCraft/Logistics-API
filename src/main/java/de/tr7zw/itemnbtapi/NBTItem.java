@@ -2,7 +2,7 @@ package de.tr7zw.itemnbtapi;
 
 import org.bukkit.inventory.ItemStack;
 
-public class NBTItem extends NBTCompound{
+public class NBTItem extends NBTCompound {
     
     private ItemStack bukkitItem;
     

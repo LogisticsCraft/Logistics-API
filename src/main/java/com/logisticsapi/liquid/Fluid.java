@@ -5,35 +5,35 @@ import org.bukkit.plugin.Plugin;
 
 public class Fluid {
 
-    private String internalname;
-    private String parentplugin;
-    private String displayname;
+    private String internalName;
+    private String parentPlugin;
+    private String displayName;
     private MaterialData material;
     private float density;
     private boolean gaseous;
     private int temperature;
-    
-    public Fluid(Plugin plugin, String internalname, String displayname, MaterialData material, float density, boolean gaseous,
-            int temperature) {
-        this.internalname = internalname;
-        this.displayname = displayname;
-        this.parentplugin = plugin.getName();
+
+    public Fluid(Plugin plugin, String internalName, String displayName, MaterialData material,
+                 float density, boolean gaseous, int temperature) {
+        this.internalName = internalName;
+        this.displayName = displayName;
+        this.parentPlugin = plugin.getName();
         this.material = material;
         this.density = density;
         this.gaseous = gaseous;
         this.temperature = temperature;
     }
 
-    public String getInternalname() {
-        return internalname;
+    public String getInternalName() {
+        return internalName;
     }
 
-    public String getParentplugin() {
-        return parentplugin;
+    public String getParentPlugin() {
+        return parentPlugin;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 
     public MaterialData getMaterial() {
@@ -51,5 +51,5 @@ public class Fluid {
     public int getTemperature() {
         return temperature;
     }
-    
+
 }

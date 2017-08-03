@@ -1,5 +1,7 @@
 package com.logisticsapi.energy;
 
+import com.logisticsapi.LogisticObject;
+import com.logisticsapi.util.nms.bossbar.BossBarManager;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import org.bukkit.Location;
@@ -9,15 +11,13 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.util.Vector;
 
-import com.logisticsapi.util.nms.bossbar.BossBarManager;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
  * @author JARvis (Пётр) PROgrammer
  */
-public interface EnergyStorage {
+public interface EnergyStorage extends LogisticObject {
     /**
      * Returns the {@link Location} of this {@link EnergyStorage}.
      * By default uses {@link EnergyManager}'s method to find it so is <b>highly recommended to be overridden</b>.

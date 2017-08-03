@@ -4,14 +4,14 @@ import java.util.Map;
 
 public interface FluidContainer {
 
-    public Map<Fluid, Long> getFluidContent();
-    
-    public Long getAmount(Fluid fluid);
-    
-    public Long getSpace(Fluid fluid);
-    
-    public Long insertFluid(Fluid fluid, Long amount);
-    
-    public Long extractFluid(Fluid fluid, Long amount);
+    Map<Fluid, Long> getFluidContent();
+
+    long getAmount(Fluid fluid);
+
+    long getSpace(Fluid fluid);
+
+    long insertFluid(Fluid fluid, Long amount);
+
+    long extractFluid(Fluid fluid, Long amount);
     
 }

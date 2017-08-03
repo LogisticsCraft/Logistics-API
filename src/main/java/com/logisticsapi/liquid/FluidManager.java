@@ -1,34 +1,38 @@
 package com.logisticsapi.liquid;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.annotation.Nonnull;
-
+import com.logisticsapi.LogisticsApiPlugin;
+import com.logisticsapi.util.console.Tracer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 
-import com.logisticsapi.LogisticsApiPlugin;
-import com.logisticsapi.util.console.Tracer;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FluidManager {
 
     private static Map<String, Fluid> fluids = new HashMap<>();
     private static Map<Location, FluidContainer> fluidContainers = new HashMap<>();
 
-    public static final Fluid WATER = registerFluid(new Fluid(LogisticsApiPlugin.getInstance(), "water", "Water", new MaterialData(Material.LAPIS_BLOCK), 1000, false, 15));
-    public static final Fluid LAVA = registerFluid(new Fluid(LogisticsApiPlugin.getInstance(), "lava", "Lava", new MaterialData(Material.MAGMA), 2450, false, 900));
+    public static final Fluid WATER = registerFluid(
+            new Fluid(LogisticsApiPlugin.getInstance(), "water", "Water",
+                    new MaterialData(Material.LAPIS_BLOCK), 1000, false, 15)
+    );
+    public static final Fluid LAVA = registerFluid(
+            new Fluid(LogisticsApiPlugin.getInstance(), "lava", "Lava",
+                    new MaterialData(Material.MAGMA), 2450, false, 900)
+    );
 
-    public static Fluid registerFluid(@NotNull Fluid fluid){
-        Fluid re = fluids.putIfAbsent(fluid.getInternalname(), fluid);
+    public static Fluid registerFluid(@Nonnull Fluid fluid) {
+        Fluid re = fluids.putIfAbsent(fluid.getInternalName(), fluid);
         if(re != null){
-            Tracer.msg(fluid.getParentplugin() + "'s '" + fluid.getInternalname() + "' fluid didn't get registered because of " + re.getParentplugin() + "'s implementation!");
+            Tracer.msg(fluid.getParentPlugin() + "'s '" + fluid.getInternalName() + "' fluid didn't get registered because of " + re.getParentPlugin() + "'s implementation!");
             return re;
         }else{
-            Tracer.msg(fluid.getParentplugin() + " registered the fluid '" + fluid.getInternalname() + "'");
+            Tracer.msg(fluid.getParentPlugin() + " registered the fluid '" + fluid.getInternalName() + "'");
             return fluid;
         }
     }

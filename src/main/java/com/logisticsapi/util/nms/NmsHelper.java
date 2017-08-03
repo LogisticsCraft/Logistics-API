@@ -1,8 +1,7 @@
 package com.logisticsapi.util.nms;
 
-import org.bukkit.Bukkit;
-
 import com.logisticsapi.util.console.Tracer;
+import org.bukkit.Bukkit;
 
 import javax.annotation.Nullable;
 
@@ -42,6 +41,10 @@ public class NmsHelper {
     }
 
     public enum NmsVersion {
-        _1_9_R1, _1_9_R2, _1_10_R1, _1_11_R1, _1_12_R1
+        _1_9_R1,
+        _1_9_R2,
+        _1_10_R1,
+        _1_11_R1,
+        _1_12_R1
     }
 }

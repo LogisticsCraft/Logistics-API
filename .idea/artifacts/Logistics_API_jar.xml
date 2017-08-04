@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Logistics-API:jar">
-    <output-path>$USER_HOME$/Desktop/Minecraft-Server/TestServer [Spigot]/plugins</output-path>
-    <root id="archive" name="Logistics-API.jar">
-      <element id="module-output" name="Logistics-API" />
-    </root>
-  </artifact>
-</component>

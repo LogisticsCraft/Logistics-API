@@ -14,7 +14,7 @@ public interface EnergyProducer extends EnergyStorage {
 
     @Nonnull
     @Override
-    default EnergySharePriority getSharePriority() {
+    default EnergySharePriority getEnergySharePriority() {
         return EnergySharePriority.ALWAYS;
     }
 }

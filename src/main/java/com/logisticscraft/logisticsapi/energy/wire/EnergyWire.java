@@ -41,11 +41,9 @@ public interface EnergyWire {
         Tracer.msg("Taking Energy: " + energy);
         Tracer.msg("Current: " + getWireEnergy());
         if (getWireEnergy() <= energy) {
-            Tracer.msg("var1");
             setWireEnergy(getWireEnergy() - energy);
             return energy;
         } else {
-            Tracer.msg("var2");
             long result = getWireEnergy();
             setWireEnergy(0);
             return result;
@@ -59,16 +57,11 @@ public interface EnergyWire {
      * @return amount of Energy not put into the updateWireNear (because of it not having space)
      */
     default long putWireEnergy(long energy) {
-        Tracer.msg("Putting Energy: " + energy);
-        Tracer.msg("Current: " + getWireEnergy());
         long sum = getWireEnergy() + energy;
-        Tracer.msg("Sum: " + sum);
         if (getWireMaxEnergy() >= sum) {
-            Tracer.msg("var1");
             setWireEnergy(sum);
             return 0;
         } else {
-            Tracer.msg("var2");
             long result = energy - getWireMaxEnergy();
             setWireEnergy(getWireMaxEnergy());
             return result;
@@ -78,7 +71,6 @@ public interface EnergyWire {
     Location getWireLocation();
 
     default void updateWireNear() {
-        Tracer.msg("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         for (Location location : getSideLocations()) {
             if (WireManager.isWireAt(location)) {
                 EnergyWire wire = WireManager.getWireAt(location);
@@ -86,19 +78,10 @@ public interface EnergyWire {
                 assert (wire != null);
 
                 if (wire.getWireEnergyRate() > getWireEnergyRate()) {
-                    Tracer.msg("Doing smth.");
                     long energyToTake = Math.min(Math.min(wire.getWireEnergy(),
                             Math.min(getWireMaxInput(), wire.getWireMaxOutput())), getWireSpaceLeft());
-
-                    Tracer.msg("ToTake: " + energyToTake);
-
-                    Tracer.msg("Taking E.1: " + wire.getWireEnergy());
                     wire.takeWireEnergy(energyToTake);
-                    Tracer.msg("Taking E.2: " + wire.getWireEnergy());
-
-                    Tracer.msg("Putting E.1: " + getWireEnergy());
                     putWireEnergy(energyToTake);
-                    Tracer.msg("Putting E.2: " + getWireEnergy());
                 }
             }
         }

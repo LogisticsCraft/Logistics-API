@@ -3,6 +3,10 @@ package com.logisticscraft.logisticsapi;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author JARvis (Пётр) PROgrammer
  */
@@ -31,4 +35,10 @@ public enum BlockSide {
     public BlockFace toBlockFace() {
         return toBlockFace(this);
     }
+
+    public Vector getBlockVectorCopy() {
+        return blockVector.clone();
+    }
+
+    public static final Set<BlockSide> ALL_SIDES = new HashSet<>(Arrays.asList(values()));
 }

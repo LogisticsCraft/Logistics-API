@@ -1,5 +1,6 @@
 package com.logisticscraft.logisticsapi.energy;
 
+import com.logisticscraft.logisticsapi.BlockSide;
 import com.logisticscraft.logisticsapi.LogisticObject;
 import com.logisticscraft.logisticsapi.util.nms.bossbar.BossBarManager;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -13,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Set;
 
 /**
  * @author JARvis (Пётр) PROgrammer
@@ -21,7 +23,7 @@ public interface EnergyStorage extends LogisticObject {
     /**
      * Returns the {@link Location} of this {@link EnergyStorage}.
      * By default uses {@link EnergyManager}'s method to find it so is <b>highly recommended to be overridden</b>.
-     * @return {@link Location} of the current {@link EnergyStorage}
+     * @return location of the current {@link EnergyStorage}
      */
     default Location getEnergyStorageLocation() {
         return EnergyManager.getStorageLocation(this);
@@ -35,12 +37,34 @@ public interface EnergyStorage extends LogisticObject {
      * <li><br>Blocks with NEVER priority <b>don't share</b> Energy with any blocks</li>
      * <li><br>Blocks with ALWAYS priority <b>share</b> Energy with all blocks</li>
      * </ul>
-     *
-     * @return {@link EnergySharePriority} representing block's ability to share Energy
+     * @return priority representing block's ability to share Energy
      */
     @Nonnull
-    default EnergySharePriority getSharePriority() {
+    default EnergySharePriority getEnergySharePriority() {
         return EnergySharePriority.NORMAL;
+    }
+
+    /**
+     * Decreases the amount of energy in storage by given value,
+     * If the value is less or equal to the amount available than 0 is returned,
+     * Else positive value is returned.
+     * @param energy amount of energy to be taken from storage
+     * @param force whether or not to skip checking of EnergyStorage subtype
+     * @return amount of energy taken from storage
+     */
+    default long takeEnergy(long energy, boolean force) {
+        if (!force && this.getEnergySharePriority() == EnergySharePriority.NEVER) return 0;
+
+        if (getEnergy() > 0) {
+            long difference = getEnergy() - energy;
+            if (difference >= 0) setEnergy(getEnergy() - energy); //Normal energy taking
+            else { //Maximum possible energy taking
+                energy = getEnergy();
+                setEnergy(0);
+            }
+        } else energy = 0;
+
+        return energy;
     }
 
     /**
@@ -48,12 +72,12 @@ public interface EnergyStorage extends LogisticObject {
      * If the value is less or equal to the space available than 0 is returned,
      * Else positive value is returned.
      *
-     * @param energy {@link long} amount of energy to be put into storage
-     * @param force {@link boolean} whether or not to skip checking of EnergyStorage subtype
+     * @param energy amount of energy to be put into storage
+     * @param force whether or not to skip checking of EnergyStorage subtype
      * @return amount of energy not put into storage
      */
     default long putEnergy(long energy, boolean force) {
-        if (!force && this instanceof EnergyProducer) return energy;
+        if (!force && this.getEnergySharePriority() == EnergySharePriority.ALWAYS) return energy;
 
         long sum = this.getEnergy() + energy;
 
@@ -71,27 +95,43 @@ public interface EnergyStorage extends LogisticObject {
     }
 
     /**
-     * Decreases the amount of energy in storage by given value,
-     * If the value is less or equal to the amount available than 0 is returned,
-     * Else positive value is returned.
-     *
-     * @param energy {@link long} amount of energy to be taken from storage
-     * @param force {@link boolean} whether or not to skip checking of EnergyStorage subtype
-     * @return {@link long} amount of energy taken from storage
+     * Returns sides from which Energy can be taken
+     * @return all sides from which Energy can be taken
      */
-    default long takeEnergy(long energy, boolean force) {
-        if (!force && this instanceof EnergyConsumer) return 0;
+    default Set<BlockSide> getEnergyTakeSides() {
+        return BlockSide.ALL_SIDES;
+    }
 
-        if (getEnergy() > 0) {
-            long difference = getEnergy() - energy;
-            if (difference >= 0) setEnergy(getEnergy() - energy); //Normal energy taking
-            else { //Maximum possible energy taking
-                energy = getEnergy();
-                setEnergy(0);
-            }
-        } else energy = 0;
+    /**
+     * Returns sides to which Energy can be taken
+     * @return all sides to which Energy can be put
+     */
+    default Set<BlockSide> getEnergyPutSides() {
+        return BlockSide.ALL_SIDES;
+    }
 
-        return energy;
+    /**
+     * Takes energy from the {@link BlockSide} given
+     * @param energy amount of energy to be taken from storage
+     * @param blockSide from which side to take energy
+     * @param force whether or not to skip checking of EnergyStorage subtype
+     * @return amount of energy taken from storage
+     */
+    default long takeEnergy(long energy, @Nonnull BlockSide blockSide, boolean force) {
+        if (getEnergy() <= 0 || !getEnergyTakeSides().contains(blockSide)) return 0;
+        return takeEnergy(energy, force);
+    }
+
+    /**
+     * Puts energy to the {@link BlockSide} given
+     * @param energy amount of energy to be put into storage
+     * @param blockSide to which side to put energy
+     * @param force whether or not to skip checking of EnergyStorage subtype
+     * @return amount of energy not put into storage
+     */
+    default long putEnergy(long energy, @Nonnull BlockSide blockSide, boolean force) {
+        if (getEnergy() >= getMaxEnergy() || !getEnergyPutSides().contains(blockSide)) return 0;
+        return takeEnergy(energy, force);
     }
 
     /**
@@ -124,7 +164,7 @@ public interface EnergyStorage extends LogisticObject {
      * Blocks with lower energy input would receive their maximal output
      * Blocks with higher energy input would receive senders's maximal energy output.
      *
-     * @return {@link long} maximal amount of energy to be put from one side
+     * @return maximal amount of energy to be put from one side
      */
     long getMaxOutput();
 
@@ -133,7 +173,7 @@ public interface EnergyStorage extends LogisticObject {
      * Blocks with lower energy output would give their maximal output
      * Blocks with higher energy output would give receiver's maximal energy input
      *
-     * @return {@link long} maximal amount of energy to be taken at one side.
+     * @return maximal amount of energy to be taken at one side.
      */
     long getMaxInput();
 
@@ -142,14 +182,14 @@ public interface EnergyStorage extends LogisticObject {
      * Is actually a shorthand made for .takeEnergyNearby() in order not to overuse
      * processor time by Location calculations.
      *
-     * @return all {@link Location}s of blocks which are touching this EnergyStorage
+     * @return all locations of blocks which are touching this EnergyStorage
      */
     Location[] getSideLocations();
     void setSideLocations(@Nonnull Location[] sideLocations);
 
     /**
      * Sets up all SideLocations according to the location given
-     * @param location {@link Location} from which to calculate SideLocations
+     * @param location location from which to calculate SideLocations
      */
     default void setupSideLocations(Location location) {
         Location[] sideLocations = new Location[6];
@@ -189,9 +229,9 @@ public interface EnergyStorage extends LogisticObject {
 
                     //Check priority
                     //Priority NEVER
-                    if (nearBlock.getSharePriority() == EnergySharePriority.NEVER
+                    if (nearBlock.getEnergySharePriority() == EnergySharePriority.NEVER
                             //Priority of block to take energy from is too low
-                            || nearBlock.getSharePriority().ordinal() < getSharePriority().ordinal()) continue;
+                            || nearBlock.getEnergySharePriority().ordinal() < getEnergySharePriority().ordinal()) continue;
 
                     //Get amount available
                     long energy;
@@ -214,7 +254,7 @@ public interface EnergyStorage extends LogisticObject {
      * have to configure .getEnergyBar() and .setEnergyBar(BossBar) to store {@link BossBar} locally for
      * this exact {@link EnergyStorage}.
      *
-     * @return BossBar identification as {@link String}
+     * @return BossBar identification
      */
     @Nullable
     @Getter
@@ -227,7 +267,7 @@ public interface EnergyStorage extends LogisticObject {
      * Is used by default with .updateEnergyBar() so it can be dynamic.
      * By default displays amount of energy as <i>current_energy/max_energy</i>.
      *
-     * @return {@link String} title to be used for EnergyBar
+     * @return title to be used for EnergyBar
      */
     @Getter
     default String getEnergyBarTitle() {
@@ -239,7 +279,7 @@ public interface EnergyStorage extends LogisticObject {
      * Is used by default with .updateEnergyBar() so it can be dynamic.
      * By default displays amount of energy as <i>current_energy/max_energy</i>.
      *
-     * @return {@link double} progress ∈ [0;1] to be used for EnergyBar
+     * @return progress ∈ [0;1] to be used for EnergyBar
      */
     @Getter
     default double getEnergyBarProgress() {
@@ -251,7 +291,7 @@ public interface EnergyStorage extends LogisticObject {
      * Is used by default with .updateEnergyBar() so it can be dynamic.
      * By default displays color according to rate of energy: <i>low - Red, normal - Yellow, full - Green</i>
      *
-     * @return {@link BarColor} to be used for EnergyBar
+     * @return BarColor to be used for EnergyBar
      */
     @Nonnull
     @Getter
@@ -272,7 +312,7 @@ public interface EnergyStorage extends LogisticObject {
      * Is used by default with .updateEnergyBar() so it can be dynamic.
      * By default displays <i>SEGMENTED_20</i>
      *
-     * @return {@link BarStyle} to be used for EnergyBar
+     * @return BarStyle to be used for EnergyBar
      */
     @Nonnull
     @Getter
@@ -286,7 +326,7 @@ public interface EnergyStorage extends LogisticObject {
      * By default uses null (no additional styles) and is not recommended to be changed
      * as this is mostly for actual Bosses
      *
-     * @return {@link BarFlag}[] to be used for EnergyBar
+     * @return BarFlags to be used for EnergyBar
      */
     @Nullable
     @Getter
@@ -300,7 +340,7 @@ public interface EnergyStorage extends LogisticObject {
      * It's highly recommended to use it just as a regular {@link Getter}
      * together with .setEnergyBar() and .updateEnergyBar().
      *
-     * @return instance of {@link BossBar} representing Block's EnergyBar
+     * @return instance of BossBar representing Block's EnergyBar
      */
     @Nullable
     @Getter
@@ -314,7 +354,7 @@ public interface EnergyStorage extends LogisticObject {
      * It's highly recommended to use it just as a regular {@link Setter}
      * together with .getEnergyBar() and .updateEnergyBar().
      *
-     * @param bossBar instance of {@link BossBar} representing Block's EnergyBar
+     * @param bossBar instance of BossBar representing Block's EnergyBar
      */
     @Setter
     default void setEnergyBar(@Nullable BossBar bossBar) {}
@@ -331,7 +371,7 @@ public interface EnergyStorage extends LogisticObject {
 
     /**
      * Removes BossBar if it was registered by ID
-     * Automatically checks wether ID is null though it's not recommended to have unnecessary calls
+     * Automatically checks whether ID is null though it's not recommended to have unnecessary calls
      */
     default void deleteEnergyBar() {
         if (getEnergyBarId() != null) BossBarManager.getProvider().remove(getEnergyBarId());

@@ -1,4 +1,4 @@
-name: LogisticsApiPlugin
+name: LogisticsApi
 main: com.logisticscraft.logisticsapi.LogisticsApiPlugin
 version: ${project.version}
 authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]

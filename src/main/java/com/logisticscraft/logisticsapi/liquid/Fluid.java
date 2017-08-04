@@ -1,4 +1,4 @@
-package com.logisticsapi.liquid;
+package com.logisticscraft.logisticsapi.liquid;
 
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;

@@ -1,10 +1,10 @@
-package com.logisticsapi.energy.wire;
+package com.logisticscraft.logisticsapi.energy.wire;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import com.logisticsapi.energy.EnergyManager;
-import com.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.energy.EnergyManager;
+import com.logisticscraft.logisticsapi.util.console.Tracer;
 
 import javax.annotation.Nonnull;
 

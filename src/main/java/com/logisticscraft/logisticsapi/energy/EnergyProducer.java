@@ -1,4 +1,4 @@
-package com.logisticsapi.energy;
+package com.logisticscraft.logisticsapi.energy;
 
 import javax.annotation.Nonnull;
 

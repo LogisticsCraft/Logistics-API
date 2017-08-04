@@ -1,6 +1,6 @@
-package com.logisticsapi.util.nms;
+package com.logisticscraft.logisticsapi.util.nms;
 
-import com.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.console.Tracer;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nullable;

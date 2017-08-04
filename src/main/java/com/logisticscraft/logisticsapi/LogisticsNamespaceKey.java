@@ -1,4 +1,4 @@
-package com.logisticsapi;
+package com.logisticscraft.logisticsapi;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

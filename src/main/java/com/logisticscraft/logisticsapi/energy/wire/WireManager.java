@@ -1,4 +1,4 @@
-package com.logisticsapi.energy.wire;
+package com.logisticscraft.logisticsapi.energy.wire;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,8 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.logisticsapi.LogisticsApiPlugin;
-import com.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
+import com.logisticscraft.logisticsapi.util.console.Tracer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

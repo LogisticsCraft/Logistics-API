@@ -1,4 +1,4 @@
-package com.logisticsapi.liquid;
+package com.logisticscraft.logisticsapi.liquid;
 
 import java.util.Map;
 

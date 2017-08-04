@@ -1,4 +1,4 @@
-package com.logisticsapi.energy;
+package com.logisticscraft.logisticsapi.energy;
 
 /**
  * @author JARvis (Пётр) PROgrammer

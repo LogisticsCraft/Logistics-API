@@ -1,4 +1,4 @@
-package com.logisticsapi.util.nms.bossbar;
+package com.logisticscraft.logisticsapi.util.nms.bossbar;
 
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;

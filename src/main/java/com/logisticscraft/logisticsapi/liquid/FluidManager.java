@@ -1,8 +1,8 @@
-package com.logisticsapi.liquid;
+package com.logisticscraft.logisticsapi.liquid;
 
 
-import com.logisticsapi.LogisticsApiPlugin;
-import com.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
+import com.logisticscraft.logisticsapi.util.console.Tracer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;

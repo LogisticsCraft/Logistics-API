@@ -1,9 +1,9 @@
-package com.logisticsapi.util.nms.bossbar;
+package com.logisticscraft.logisticsapi.util.nms.bossbar;
 
+import com.logisticscraft.logisticsapi.util.nms.NmsHelper;
 import org.bukkit.boss.BossBar;
 
-import com.logisticsapi.util.console.Tracer;
-import com.logisticsapi.util.nms.NmsHelper;
+import com.logisticscraft.logisticsapi.util.console.Tracer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class BossBarManager {
         Tracer.msg("Enabling BossBar Manager...");
         try {
             setProvider((BossBarProvider) NmsHelper.getNmsProvider(
-                    "com.logisticsapi.util.nms.bossbar.BossBarProvider").newInstance()
+                    "BossBarProvider").newInstance()
             );
         } catch (InstantiationException | IllegalAccessException | NullPointerException e) {
             Tracer.msg("Error while enabling BossBarManager:");

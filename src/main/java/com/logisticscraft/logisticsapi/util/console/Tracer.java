@@ -1,4 +1,4 @@
-package com.logisticsapi.util.console;
+package com.logisticscraft.logisticsapi.util.console;
 
 import org.bukkit.ChatColor;
 

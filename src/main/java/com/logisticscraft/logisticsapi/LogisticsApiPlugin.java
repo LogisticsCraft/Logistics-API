@@ -1,19 +1,19 @@
-package com.logisticsapi;
+package com.logisticscraft.logisticsapi;
 
+import com.logisticscraft.logisticsapi.energy.wire.WireManager;
+import com.logisticscraft.logisticsapi.util.nms.NmsHelper;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.logisticsapi.energy.EnergyManager;
-import com.logisticsapi.energy.wire.WireManager;
-import com.logisticsapi.liquid.FluidManager;
-import com.logisticsapi.util.console.Tracer;
-import com.logisticsapi.util.nms.NmsHelper;
-import com.logisticsapi.util.nms.bossbar.BossBarManager;
+import com.logisticscraft.logisticsapi.energy.EnergyManager;
+import com.logisticscraft.logisticsapi.liquid.FluidManager;
+import com.logisticscraft.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.nms.bossbar.BossBarManager;
 
 /**
  * @author JARvis (Пётр) PROgrammer
  */
-public class LogisticsApiPlugin extends JavaPlugin {
+public final class LogisticsApiPlugin extends JavaPlugin {
     private static LogisticsApiPlugin instance;
 
     public static LogisticsApiPlugin getInstance() {

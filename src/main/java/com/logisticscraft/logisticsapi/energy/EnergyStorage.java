@@ -1,7 +1,7 @@
-package com.logisticsapi.energy;
+package com.logisticscraft.logisticsapi.energy;
 
-import com.logisticsapi.LogisticObject;
-import com.logisticsapi.util.nms.bossbar.BossBarManager;
+import com.logisticscraft.logisticsapi.LogisticObject;
+import com.logisticscraft.logisticsapi.util.nms.bossbar.BossBarManager;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import org.bukkit.Location;

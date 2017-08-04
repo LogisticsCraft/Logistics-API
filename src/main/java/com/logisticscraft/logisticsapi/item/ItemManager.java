@@ -1,4 +1,4 @@
-package com.logisticsapi.item;
+package com.logisticscraft.logisticsapi.item;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;

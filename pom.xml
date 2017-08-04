@@ -4,23 +4,51 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.logisticsapi</groupId>
+    <groupId>com.logisticscraft</groupId>
     <artifactId>logistics-api</artifactId>
-    <version>0.3-SNAPSHOT</version>
-
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.12-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.buildNumber>CUSTOM</project.buildNumber>
+		<project.versionCode>${project.version}-b${project.buildNumber}</project.versionCode>
+        <spigotVersion>1.12-R0.1-SNAPSHOT</spigotVersion>
+    </properties>
+
+	<!-- Jenkins profile -->
+	<profiles>
+		<!-- Set the buildNumber using the jenkins env. variable -->
+		<profile>
+			<id>jenkins</id>
+			<activation>
+				<property>
+					<name>env.BUILD_NUMBER</name>
+				</property>
+			</activation>
+			<properties>
+				<project.buildNumber>${env.BUILD_NUMBER}</project.buildNumber>
+			</properties>
+		</profile>
+	</profiles>
 
     <build>
-        <defaultGoal>clean package install javadoc:javadoc</defaultGoal>
+        <defaultGoal>clean install javadoc:javadoc</defaultGoal>
+
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>.</directory>
+				<includes>
+					<include>LICENSE</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -31,6 +59,23 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+				</configuration>
+				<executions>
+					<execution>
+						<id>shade</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -44,7 +89,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--JavaDocs-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -60,5 +104,41 @@
             </plugin>
         </plugins>
     </build>
+
+	<repositories>
+		<repository>
+			<id>spigotmc-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+		</repository>
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>http://repo.dmulloy2.net/content/groups/public</url>
+		</repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigotVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>${spigotVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LogisticsCraft.Item-NBT-API</groupId>
+            <artifactId>item-nbt-api</artifactId>
+            <version>-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 </project>

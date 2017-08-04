@@ -1,4 +1,4 @@
 name: LogisticsApiPlugin
-main: com.logisticsapi.LogisticsApiPlugin
-version: 0.3-Beta
-authors: [PROgrm_JARvis, tr7zw, RoboTricker]
+main: com.logisticscraft.logisticsapi.LogisticsApiPlugin
+version: ${project.version}
+authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]

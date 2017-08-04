@@ -21,9 +21,9 @@ public final class LogisticsApiPlugin extends JavaPlugin {
     }
 
     private static void disableAll() {
-        Tracer.msg("Undisplaying EnergyBar for all Players...");
+        Tracer.msg("Undisplaying EnergyBars for all Players...");
         EnergyManager.undisplayEnergyBarAll();
-        Tracer.msg("EnergyBar for all Players has been undisplayed");
+        Tracer.msg("EnergyBars for all Players has been undisplayed");
     }
 
     @Override

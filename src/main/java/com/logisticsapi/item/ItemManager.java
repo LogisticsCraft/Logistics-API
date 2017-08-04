@@ -1,12 +1,24 @@
 package com.logisticsapi.item;
 
-import de.tr7zw.itemnbtapi.NBTItem;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.logisticsapi.util.console.Tracer;
+
+import de.tr7zw.itemnbtapi.NBTItem;
+
 public class ItemManager {
 
+    private static Map<Location, ItemContainer> itemContainers = new HashMap<>();
+    
     public static NBTItem getNBTItem(ItemStack item){
         return new NBTItem(item);
     }
@@ -45,6 +57,38 @@ public class ItemManager {
     
     public static Boolean hasOreDictionary(ItemStack item){
         return getOreDictionary(item) != null;
+    }
+    
+    public static void registerItemContainer(@Nonnull final Location location,
+            @Nonnull final ItemContainer itemContainer) {
+        if (itemContainers.putIfAbsent(location, itemContainer) == null) Tracer.msg(
+                "Item Container registered at " + location.toString()
+                );
+        else Tracer.msg("Item Container re-registered at " + location.toString());
+    }
+
+    public static void unregisterItemContainer(@Nonnull final Location location) {
+        if (itemContainers.remove(location) == null) Tracer.warn("Attempt to unregister unknown ItemContainer");
+    }
+
+    public static boolean isContainerAt(@Nonnull final Location location) {
+        return itemContainers.containsKey(location);
+    }
+
+    public static boolean isContainerRegistered(@Nonnull final ItemContainer container) {
+        return itemContainers.containsValue(container);
+    }
+
+    @Nullable
+    public static ItemContainer getContainerAt(@Nonnull final Location location) {
+        return itemContainers.get(location);
+    }
+
+    @Nullable
+    public static Location getContainerLocation(@Nonnull final ItemContainer itemContainer) {
+        for (Map.Entry<Location, ItemContainer> entry : itemContainers.entrySet()) if (entry.getValue()
+                == itemContainer) return entry.getKey();
+        return null;
     }
     
 }

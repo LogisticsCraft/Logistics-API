@@ -59,8 +59,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!-- Not required atm
-			<plugin>
+            <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>3.0.0</version>
@@ -77,7 +76,6 @@
 					</execution>
 				</executions>
 			</plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -116,6 +114,10 @@
 			<id>dmulloy2-repo</id>
 			<url>http://repo.dmulloy2.net/content/groups/public</url>
 		</repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -130,6 +132,12 @@
             <artifactId>spigot</artifactId>
             <version>${spigotVersion}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LogisticsCraft.Item-NBT-API</groupId>
+            <artifactId>item-nbt-api</artifactId>
+            <version>-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

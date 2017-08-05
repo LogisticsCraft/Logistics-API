@@ -70,6 +70,7 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         Tracer.setLogger(getLogger());
 
         Tracer.msg("Enabling...");
+        Tracer.traceLogo();
         Tracer.msg("Server version: " + getServer().getVersion());
         Tracer.msg("Bukkit version: " + getServer().getBukkitVersion());
 

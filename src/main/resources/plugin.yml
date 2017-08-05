@@ -2,3 +2,7 @@ name: LogisticsApi
 main: com.logisticscraft.logisticsapi.LogisticsApiPlugin
 version: ${project.version}
 authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]
+commands:
+  logisticsapi:
+    description: 'Main info about Logistics-API running at the moment'
+    aliases: [logisticapi, logistics, logistic, lapi, la, l]

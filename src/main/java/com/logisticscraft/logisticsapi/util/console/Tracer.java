@@ -17,20 +17,20 @@ public final class Tracer {
     }
     //Tracing
 
-    public static void msg(String message) {
-        logger.info(message);
+    public static void msg(String... messages) {
+        for (String message : messages) logger.info(message);
     }
 
     /*public static void sql(String message) {
         logger.info("SQL-Info: " + message);
     }*/
 
-    public static void warn(String message) {
-        logger.warning(message);
+    public static void warn(String... messages) {
+        for (String message : messages) logger.warning(message);
     }
 
-    public static void err(String message) {
-        logger.warning(ChatColor.DARK_RED + message);
+    public static void err(String... messages) {
+        for (String message : messages) logger.warning(ChatColor.DARK_RED + message);
     }
 
     //TODO open when debug is made to be loaded from config
@@ -40,7 +40,7 @@ public final class Tracer {
     }*/
 
     public static void traceLogo() {
-        for (String asciiLogoLine : ASCII_LOGO) msg(asciiLogoLine);
+        msg(ASCII_LOGO);
     }
 
     public static final String[] ASCII_LOGO =

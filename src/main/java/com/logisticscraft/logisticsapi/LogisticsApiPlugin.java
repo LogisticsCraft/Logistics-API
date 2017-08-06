@@ -1,7 +1,10 @@
 package com.logisticscraft.logisticsapi;
 
 import com.logisticscraft.logisticsapi.energy.wire.WireManager;
+import com.logisticscraft.logisticsapi.general.command.CommandManager;
+import com.logisticscraft.logisticsapi.general.command.LogisticsApiCommand;
 import com.logisticscraft.logisticsapi.util.nms.NmsHelper;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -63,22 +66,33 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         Tracer.msg("FluidManager has been enabled");
     }
 
+    private static void registerCommands() {
+        Tracer.msg("Registering Commands...");
+
+        CommandManager.registerCommands();
+
+        Tracer.msg("Commands registered");
+    }
+
+
     @Override
     public void onEnable() {
         instance = this;
 
         Tracer.setLogger(getLogger());
 
-        Tracer.msg("Enabling...");
+        PluginDescriptionFile description = getDescription();
         Tracer.traceLogo();
-        Tracer.msg("Server version: " + getServer().getVersion());
-        Tracer.msg("Bukkit version: " + getServer().getBukkitVersion());
+        String authors = description.getAuthors().toString();
+        Tracer.msg("by: " + authors.substring(1, authors.length()-1));
+        Tracer.msg("Server version: " + getServer().getVersion(),
+                "Bukkit version: " + getServer().getBukkitVersion());
 
         enableNms();
         enableEnergyManagers();
         enableFluidManager();
+        registerCommands();
 
-        PluginDescriptionFile description = getDescription();
         Tracer.msg(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }
 }

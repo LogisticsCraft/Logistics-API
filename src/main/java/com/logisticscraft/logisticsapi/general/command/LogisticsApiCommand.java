@@ -23,10 +23,10 @@ public class LogisticsApiCommand implements CommandExecutor {
                 Location location = block.getLocation();
 
                 sender.sendMessage("Default location:" + location.toString());
-                String locationSerialized = LocationManager.serializeLocation(location);
+                String locationSerialized = LocationManager.serializeBlockLocation(location);
                 sender.sendMessage("Serialized: " + locationSerialized);
                 sender.sendMessage("DeSerialized (check): " + LocationManager
-                        .deserializeLocation(locationSerialized));
+                        .deserializeBlockLocation(locationSerialized));
             }
         }
         return false;

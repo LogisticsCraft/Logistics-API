@@ -11,13 +11,13 @@ import javax.annotation.Nullable;
  */
 public class LocationManager {
     @Nullable
-    public static Location deserializeLocation(@Nonnull String locationSerialized) {
+    public static Location deserializeBlockLocation(@Nonnull String locationSerialized) {
         try {
-            String[] locationData = locationSerialized.split("\\|");
-            Long locationCoords = Long.parseLong(locationData[1]);
+            int splitterIndex = locationSerialized.indexOf('|');
+            Long locationCoords = Long.parseLong(locationSerialized.substring(splitterIndex + 1));
 
-            return new Location(Bukkit.getWorld(locationData[0]),
-                    locationCoords >> 38, (locationCoords << 26 >> 52) + 1, locationCoords << 38 >> 38);
+            return new Location(Bukkit.getWorld(locationSerialized.substring(0, splitterIndex)),
+                    locationCoords >> 36, locationCoords << 28 >> 56, locationCoords << 36 >> 36);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -25,11 +25,10 @@ public class LocationManager {
     }
 
     @Nonnull
-    public static String serializeLocation(@Nonnull Location location) {
+    public static String serializeBlockLocation(@Nonnull Location location) {
         return location.getWorld().getName() + "|" +
-                (long) (location.getX() * (long) Math.pow(2, 38)
-                        + location.getY() * (long) Math.pow(2, 26)
-                        + location.getZ()
-                );
+                (((long) location.getBlockX() & 0XFFFFFFF) << 36
+                        | (((long) location.getBlockY() & 0xFF) << 28)
+                        | ((long) location.getBlockZ() & 0xFFFFFFF));
     }
 }

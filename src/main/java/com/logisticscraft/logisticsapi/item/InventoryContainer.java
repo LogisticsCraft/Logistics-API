@@ -3,61 +3,74 @@ package com.logisticscraft.logisticsapi.item;
 import java.util.Collection;
 
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public interface InventoryContainer extends ItemContainer{
+import com.logisticscraft.logisticsapi.BlockSide;
 
-    public Inventory getInventory();
+public interface InventoryContainer extends ItemContainer {
 
-    public static ItemStack decreaseAmountWithOne(ItemStack item) {
-        ItemStack copy = item.clone();
-        if (item.getAmount() > 1) {
-            copy.setAmount(item.getAmount() - 1);
-        } else {
-            copy = null;
-        }
-        return copy;
-    }
+	public Inventory getInventory();
 
-    @Override
-    public default ItemStack extractItem(BlockFace extractDirection) {
-        Inventory cachedInv = getInventory();
-        for (int i = 0; i < cachedInv.getSize(); i++) {
-            if (cachedInv.getItem(i) != null) {
-                ItemStack id = cachedInv.getItem(i);
-                cachedInv.setItem(i, decreaseAmountWithOne(cachedInv.getItem(i)));
-                return id;
-            }
-        }
-        return null;
-    }
+	public static ItemStack changeAmount(ItemStack item, int amountDelta) {
+		ItemStack copy = item.clone();
+		if (item.getAmount() + amountDelta > 0) {
+			copy.setAmount(Math.min(item.getMaxStackSize(), item.getAmount() + amountDelta));
+		} else {
+			copy = null;
+		}
+		return copy;
+	}
 
-    @Override
-    public default boolean insertItem(BlockFace insertDirection, ItemStack insertion) {
-        Collection<ItemStack> overflow = getInventory().addItem(insertion).values();
-        return overflow.isEmpty();
-    }
+	@Override
+	public default ItemStack extractItem(BlockSide extractDirection, int extractAmount) {
+		Inventory cachedInv = getInventory();
+		ItemStack takenIs = null;
+		for (int i = 0; i < cachedInv.getSize(); i++) {
+			if (cachedInv.getItem(i) != null) {
+				int amountBefore = takenIs != null ? takenIs.getAmount() : 0;
+				if (takenIs == null) {
+					takenIs = cachedInv.getItem(i).clone();
+					takenIs.setAmount(Math.min(extractAmount, takenIs.getAmount()));
+				} else if (takenIs.isSimilar(cachedInv.getItem(i))) {
+					takenIs.setAmount(Math.min(extractAmount, amountBefore + cachedInv.getItem(i).getAmount()));
+				}
+				ItemStack invItem = cachedInv.getItem(i);
+				cachedInv.setItem(i, changeAmount(invItem, -(takenIs.getAmount() - amountBefore)));
+			}
+		}
+		return takenIs;
+	}
 
-    @Override
-    public default boolean isSpaceForItemAsync(BlockFace insertDirection, ItemStack insertion) {
-        Inventory cachedInv = getInventory();
-        for (int i = 0; i < cachedInv.getSize(); i++) {
-            ItemStack is = cachedInv.getItem(i);
-            if (is == null || is.getType() == Material.AIR) {
-                return true;
-            }
-            if (is.isSimilar(insertion) && is.getAmount() < is.getMaxStackSize()) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public default ItemStack insertItem(BlockSide insertDirection, ItemStack insertion) {
+		Inventory cachedInv = getInventory();
+		Collection<ItemStack> overflow = cachedInv.addItem(insertion).values();
+		if (overflow.isEmpty()) {
+			return null;
+		} else {
+			return overflow.toArray(new ItemStack[0])[0];
+		}
+	}
 
-    @Override
-    public default boolean isInterfaceable(BlockFace face) {
-        return true;
-    }
+	@Override
+	public default int howMuchSpaceForItemAsync(BlockSide insertDirection, ItemStack insertion) {
+		Inventory cachedInv = getInventory();
+		int freeSpace = 0;
+		for (int i = 0; i < cachedInv.getSize(); i++) {
+			ItemStack is = cachedInv.getItem(i);
+			if (is == null || is.getType() == Material.AIR) {
+				freeSpace += insertion.getMaxStackSize();
+			} else if (is.isSimilar(insertion) && is.getAmount() < is.getMaxStackSize()) {
+				freeSpace += is.getMaxStackSize() - is.getAmount();
+			}
+		}
+		return freeSpace;
+	}
+
+	@Override
+	public default boolean isInterfaceable(BlockSide face) {
+		return true;
+	}
 
 }

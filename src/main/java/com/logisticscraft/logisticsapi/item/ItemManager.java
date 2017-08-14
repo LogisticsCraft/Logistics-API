@@ -100,4 +100,8 @@ public class ItemManager {
         return null;
     }
     
+    public static Map<Location, ItemContainer> getContainers(){
+        return itemContainers;
+    }
+    
 }

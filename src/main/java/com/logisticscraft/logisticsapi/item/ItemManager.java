@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.logisticscraft.logisticsapi.event.ItemContainerRegisterEvent;
+import com.logisticscraft.logisticsapi.event.ItemContainerUnregisterEvent;
 import com.logisticscraft.logisticsapi.util.console.Tracer;
 
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -61,14 +63,21 @@ public class ItemManager {
     
     public static void registerItemContainer(@Nonnull final Location location,
             @Nonnull final ItemContainer itemContainer) {
-        if (itemContainers.putIfAbsent(location, itemContainer) == null) Tracer.msg(
-                "Item Container registered at " + location.toString()
-                );
+        if (itemContainers.putIfAbsent(location, itemContainer) == null){ 
+            Tracer.msg("Item Container registered at " + location.toString());
+            Bukkit.getPluginManager().callEvent(new ItemContainerRegisterEvent(location, itemContainer));
+        }
         else Tracer.msg("Item Container re-registered at " + location.toString());
     }
 
     public static void unregisterItemContainer(@Nonnull final Location location) {
-        if (itemContainers.remove(location) == null) Tracer.warn("Attempt to unregister unknown ItemContainer");
+        ItemContainer container = itemContainers.get(location);
+        if(container != null){
+            Bukkit.getPluginManager().callEvent(new ItemContainerUnregisterEvent(location, container));
+            itemContainers.remove(location);
+        }else{
+            Tracer.warn("Attempt to unregister unknown ItemContainer");
+        }
     }
 
     public static boolean isContainerAt(@Nonnull final Location location) {

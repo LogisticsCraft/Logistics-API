@@ -3,8 +3,9 @@ package com.logisticscraft.logisticsapi.item;
 import org.bukkit.inventory.ItemStack;
 
 import com.logisticscraft.logisticsapi.BlockSide;
+import com.logisticscraft.logisticsapi.LogisticObject;
 
-public interface ItemContainer {
+public interface ItemContainer extends LogisticObject {
 
 	public ItemStack extractItem(BlockSide extractDirection, int extractAmount);
 

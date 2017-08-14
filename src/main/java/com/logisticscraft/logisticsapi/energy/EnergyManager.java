@@ -45,7 +45,7 @@ public class EnergyManager {
         if (energyStorages.putIfAbsent(location, energyStorage) == null) Tracer.msg(
                 "Energy storage registered at " + location.toString()
         );
-        else Tracer.msg("Energy storage re-registered at " + location.toString());
+        else Tracer.warn("Trying to register EnergyStorage at occupied location: " + location.toString());
 
         energyStorage.setupSideLocations(location);
     }

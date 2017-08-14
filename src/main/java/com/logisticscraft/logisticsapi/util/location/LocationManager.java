@@ -27,7 +27,7 @@ public class LocationManager {
     @Nonnull
     public static String serializeBlockLocation(@Nonnull Location location) {
         return location.getWorld().getName() + "|" +
-                (((long) location.getBlockX() & 0XFFFFFFF) << 36
+                (((long) location.getBlockX() & 0xFFFFFFF) << 36
                         | (((long) location.getBlockY() & 0xFF) << 28)
                         | ((long) location.getBlockZ() & 0xFFFFFFF));
     }

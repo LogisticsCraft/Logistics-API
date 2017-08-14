@@ -39,7 +39,7 @@ public class WireManager {
         if (wires.putIfAbsent(location, wire) == null) Tracer.msg(
                 "Energy Wire registered at " + location.toString()
         );
-        else Tracer.msg("Energy Wire re-registered at " + location.toString());
+        else Tracer.warn("Trying to register EnergyWire at occupied location: " + location.toString());
 
         wire.setupSideLocations(location);
     }

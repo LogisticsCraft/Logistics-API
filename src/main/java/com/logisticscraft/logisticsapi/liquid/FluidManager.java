@@ -45,9 +45,9 @@ public class FluidManager {
     public static void registerFluidContainer(@Nonnull final Location location,
             @Nonnull final FluidContainer fluidContainer) {
         if (fluidContainers.putIfAbsent(location, fluidContainer) == null) Tracer.msg(
-                "Fluid Container registered at " + location.toString()
+                "FluidContainer registered at " + location.toString()
                 );
-        else Tracer.msg("Fluid Container re-registered at " + location.toString());
+        else Tracer.warn("Trying to register FluidContainer at occupied location: " + location.toString());
     }
 
     public static void unregisterFluidContainer(@Nonnull final Location location) {

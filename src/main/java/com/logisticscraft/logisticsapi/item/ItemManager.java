@@ -63,11 +63,11 @@ public class ItemManager {
     
     public static void registerItemContainer(@Nonnull final Location location,
             @Nonnull final ItemContainer itemContainer) {
-        if (itemContainers.putIfAbsent(location, itemContainer) == null){ 
-            Tracer.msg("Item Container registered at " + location.toString());
+        if (itemContainers.putIfAbsent(location, itemContainer) == null) {
+            Tracer.msg("ItemContainer registered at " + location.toString());
             Bukkit.getPluginManager().callEvent(new ItemContainerRegisterEvent(location, itemContainer));
         }
-        else Tracer.msg("Item Container re-registered at " + location.toString());
+        else Tracer.warn("Trying to register ItemContainer at occupied location: " + location.toString());
     }
 
     public static void unregisterItemContainer(@Nonnull final Location location) {

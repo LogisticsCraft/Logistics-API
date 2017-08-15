@@ -1,12 +1,16 @@
 package com.logisticscraft.logisticsapi.item;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.logisticscraft.logisticsapi.BlockSide;
+
+import de.robotricker.transportpipes.pipeitems.ItemData;
+import de.robotricker.transportpipes.pipes.FilteringMode;
 
 public interface InventoryContainer extends ItemContainer {
 
@@ -23,15 +27,19 @@ public interface InventoryContainer extends ItemContainer {
 	}
 
 	@Override
-	public default ItemStack extractItem(BlockSide extractDirection, int extractAmount) {
+	public default ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemData> filterItems, FilteringMode filteringMode) {
 		Inventory cachedInv = getInventory();
 		ItemStack takenIs = null;
 		for (int i = 0; i < cachedInv.getSize(); i++) {
 			if (cachedInv.getItem(i) != null) {
 				int amountBefore = takenIs != null ? takenIs.getAmount() : 0;
 				if (takenIs == null) {
-					takenIs = cachedInv.getItem(i).clone();
-					takenIs.setAmount(Math.min(extractAmount, takenIs.getAmount()));
+					if (new ItemData(cachedInv.getItem(i)).checkFilter(filterItems, filteringMode)) {
+						takenIs = cachedInv.getItem(i).clone();
+						takenIs.setAmount(Math.min(extractAmount, takenIs.getAmount()));
+					} else {
+						continue;
+					}
 				} else if (takenIs.isSimilar(cachedInv.getItem(i))) {
 					takenIs.setAmount(Math.min(extractAmount, amountBefore + cachedInv.getItem(i).getAmount()));
 				}

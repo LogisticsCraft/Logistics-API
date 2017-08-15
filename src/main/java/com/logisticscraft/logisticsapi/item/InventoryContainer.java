@@ -9,9 +9,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.logisticscraft.logisticsapi.BlockSide;
 
-import de.robotricker.transportpipes.pipeitems.ItemData;
-import de.robotricker.transportpipes.pipes.FilteringMode;
-
 public interface InventoryContainer extends ItemContainer {
 
 	public Inventory getInventory();
@@ -27,7 +24,7 @@ public interface InventoryContainer extends ItemContainer {
 	}
 
 	@Override
-	public default ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemData> filterItems, FilteringMode filteringMode) {
+	public default ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemStack> filterItems, FilteringMode filteringMode) {
 		Inventory cachedInv = getInventory();
 		ItemStack takenIs = null;
 		for (int i = 0; i < cachedInv.getSize(); i++) {

@@ -6,7 +6,7 @@
 
     <groupId>com.logisticscraft</groupId>
     <artifactId>logistics-api</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -138,12 +138,6 @@
             <artifactId>item-nbt-api</artifactId>
             <version>1.3-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-        	<groupId>de.robotricker</groupId>
-        	<artifactId>transportpipes</artifactId>
-        	<version>4.2.2-SNAPSHOT</version>
-        	<scope>provided</scope>
         </dependency>
     </dependencies>
 

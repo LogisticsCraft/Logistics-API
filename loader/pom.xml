@@ -10,7 +10,7 @@
         <version>0.0.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>logistics-example</artifactId>
+    <artifactId>logistics-loader</artifactId>
     <packaging>jar</packaging>
 
     <build>
@@ -29,32 +29,6 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.logisticscraft.logisticsloader</pattern>
-                            <shadedPattern>com.logisticscraft.logisticsexample.libs.logisticsloader</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 
     <dependencies>
@@ -69,12 +43,6 @@
             <artifactId>logistics-api</artifactId>
             <version>0.0.4-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.logisticscraft</groupId>
-            <artifactId>logistics-loader</artifactId>
-            <version>0.0.4-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

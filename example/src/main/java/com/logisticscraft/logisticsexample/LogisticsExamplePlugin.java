@@ -1,5 +1,6 @@
 package com.logisticscraft.logisticsexample;
 
+import com.logisticscraft.logisticsloader.LogisticsLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -18,5 +19,6 @@ public final class LogisticsExamplePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        LogisticsLoader.load();
     }
 }

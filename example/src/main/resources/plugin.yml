@@ -1,0 +1,5 @@
+name: LogisticsExample
+main: com.logisticscraft.logisticsexample.LogisticsExamplePlugin
+version: ${project.version}
+authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]
+depend: [LogisticsAPI]

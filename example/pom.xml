@@ -26,6 +26,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigotVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.logisticscraft</groupId>
             <artifactId>logistics-api</artifactId>
             <version>0.0.4-SNAPSHOT</version>

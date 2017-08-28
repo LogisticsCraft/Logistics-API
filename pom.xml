@@ -12,7 +12,6 @@
     <modules>
         <module>api</module>
         <module>example</module>
-        <!-- <module>nms</module> -->
     </modules>
 
     <properties>
@@ -73,10 +72,6 @@
         <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>http://repo.dmulloy2.net/content/groups/public</url>
         </repository>
         <repository>
             <id>logisticscraft-repo</id>

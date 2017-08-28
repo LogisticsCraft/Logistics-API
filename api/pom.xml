@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <build>
-        <defaultGoal>clean install javadoc:javadoc</defaultGoal>
+        <defaultGoal>clean install javadoc:aggregate</defaultGoal>
 
         <resources>
             <resource>
@@ -61,12 +61,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigotVersion}</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>

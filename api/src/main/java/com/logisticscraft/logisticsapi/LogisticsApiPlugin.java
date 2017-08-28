@@ -1,17 +1,14 @@
 package com.logisticscraft.logisticsapi;
 
+import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.energy.wire.WireManager;
 import com.logisticscraft.logisticsapi.general.command.CommandManager;
-import com.logisticscraft.logisticsapi.general.command.LogisticsApiCommand;
-import com.logisticscraft.logisticsapi.util.nms.NmsHelper;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import com.logisticscraft.logisticsapi.energy.EnergyManager;
 import com.logisticscraft.logisticsapi.liquid.FluidManager;
 import com.logisticscraft.logisticsapi.util.console.Tracer;
-import com.logisticscraft.logisticsapi.util.nms.bossbar.BossBarManager;
+import com.logisticscraft.logisticsapi.util.nms.NmsHelper;
+import com.logisticscraft.logisticsapi.visual.BossBarManager;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author JARvis (Пётр) PROgrammer
@@ -39,16 +36,6 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         Tracer.msg(description.getName() + " (v" + description.getVersion() + ") has been disabled.");
     }
 
-    private static void enableNms() {
-        Tracer.msg("Enabling NMS...");
-
-        NmsHelper.setupVersion();
-
-        BossBarManager.init();
-
-        Tracer.msg("NMS has been enabled");
-    }
-
     private static void enableEnergyManagers() {
         Tracer.msg("Enabling EnergyManagers...");
 
@@ -57,7 +44,7 @@ public final class LogisticsApiPlugin extends JavaPlugin {
 
         Tracer.msg("EnergyManagers has been enabled");
     }
-    
+
     private static void enableFluidManager() {
         Tracer.msg("Enabling FluidManager...");
 
@@ -84,11 +71,10 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         PluginDescriptionFile description = getDescription();
         Tracer.traceLogo();
         String authors = description.getAuthors().toString();
-        Tracer.msg("by: " + authors.substring(1, authors.length()-1));
+        Tracer.msg("by: " + authors.substring(1, authors.length() - 1));
         Tracer.msg("Server version: " + getServer().getVersion(),
                 "Bukkit version: " + getServer().getBukkitVersion());
 
-        enableNms();
         enableEnergyManagers();
         enableFluidManager();
         registerCommands();

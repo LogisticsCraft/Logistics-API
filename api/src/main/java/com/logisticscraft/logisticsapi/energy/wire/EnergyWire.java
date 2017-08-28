@@ -1,34 +1,39 @@
 package com.logisticscraft.logisticsapi.energy.wire;
 
+import com.logisticscraft.logisticsapi.registry.LogisticObject;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import com.logisticscraft.logisticsapi.energy.EnergyManager;
+import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.util.console.Tracer;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 
 /**
  * @author JARvis (Пётр) PROgrammer
  * TODO
  */
-public interface EnergyWire {
-    long getWireEnergy();
+public interface EnergyWire extends LogisticObject {
+    ///////////////////////////////////////////////////////////////////////////
+    // General Energy Amount
+    ///////////////////////////////////////////////////////////////////////////
+    long getEnergy();
 
-    void setWireEnergy(long energy);
+    void setEnergy(long energy);
 
-    long getWireMaxEnergy();
+    long getMaxEnergy();
 
-    long getWireMaxInput();
+    long getMaxInput();
 
-    long getWireMaxOutput();
+    long getMaxOutput();
 
-    default float getWireEnergyRate() {
-        return (float) getWireEnergy() / (float) getWireMaxEnergy();
+    default float getEnergyRate() {
+        return (float) getEnergy() / (float) getMaxEnergy();
     }
 
-    default long getWireSpaceLeft() {
-        return getWireMaxEnergy() - getWireEnergy();
+    default long getEnergySpaceLeft() {
+        return getMaxEnergy() - getEnergy();
     }
 
     /**
@@ -37,15 +42,15 @@ public interface EnergyWire {
      * @param energy Energy to be taken from the updateWireNear
      * @return amount of Energy given with updateWireNear (less than or equal to energy asked)
      */
-    default long takeWireEnergy(long energy) {
+    default long takeEnergy(long energy) {
         Tracer.msg("Taking Energy: " + energy);
-        Tracer.msg("Current: " + getWireEnergy());
-        if (getWireEnergy() <= energy) {
-            setWireEnergy(getWireEnergy() - energy);
+        Tracer.msg("Current: " + getEnergy());
+        if (getEnergy() <= energy) {
+            setEnergy(getEnergy() - energy);
             return energy;
         } else {
-            long result = getWireEnergy();
-            setWireEnergy(0);
+            long result = getEnergy();
+            setEnergy(0);
             return result;
         }
     }
@@ -56,18 +61,23 @@ public interface EnergyWire {
      * @param energy Energy to be put into the updateWireNear
      * @return amount of Energy not put into the updateWireNear (because of it not having space)
      */
-    default long putWireEnergy(long energy) {
-        long sum = getWireEnergy() + energy;
-        if (getWireMaxEnergy() >= sum) {
-            setWireEnergy(sum);
+    default long putEnergy(long energy) {
+        long sum = getEnergy() + energy;
+        if (getMaxEnergy() >= sum) {
+            setEnergy(sum);
             return 0;
         } else {
-            long result = energy - getWireMaxEnergy();
-            setWireEnergy(getWireMaxEnergy());
+            long result = energy - getMaxEnergy();
+            setEnergy(getMaxEnergy());
             return result;
         }
     }
 
+    /**
+     * Returns the current Location of Wire-Instance
+     * Is highly recommended to use BlockLocation
+     * @return location of the Wire
+     */
     Location getWireLocation();
 
     default void updateWireNear() {
@@ -77,11 +87,11 @@ public interface EnergyWire {
 
                 assert (wire != null);
 
-                if (wire.getWireEnergyRate() > getWireEnergyRate()) {
-                    long energyToTake = Math.min(Math.min(wire.getWireEnergy(),
-                            Math.min(getWireMaxInput(), wire.getWireMaxOutput())), getWireSpaceLeft());
-                    wire.takeWireEnergy(energyToTake);
-                    putWireEnergy(energyToTake);
+                if (wire.getEnergyRate() > getEnergyRate()) {
+                    long energyToTake = Math.min(Math.min(wire.getEnergy(),
+                            Math.min(getMaxInput(), wire.getMaxOutput())), getEnergySpaceLeft());
+                    wire.takeEnergy(energyToTake);
+                    putEnergy(energyToTake);
                 }
             }
         }

@@ -1,11 +1,10 @@
 package com.logisticscraft.logisticsapi.event;
 
+import com.logisticscraft.logisticsapi.registry.LogisticObject;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import com.logisticscraft.logisticsapi.LogisticObject;
 
 public class LogisticObjectRegisterEvent extends Event {
     public static final HandlerList handlers = new HandlerList();

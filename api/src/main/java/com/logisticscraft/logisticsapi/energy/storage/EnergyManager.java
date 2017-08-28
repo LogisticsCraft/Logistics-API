@@ -1,6 +1,7 @@
-package com.logisticscraft.logisticsapi.energy;
+package com.logisticscraft.logisticsapi.energy.storage;
 
 import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
+import com.logisticscraft.logisticsapi.annotation.ApiComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,6 +41,7 @@ public class EnergyManager {
 
     private static Map<Location, EnergyStorage> energyStorages = new HashMap<>();
 
+    @ApiComponent
     public static void registerEnergyStorage(@Nonnull final Location location,
                                              @Nonnull final EnergyStorage energyStorage) {
         if (energyStorages.putIfAbsent(location, energyStorage) == null) Tracer.msg(
@@ -50,24 +52,29 @@ public class EnergyManager {
         energyStorage.setupSideLocations(location);
     }
 
+    @ApiComponent
     public static void unregisterEnergyStorage(@Nonnull final Location location) {
         if (energyStorages.remove(location) == null) Tracer.warn("Attempt to unregister unknown EnergyStorage");
     }
 
+    @ApiComponent
     public static boolean isStorageAt(@Nonnull final Location location) {
         return energyStorages.containsKey(location);
     }
 
+    @ApiComponent
     public static boolean isStorageRegistered(@Nonnull final EnergyStorage storage) {
         return energyStorages.containsValue(storage);
     }
 
     @Nullable
+    @ApiComponent
     public static EnergyStorage getStorageAt(@Nonnull final Location location) {
         return energyStorages.get(location);
     }
 
     @Nullable
+    @ApiComponent
     public static Location getStorageLocation(@Nonnull final EnergyStorage energyStorage) {
         for (Map.Entry<Location, EnergyStorage> entry : energyStorages.entrySet()) if (entry.getValue()
                 == energyStorage) return entry.getKey();

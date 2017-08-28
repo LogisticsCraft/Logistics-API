@@ -1,5 +1,6 @@
-package com.logisticscraft.logisticsapi.util.nms.bossbar;
+package com.logisticscraft.logisticsapi.visual;
 
+import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -7,11 +8,15 @@ import org.bukkit.boss.BossBar;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author JARvis (Пётр) PROgrammer
  */
-public interface BossBarProvider {
+public class BossBarManager {
+    static Map<String, BossBar> bars = new HashMap<>();
+
     /**
      * Creates dynamic {@link BossBar} with given params
      *
@@ -23,11 +28,24 @@ public interface BossBarProvider {
      * @param flags flag(s) enums of the BossBar
      * @return created BossBar
      */
-    BossBar create(@Nullable String id,
+    public static BossBar create(@Nullable String id,
                    @Nonnull String title,
                    @Nonnull BarColor color,
                    @Nonnull BarStyle style,
-                   BarFlag... flags);
+                   BarFlag... flags) {
+        if (flags == null) flags = new BarFlag[0];
+        BossBar bossBar = Bukkit.createBossBar(title, color, style, flags);
 
-    void remove(@Nonnull String id);
+        if (id != null) BossBarManager.bars.put(id, bossBar);
+
+        return bossBar;
+    }
+
+    public static void remove(@Nonnull String id) {
+        BossBar bossBar = BossBarManager.bars.get(id);
+        if (bossBar != null) {
+            bossBar.removeAll();
+            BossBarManager.bars.remove(id);
+        }
+    }
 }

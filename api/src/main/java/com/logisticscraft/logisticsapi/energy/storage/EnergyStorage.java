@@ -1,8 +1,8 @@
-package com.logisticscraft.logisticsapi.energy;
+package com.logisticscraft.logisticsapi.energy.storage;
 
 import com.logisticscraft.logisticsapi.BlockSide;
-import com.logisticscraft.logisticsapi.LogisticObject;
-import com.logisticscraft.logisticsapi.util.nms.bossbar.BossBarManager;
+import com.logisticscraft.logisticsapi.energy.wire.EnergyWire;
+import com.logisticscraft.logisticsapi.visual.BossBarManager;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import org.bukkit.Location;
@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * @author JARvis (Пётр) PROgrammer
  */
-public interface EnergyStorage extends LogisticObject {
+public interface EnergyStorage extends EnergyWire {
     /**
      * Returns the {@link Location} of this {@link EnergyStorage}.
      * By default uses {@link EnergyManager}'s method to find it so is <b>highly recommended to be overridden</b>.
@@ -364,7 +364,7 @@ public interface EnergyStorage extends LogisticObject {
      * No checks on ID being null are performed so created BossBar may be anonymous
      */
     default void setupEnergyBar() {
-        setEnergyBar(BossBarManager.getProvider().create(
+        setEnergyBar(BossBarManager.create(
                 getEnergyBarId(), getEnergyBarTitle(), getEnergyBarColor(), getEnergyBarStyle(), getEnergyBarFlags())
         );
     }
@@ -374,7 +374,7 @@ public interface EnergyStorage extends LogisticObject {
      * Automatically checks whether ID is null though it's not recommended to have unnecessary calls
      */
     default void deleteEnergyBar() {
-        if (getEnergyBarId() != null) BossBarManager.getProvider().remove(getEnergyBarId());
+        if (getEnergyBarId() != null) BossBarManager.remove(getEnergyBarId());
     }
 
     /**

@@ -11,9 +11,9 @@ import com.logisticscraft.logisticsapi.BlockSide;
 
 public interface InventoryContainer extends ItemContainer {
 
-	public Inventory getInventory();
+	Inventory getInventory();
 
-	public static ItemStack changeAmount(ItemStack item, int amountDelta) {
+	static ItemStack changeAmount(ItemStack item, int amountDelta) {
 		ItemStack copy = item.clone();
 		if (item.getAmount() + amountDelta > 0) {
 			copy.setAmount(Math.min(item.getMaxStackSize(), item.getAmount() + amountDelta));
@@ -24,7 +24,7 @@ public interface InventoryContainer extends ItemContainer {
 	}
 
 	@Override
-	public default ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemStack> filterItems, FilteringMode filteringMode) {
+	default ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemStack> filterItems, FilteringMode filteringMode) {
 		Inventory cachedInv = getInventory();
 		ItemStack takenIs = null;
 		for (int i = 0; i < cachedInv.getSize(); i++) {
@@ -48,7 +48,7 @@ public interface InventoryContainer extends ItemContainer {
 	}
 
 	@Override
-	public default ItemStack insertItem(BlockSide insertDirection, ItemStack insertion) {
+	default ItemStack insertItem(BlockSide insertDirection, ItemStack insertion) {
 		Inventory cachedInv = getInventory();
 		Collection<ItemStack> overflow = cachedInv.addItem(insertion).values();
 		if (overflow.isEmpty()) {
@@ -59,7 +59,7 @@ public interface InventoryContainer extends ItemContainer {
 	}
 
 	@Override
-	public default int howMuchSpaceForItemAsync(BlockSide insertDirection, ItemStack insertion) {
+	default int howMuchSpaceForItemAsync(BlockSide insertDirection, ItemStack insertion) {
 		Inventory cachedInv = getInventory();
 		int freeSpace = 0;
 		for (int i = 0; i < cachedInv.getSize(); i++) {
@@ -74,7 +74,7 @@ public interface InventoryContainer extends ItemContainer {
 	}
 
 	@Override
-	public default boolean isInterfaceable(BlockSide face) {
+	default boolean isInterfaceable(BlockSide face) {
 		return true;
 	}
 

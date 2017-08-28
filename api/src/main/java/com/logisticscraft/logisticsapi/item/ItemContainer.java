@@ -2,19 +2,19 @@ package com.logisticscraft.logisticsapi.item;
 
 import java.util.List;
 
+import com.logisticscraft.logisticsapi.registry.LogisticObject;
 import org.bukkit.inventory.ItemStack;
 
 import com.logisticscraft.logisticsapi.BlockSide;
-import com.logisticscraft.logisticsapi.LogisticObject;
 
 public interface ItemContainer extends LogisticObject {
 
-	public ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemStack> filterItems, FilteringMode filteringMode);
+	ItemStack extractItem(BlockSide extractDirection, int extractAmount, List<ItemStack> filterItems, FilteringMode filteringMode);
 
-	public ItemStack insertItem(BlockSide insertDirection, ItemStack insertion);
+	ItemStack insertItem(BlockSide insertDirection, ItemStack insertion);
 
-	public int howMuchSpaceForItemAsync(BlockSide insertDirection, ItemStack insertion);
+	int howMuchSpaceForItemAsync(BlockSide insertDirection, ItemStack insertion);
 
-	public boolean isInterfaceable(BlockSide face);
+	boolean isInterfaceable(BlockSide face);
 
 }

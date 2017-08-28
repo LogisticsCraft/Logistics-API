@@ -1,5 +1,6 @@
 package com.logisticscraft.logisticsapi.energy.wire;
 
+import com.logisticscraft.logisticsapi.annotation.ApiComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,6 +35,7 @@ public class WireManager {
         }, 20L, 20L);
     }
 
+    @ApiComponent
     public static void registerWire(@Nonnull final Location location,
                                     @Nonnull final EnergyWire wire) {
         if (wires.putIfAbsent(location, wire) == null) Tracer.msg(
@@ -44,19 +46,23 @@ public class WireManager {
         wire.setupSideLocations(location);
     }
 
+    @ApiComponent
     public static void unregisterWire(@Nonnull final Location location) {
         if (wires.remove(location) == null) Tracer.warn("Attempt to unregister unknown EnergyWire");
     }
 
+    @ApiComponent
     public static boolean isWireAt(Location location) {
         return wires.containsKey(location);
     }
 
+    @ApiComponent
     public static boolean isWireRegistered(EnergyWire wire) {
         return wires.containsValue(wire);
     }
 
     @Nullable
+    @ApiComponent
     public static EnergyWire getWireAt(Location location) {
         return wires.get(location);
     }
@@ -73,7 +79,7 @@ public class WireManager {
         Location location = block.getLocation();
 
         if (isWireAt(location)) {
-            player.sendTitle(getWireAt(location).getWireEnergy() + ">>", "energy", 1, 18, 1);
+            player.sendTitle(getWireAt(location).getEnergy() + ">>", "energy", 1, 18, 1);
         }
     }
 }

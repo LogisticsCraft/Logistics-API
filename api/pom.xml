@@ -90,12 +90,11 @@
             <version>${spigotVersion}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api</artifactId>
-            <version>1.3-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.github.tr7zw.Item-NBT-API</groupId>
+			<artifactId>item-nbt-api</artifactId>
+			<version>-SNAPSHOT</version>
+		</dependency>
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-core</artifactId>

@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.block;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 
-public interface NBTContainer extends RuntimeCache{
+public interface NBTContainer{
 
     public void saveNBT(NBTCompound nbtcompound);
     

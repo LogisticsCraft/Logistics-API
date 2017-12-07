@@ -1,8 +1,6 @@
 package com.logisticscraft.logisticsapi.block;
 
-import de.tr7zw.itemnbtapi.NBTCompound;
-
-public interface EnergyStorage extends NBTContainer{
+public interface EnergyStorage extends LogisticBlockAccess{
 
     default int getMaxEnergyStored(){
         if(getClass().getAnnotation(EnergyStorageData.class) == null){
@@ -28,10 +26,8 @@ public interface EnergyStorage extends NBTContainer{
         return getClass().getAnnotation(EnergyStorageData.class).maxExtract();
     }
 
-
     default int getEnergyStored(){
-        if(getRuntimeData().hasKey("energy"))return getRuntimeData().getInteger("energy");
-        return 0;
+        return getPower();
     }
 
     default void setEnergyStored(int energy) {
@@ -40,18 +36,7 @@ public interface EnergyStorage extends NBTContainer{
         } else if (energy < 0) {
             energy = 0;
         }
-        getRuntimeData().setInteger("energy", energy);
-    }
-
-    @Override
-    default void saveNBT(NBTCompound nbtcompound) {
-        nbtcompound.setInteger("energy", getEnergyStored());
-    }
-
-    @Override
-    default void loadNBT(NBTCompound nbtcompound) {
-        if(nbtcompound.hasKey("energy"))
-            setEnergyStored(nbtcompound.getInteger("energy"));
+        setPower(energy);
     }
 
     public @interface EnergyStorageData{

@@ -93,12 +93,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigotVersion}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>ch.jalu</groupId>
             <artifactId>injector</artifactId>
             <version>1.0</version>
@@ -111,15 +105,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.18</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
 			<groupId>com.github.tr7zw.Item-NBT-API</groupId>
 			<artifactId>item-nbt-api</artifactId>
 			<version>-SNAPSHOT</version>
+            <scope>compile</scope>
 		</dependency>
         <dependency>
             <groupId>co.aikar</groupId>

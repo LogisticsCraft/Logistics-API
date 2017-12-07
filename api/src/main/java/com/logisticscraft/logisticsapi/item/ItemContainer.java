@@ -5,7 +5,7 @@ import java.util.List;
 import com.logisticscraft.logisticsapi.registry.LogisticObject;
 import org.bukkit.inventory.ItemStack;
 
-import com.logisticscraft.logisticsapi.BlockSide;
+import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 
 public interface ItemContainer extends LogisticObject {
 

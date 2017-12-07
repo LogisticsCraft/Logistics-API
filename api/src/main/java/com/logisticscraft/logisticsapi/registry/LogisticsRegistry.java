@@ -1,32 +1,28 @@
 package com.logisticscraft.logisticsapi.registry;
 
 import com.logisticscraft.logisticsapi.annotation.ApiComponent;
-import com.logisticscraft.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
-public class LogistcsRegistry {
-    private static Map<LogisticsNamespaceKey, LogisticObjectData> objects = new HashMap<>();
+@NoArgsConstructor
+public class LogisticsRegistry {
 
-    public static Map<LogisticsNamespaceKey, LogisticObjectData> getObjects() {
-        return objects;
-    }
+    private Map<LogisticsNamespaceKey, LogisticObjectData> objects = new HashMap<>();
 
     @ApiComponent
-    public static boolean register(@Nonnull LogisticObjectData objectData, boolean force) {
+    public boolean register(@NonNull LogisticObjectData objectData, boolean force) {
         if (force) {
             objects.put(objectData.getNamespaceKey(), objectData);
-            Tracer.msg("LogisticObject was FORCE-registered by NamespaceKey \""
+            Tracer.info("LogisticObject was FORCE-registered by NamespaceKey \""
                     + objectData.getNamespaceKey() + "\"");
             return true;
         } else if (objects.putIfAbsent(objectData.getNamespaceKey(), objectData) == null) {
-            Tracer.msg("LogisticObject was registered by NamespaceKey \""
+            Tracer.info("LogisticObject was registered by NamespaceKey \""
                     + objectData.getNamespaceKey() + "\"");
             return true;
         } else {
@@ -37,12 +33,13 @@ public class LogistcsRegistry {
     }
 
     @ApiComponent
-    public static LogisticObjectData getObject(@Nonnull JavaPlugin plugin, @Nonnull String name) {
+    public LogisticObjectData getObject(@NonNull JavaPlugin plugin, @NonNull String name) {
         return getObject(new LogisticsNamespaceKey(plugin, name));
     }
 
     @ApiComponent
-    public static LogisticObjectData getObject(@Nonnull LogisticsNamespaceKey namespaceKey) {
+    public LogisticObjectData getObject(@NonNull LogisticsNamespaceKey namespaceKey) {
         return objects.get(namespaceKey);
     }
+
 }

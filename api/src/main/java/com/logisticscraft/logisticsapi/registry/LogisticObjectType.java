@@ -1,8 +1,5 @@
 package com.logisticscraft.logisticsapi.registry;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
 public enum LogisticObjectType {
     WIRE,
     ENERGY_STORAGE,

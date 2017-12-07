@@ -3,9 +3,7 @@ package com.logisticscraft.logisticsapi.item;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.logisticscraft.logisticsapi.event.ItemContainerRegisterEvent;
 import com.logisticscraft.logisticsapi.event.ItemContainerUnregisterEvent;
-import com.logisticscraft.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 
@@ -61,16 +59,16 @@ public class ItemManager {
         return getOreDictionary(item) != null;
     }
     
-    public static void registerItemContainer(@Nonnull final Location location,
-            @Nonnull final ItemContainer itemContainer) {
+    public static void registerItemContainer(@NonNull final Location location,
+            @NonNull final ItemContainer itemContainer) {
         if (itemContainers.putIfAbsent(location, itemContainer) == null) {
-            Tracer.msg("ItemContainer registered at " + location.toString());
+            Tracer.info("ItemContainer registered at " + location.toString());
             Bukkit.getPluginManager().callEvent(new ItemContainerRegisterEvent(location, itemContainer));
         }
         else Tracer.warn("Trying to register ItemContainer at occupied location: " + location.toString());
     }
 
-    public static void unregisterItemContainer(@Nonnull final Location location) {
+    public static void unregisterItemContainer(@NonNull final Location location) {
         ItemContainer container = itemContainers.get(location);
         if(container != null){
             Bukkit.getPluginManager().callEvent(new ItemContainerUnregisterEvent(location, container));
@@ -80,21 +78,19 @@ public class ItemManager {
         }
     }
 
-    public static boolean isContainerAt(@Nonnull final Location location) {
+    public static boolean isContainerAt(@NonNull final Location location) {
         return itemContainers.containsKey(location);
     }
 
-    public static boolean isContainerRegistered(@Nonnull final ItemContainer container) {
+    public static boolean isContainerRegistered(@NonNull final ItemContainer container) {
         return itemContainers.containsValue(container);
     }
 
-    @Nullable
-    public static ItemContainer getContainerAt(@Nonnull final Location location) {
+    public static ItemContainer getContainerAt(@NonNull final Location location) {
         return itemContainers.get(location);
     }
 
-    @Nullable
-    public static Location getContainerLocation(@Nonnull final ItemContainer itemContainer) {
+    public static Location getContainerLocation(@NonNull final ItemContainer itemContainer) {
         for (Map.Entry<Location, ItemContainer> entry : itemContainers.entrySet()) if (entry.getValue()
                 == itemContainer) return entry.getKey();
         return null;

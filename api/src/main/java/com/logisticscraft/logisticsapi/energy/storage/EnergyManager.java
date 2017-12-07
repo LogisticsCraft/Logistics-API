@@ -2,6 +2,8 @@ package com.logisticscraft.logisticsapi.energy.storage;
 
 import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
 import com.logisticscraft.logisticsapi.annotation.ApiComponent;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,18 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import com.logisticscraft.logisticsapi.util.console.Tracer;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
 public class EnergyManager {
 
     public static final Map<BlockSides, Vector> SIDE_VECTORS = new HashMap<BlockSides, Vector>() {{
@@ -42,9 +37,9 @@ public class EnergyManager {
     private static Map<Location, EnergyStorage> energyStorages = new HashMap<>();
 
     @ApiComponent
-    public static void registerEnergyStorage(@Nonnull final Location location,
-                                             @Nonnull final EnergyStorage energyStorage) {
-        if (energyStorages.putIfAbsent(location, energyStorage) == null) Tracer.msg(
+    public static void registerEnergyStorage(@NonNull final Location location,
+                                             @NonNull final EnergyStorage energyStorage) {
+        if (energyStorages.putIfAbsent(location, energyStorage) == null) Tracer.info(
                 "Energy storage registered at " + location.toString()
         );
         else Tracer.warn("Trying to register EnergyStorage at occupied location: " + location.toString());
@@ -53,31 +48,30 @@ public class EnergyManager {
     }
 
     @ApiComponent
-    public static void unregisterEnergyStorage(@Nonnull final Location location) {
+    public static void unregisterEnergyStorage(@NonNull final Location location) {
         if (energyStorages.remove(location) == null) Tracer.warn("Attempt to unregister unknown EnergyStorage");
     }
 
     @ApiComponent
-    public static boolean isStorageAt(@Nonnull final Location location) {
+    public static boolean isStorageAt(@NonNull final Location location) {
         return energyStorages.containsKey(location);
     }
 
     @ApiComponent
-    public static boolean isStorageRegistered(@Nonnull final EnergyStorage storage) {
+    public static boolean isStorageRegistered(@NonNull final EnergyStorage storage) {
         return energyStorages.containsValue(storage);
     }
 
-    @Nullable
     @ApiComponent
-    public static EnergyStorage getStorageAt(@Nonnull final Location location) {
+    public static EnergyStorage getStorageAt(@NonNull final Location location) {
         return energyStorages.get(location);
     }
 
-    @Nullable
     @ApiComponent
-    public static Location getStorageLocation(@Nonnull final EnergyStorage energyStorage) {
-        for (Map.Entry<Location, EnergyStorage> entry : energyStorages.entrySet()) if (entry.getValue()
-                == energyStorage) return entry.getKey();
+    public static Location getStorageLocation(@NonNull final EnergyStorage energyStorage) {
+        for (Map.Entry<Location, EnergyStorage> entry : energyStorages.entrySet())
+            if (entry.getValue()
+                    == energyStorage) return entry.getKey();
         return null;
     }
 
@@ -112,7 +106,7 @@ public class EnergyManager {
         EnergyManager.showEnergyBarTask = showEnergyBarTask;
     }
 
-    public static void displayEnergyInfo(@Nonnull Player player) {
+    public static void displayEnergyInfo(@NonNull Player player) {
         Block block = player.getTargetBlock((Set<Material>) null, 8);
         if (block != null) {
 
@@ -133,7 +127,7 @@ public class EnergyManager {
         for (Player player : players) displayEnergyInfo(player);
     }
 
-    public static void undisplayEnergyBar(@Nonnull Player player) {
+    public static void undisplayEnergyBar(@NonNull Player player) {
         if (bars.containsKey(player)) {
             bars.get(player).removePlayer(player);
             bars.remove(player);
@@ -160,7 +154,7 @@ public class EnergyManager {
         return item != null && item.getType() == wireMaterial;
     }
 
-    public static boolean tryWire(@Nonnull Player player, Block blockClicked) {
+    public static boolean tryWire(@NonNull Player player, Block blockClicked) {
         if (blockClicked != null && isWireItem(player.getInventory().getItemInMainHand())) {
             SimpleWildBlock wildBlock = BlockManager.getWildBlockAtLocation(blockClicked.getEnergyStorageLocation());
             if (wildBlock != null && wildBlock instanceof EnergyStorage) {

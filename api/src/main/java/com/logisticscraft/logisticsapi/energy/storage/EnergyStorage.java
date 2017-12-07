@@ -1,10 +1,11 @@
 package com.logisticscraft.logisticsapi.energy.storage;
 
-import com.logisticscraft.logisticsapi.BlockSide;
+import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 import com.logisticscraft.logisticsapi.energy.wire.EnergyWire;
 import com.logisticscraft.logisticsapi.visual.BossBarManager;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
+import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -12,13 +13,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Set;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
 public interface EnergyStorage extends EnergyWire {
     /**
      * Returns the {@link Location} of this {@link EnergyStorage}.
@@ -39,7 +35,7 @@ public interface EnergyStorage extends EnergyWire {
      * </ul>
      * @return priority representing block's ability to share Energy
      */
-    @Nonnull
+    @NonNull
     default EnergySharePriority getEnergySharePriority() {
         return EnergySharePriority.NORMAL;
     }
@@ -117,7 +113,7 @@ public interface EnergyStorage extends EnergyWire {
      * @param force whether or not to skip checking of EnergyStorage subtype
      * @return amount of energy taken from storage
      */
-    default long takeEnergy(long energy, @Nonnull BlockSide blockSide, boolean force) {
+    default long takeEnergy(long energy, @NonNull BlockSide blockSide, boolean force) {
         if (getEnergy() <= 0 || !getEnergyTakeSides().contains(blockSide)) return 0;
         return takeEnergy(energy, force);
     }
@@ -129,7 +125,7 @@ public interface EnergyStorage extends EnergyWire {
      * @param force whether or not to skip checking of EnergyStorage subtype
      * @return amount of energy not put into storage
      */
-    default long putEnergy(long energy, @Nonnull BlockSide blockSide, boolean force) {
+    default long putEnergy(long energy, @NonNull BlockSide blockSide, boolean force) {
         if (getEnergy() >= getMaxEnergy() || !getEnergyPutSides().contains(blockSide)) return 0;
         return takeEnergy(energy, force);
     }
@@ -185,7 +181,7 @@ public interface EnergyStorage extends EnergyWire {
      * @return all locations of blocks which are touching this EnergyStorage
      */
     Location[] getSideLocations();
-    void setSideLocations(@Nonnull Location[] sideLocations);
+    void setSideLocations(@NonNull Location[] sideLocations);
 
     /**
      * Sets up all SideLocations according to the location given
@@ -256,7 +252,6 @@ public interface EnergyStorage extends EnergyWire {
      *
      * @return BossBar identification
      */
-    @Nullable
     @Getter
     default String getEnergyBarId() {
         return null;
@@ -293,7 +288,7 @@ public interface EnergyStorage extends EnergyWire {
      *
      * @return BarColor to be used for EnergyBar
      */
-    @Nonnull
+    @NonNull
     @Getter
     default BarColor getEnergyBarColor() {
         switch ((int) (getEnergyBarProgress() * 2)) {
@@ -314,7 +309,7 @@ public interface EnergyStorage extends EnergyWire {
      *
      * @return BarStyle to be used for EnergyBar
      */
-    @Nonnull
+    @NonNull
     @Getter
     default BarStyle getEnergyBarStyle() {
         return BarStyle.SEGMENTED_20;
@@ -328,7 +323,6 @@ public interface EnergyStorage extends EnergyWire {
      *
      * @return BarFlags to be used for EnergyBar
      */
-    @Nullable
     @Getter
     default BarFlag[] getEnergyBarFlags() {
         return null;
@@ -342,7 +336,6 @@ public interface EnergyStorage extends EnergyWire {
      *
      * @return instance of BossBar representing Block's EnergyBar
      */
-    @Nullable
     @Getter
     default BossBar getEnergyBar() {
         return null;
@@ -357,7 +350,7 @@ public interface EnergyStorage extends EnergyWire {
      * @param bossBar instance of BossBar representing Block's EnergyBar
      */
     @Setter
-    default void setEnergyBar(@Nullable BossBar bossBar) {}
+    default void setEnergyBar(BossBar bossBar) {}
 
     /**
      * Generates block's BossBar according to it's getters
@@ -385,7 +378,7 @@ public interface EnergyStorage extends EnergyWire {
     default void updateEnergyBar() {
         if (getEnergyBar() == null) setupEnergyBar();
         if (getEnergyBar() != null) {
-            @Nonnull BossBar energyBar = getEnergyBar();
+            @NonNull BossBar energyBar = getEnergyBar();
             //Title
             if (!energyBar.getTitle().equals(getEnergyBarTitle())) energyBar.setTitle(getEnergyBarTitle());
             //Progress

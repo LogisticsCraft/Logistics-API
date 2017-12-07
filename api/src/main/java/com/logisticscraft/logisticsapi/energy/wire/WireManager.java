@@ -1,6 +1,7 @@
 package com.logisticscraft.logisticsapi.energy.wire;
 
 import com.logisticscraft.logisticsapi.annotation.ApiComponent;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,18 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
-import com.logisticscraft.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- * TODO
- */
 public class WireManager {
     private static Map<Location, EnergyWire> wires = new HashMap<>();
     ///////////////////////////////////////////////////////////////////////////
@@ -36,9 +31,9 @@ public class WireManager {
     }
 
     @ApiComponent
-    public static void registerWire(@Nonnull final Location location,
-                                    @Nonnull final EnergyWire wire) {
-        if (wires.putIfAbsent(location, wire) == null) Tracer.msg(
+    public static void registerWire(@NonNull final Location location,
+                                    @NonNull final EnergyWire wire) {
+        if (wires.putIfAbsent(location, wire) == null) Tracer.info(
                 "Energy Wire registered at " + location.toString()
         );
         else Tracer.warn("Trying to register EnergyWire at occupied location: " + location.toString());
@@ -47,7 +42,7 @@ public class WireManager {
     }
 
     @ApiComponent
-    public static void unregisterWire(@Nonnull final Location location) {
+    public static void unregisterWire(@NonNull final Location location) {
         if (wires.remove(location) == null) Tracer.warn("Attempt to unregister unknown EnergyWire");
     }
 
@@ -61,7 +56,6 @@ public class WireManager {
         return wires.containsValue(wire);
     }
 
-    @Nullable
     @ApiComponent
     public static EnergyWire getWireAt(Location location) {
         return wires.get(location);

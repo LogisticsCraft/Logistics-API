@@ -1,31 +1,27 @@
 package com.logisticscraft.logisticsapi.registry;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import lombok.NonNull;
+
 import java.lang.annotation.*;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface LogisticObjectMeta {
-    @Nonnull
+
+    @NonNull
     LogisticObjectType type();
 
-    @Nonnull
+    @NonNull
     String displayName() default "";
 
-    @Nonnull
+    @NonNull
     String localizedName() default "";
 
-    @Nullable
     String[] tags() default {};
 
-    @Nullable
     String description() default "";
 
-    @Nullable
     String descriptionLocalized() default "";
+
 }

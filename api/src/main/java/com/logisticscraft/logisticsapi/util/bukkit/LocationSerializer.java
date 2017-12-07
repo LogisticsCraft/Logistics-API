@@ -1,17 +1,14 @@
-package com.logisticscraft.logisticsapi.util.location;
+package com.logisticscraft.logisticsapi.util.bukkit;
 
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+@UtilityClass
+public class LocationSerializer {
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
-public class LocationManager {
-    @Nullable
-    public static Location deserializeBlockLocation(@Nonnull String locationSerialized) {
+    public static Location deserializeBlockLocation(@NonNull String locationSerialized) {
         try {
             int splitterIndex = locationSerialized.indexOf('|');
             Long locationCoords = Long.parseLong(locationSerialized.substring(splitterIndex + 1));
@@ -24,8 +21,8 @@ public class LocationManager {
         }
     }
 
-    @Nonnull
-    public static String serializeBlockLocation(@Nonnull Location location) {
+    @NonNull
+    public static String serializeBlockLocation(@NonNull Location location) {
         return location.getWorld().getName() + "|" +
                 (((long) location.getBlockX() & 0xFFFFFFF) << 36
                         | (((long) location.getBlockY() & 0xFF) << 28)

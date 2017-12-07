@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.logisticscraft.logisticsapi.BlockSide;
+import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 
 public interface InventoryContainer extends ItemContainer {
 

@@ -1,8 +1,10 @@
 package com.logisticscraft.logisticsapi.liquid;
 
+import lombok.Getter;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
+@Getter
 public class Fluid {
 
     private String internalName;
@@ -22,34 +24,6 @@ public class Fluid {
         this.density = density;
         this.gaseous = gaseous;
         this.temperature = temperature;
-    }
-
-    public String getInternalName() {
-        return internalName;
-    }
-
-    public String getParentPlugin() {
-        return parentPlugin;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public MaterialData getMaterial() {
-        return material;
-    }
-
-    public float getDensity() {
-        return density;
-    }
-
-    public boolean isGaseous() {
-        return gaseous;
-    }
-
-    public int getTemperature() {
-        return temperature;
     }
 
 }

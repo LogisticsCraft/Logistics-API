@@ -1,25 +1,16 @@
 package com.logisticscraft.logisticsapi.util.nms;
 
-import com.logisticscraft.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nullable;
-
-/**
- * @author JARvis (Пётр) PROgrammer
- */
 public class NmsHelper {
+
+    @Getter
+    @Setter
     private static NmsVersion version;
 
-    public static NmsVersion getVersion() {
-        return version;
-    }
-
-    public static void setVersion(NmsVersion version) {
-        NmsHelper.version = version;
-    }
-
-    @Nullable
     public static Class getNmsProvider(String name) {
         Class providerClass = null;
         try {
@@ -31,13 +22,12 @@ public class NmsHelper {
         return providerClass;
     }
 
-
     public static void setupVersion() {
-        Tracer.msg("Setting up NmsHelper's version");
+        Tracer.info("Setting up NmsHelper's version");
         setVersion(NmsVersion.valueOf(Bukkit.getServer().getClass().getPackage().getName()
                 .replace(".", ",").split(",")[3].replace("v", "_"))
         );
-        Tracer.msg("NmsHelper's version has been set up");
+        Tracer.info("NmsHelper's version has been set up");
     }
 
     public enum NmsVersion {
@@ -47,4 +37,5 @@ public class NmsHelper {
         _1_11_R1,
         _1_12_R1
     }
+
 }

@@ -1,10 +1,7 @@
 package com.logisticscraft.logisticsapi.energy.storage;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
 public interface EnergyConsumer extends EnergyStorage {
 
     @Override
@@ -12,7 +9,7 @@ public interface EnergyConsumer extends EnergyStorage {
         return 0;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     default EnergySharePriority getEnergySharePriority() {
         return EnergySharePriority.NEVER;

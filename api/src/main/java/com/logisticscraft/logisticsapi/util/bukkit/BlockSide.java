@@ -1,5 +1,6 @@
-package com.logisticscraft.logisticsapi;
+package com.logisticscraft.logisticsapi.util.bukkit;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 
@@ -7,9 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
+@AllArgsConstructor
 public enum BlockSide {
     EAST(new Vector(1.0, 0.0, 0.0)),
     WEST(new Vector(-1.0, 0.0, 0.0)),
@@ -19,10 +18,6 @@ public enum BlockSide {
     NORTH(new Vector(0.0, 0.0, -1.0));
 
     private final Vector blockVector;
-
-    BlockSide(Vector blockVector) {
-        this.blockVector = blockVector;
-    }
 
     public static BlockSide fromBlockFace(BlockFace blockFace) {
         return valueOf(blockFace.name());

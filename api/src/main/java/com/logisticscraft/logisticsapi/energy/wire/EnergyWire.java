@@ -1,19 +1,13 @@
 package com.logisticscraft.logisticsapi.energy.wire;
 
 import com.logisticscraft.logisticsapi.registry.LogisticObject;
+import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
-import com.logisticscraft.logisticsapi.util.console.Tracer;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
 
-import javax.annotation.Nonnull;
-import java.util.Collection;
-
-/**
- * @author JARvis (Пётр) PROgrammer
- * TODO
- */
 public interface EnergyWire extends LogisticObject {
     ///////////////////////////////////////////////////////////////////////////
     // General Energy Amount
@@ -43,8 +37,8 @@ public interface EnergyWire extends LogisticObject {
      * @return amount of Energy given with updateWireNear (less than or equal to energy asked)
      */
     default long takeEnergy(long energy) {
-        Tracer.msg("Taking Energy: " + energy);
-        Tracer.msg("Current: " + getEnergy());
+        Tracer.info("Taking Energy: " + energy);
+        Tracer.info("Current: " + getEnergy());
         if (getEnergy() <= energy) {
             setEnergy(getEnergy() - energy);
             return energy;
@@ -99,7 +93,7 @@ public interface EnergyWire extends LogisticObject {
 
     Location[] getSideLocations();
 
-    void setSideLocations(@Nonnull Location[] sideLocations);
+    void setSideLocations(@NonNull Location[] sideLocations);
 
     default void setupSideLocations(Location location) {
         Location[] sideLocations = new Location[6];

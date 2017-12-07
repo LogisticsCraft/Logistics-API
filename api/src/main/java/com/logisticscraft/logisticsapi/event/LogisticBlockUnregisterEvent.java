@@ -1,34 +1,31 @@
 package com.logisticscraft.logisticsapi.event;
 
-import com.logisticscraft.logisticsapi.registry.LogisticObject;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class LogisticObjectUnregisterEvent extends Event {
+import com.logisticscraft.logisticsapi.block.LogisticBlock;
+
+import lombok.Getter;
+
+public class LogisticBlockUnregisterEvent extends Event {
     public static final HandlerList handlers = new HandlerList();
 	
+    @Getter
 	private final Location location;
-	private final LogisticObject object;
+	@Getter
+	private final LogisticBlock logisticblock;
 
-	public LogisticObjectUnregisterEvent(Location location, LogisticObject object) {
+	public LogisticBlockUnregisterEvent(Location location, LogisticBlock logisticblock) {
         super();
         this.location = location;
-        this.object = object;
+        this.logisticblock = logisticblock;
     }
 
 	public Block getBlock(){
 	    return location.getBlock();
 	}
-	
-    public Location getLocation() {
-        return location;
-    }
-
-    public LogisticObject getLogisticObject() {
-        return object;
-    }
 
     @Override
 	public HandlerList getHandlers() {

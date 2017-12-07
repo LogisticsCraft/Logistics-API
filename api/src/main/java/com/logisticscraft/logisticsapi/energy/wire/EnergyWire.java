@@ -1,6 +1,5 @@
 package com.logisticscraft.logisticsapi.energy.wire;
 
-import com.logisticscraft.logisticsapi.registry.LogisticObject;
 import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -8,7 +7,7 @@ import org.bukkit.util.Vector;
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.util.logger.Tracer;
 
-public interface EnergyWire extends LogisticObject {
+public interface EnergyWire {
     ///////////////////////////////////////////////////////////////////////////
     // General Energy Amount
     ///////////////////////////////////////////////////////////////////////////

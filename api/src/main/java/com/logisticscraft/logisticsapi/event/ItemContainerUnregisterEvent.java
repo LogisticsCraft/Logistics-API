@@ -3,7 +3,7 @@ package com.logisticscraft.logisticsapi.event;
 import org.bukkit.Location;
 import com.logisticscraft.logisticsapi.item.ItemContainer;
 
-public class ItemContainerUnregisterEvent extends LogisticObjectUnregisterEvent {
+public class ItemContainerUnregisterEvent extends LogisticBlockUnregisterEvent {
 
 	private final ItemContainer itemcontainer;
 

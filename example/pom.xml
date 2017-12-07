@@ -34,7 +34,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
@@ -58,12 +58,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigotVersion}</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>com.logisticscraft</groupId>
             <artifactId>logistics-api</artifactId>

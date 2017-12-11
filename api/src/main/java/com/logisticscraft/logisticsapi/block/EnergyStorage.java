@@ -1,36 +1,23 @@
 package com.logisticscraft.logisticsapi.block;
 
-public interface EnergyStorage extends LogisticBlockAccess{
+import de.tr7zw.itemnbtapi.NBTCompound;
 
-    default int getMaxEnergyStored(){
-        if(getClass().getAnnotation(EnergyStorageData.class) == null){
-            new Exception("The class '" + getClass().getName() + "' does not have the @EnergyStorageData Annotation!").printStackTrace();
-            return 0;
-        }
-        return getClass().getAnnotation(EnergyStorageData.class).capacity();
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+public interface EnergyStorage extends PowerHolder, NBTContainer {
+
+    default long getMaxEnergyStored() {
+        return AnnotationUtils.getAnnotation(this, EnergyStorageData.class).capacity();
     }
 
-    default int getMaxReceive(){
-        if(getClass().getAnnotation(EnergyStorageData.class) == null){
-            new Exception("The class '" + getClass().getName() + "' does not have the @EnergyStorageData Annotation!").printStackTrace();
-            return 0;
-        }
-        return getClass().getAnnotation(EnergyStorageData.class).maxReceive();
-    }
-
-    default int getMaxExtract(){
-        if(getClass().getAnnotation(EnergyStorageData.class) == null){
-            new Exception("The class '" + getClass().getName() + "' does not have the @EnergyStorageData Annotation!").printStackTrace();
-            return 0;
-        }
-        return getClass().getAnnotation(EnergyStorageData.class).maxExtract();
-    }
-
-    default int getEnergyStored(){
+    default long getStoredEnergy() {
         return getPower();
     }
 
-    default void setEnergyStored(int energy) {
+    default void setStoredEnergy(long energy) {
         if (energy > getMaxEnergyStored()) {
             energy = getMaxEnergyStored();
         } else if (energy < 0) {
@@ -39,9 +26,22 @@ public interface EnergyStorage extends LogisticBlockAccess{
         setPower(energy);
     }
 
-    public @interface EnergyStorageData{
-        int capacity();
-        int maxReceive();
-        int maxExtract();
+    @Override
+    default void saveNBT(NBTCompound nbtCompound) {
+        nbtCompound.setLong("power", getStoredEnergy());
     }
+
+    @Override
+    default void loadNBT(NBTCompound nbtcompound) {
+        setStoredEnergy(nbtcompound.getLong("power"));
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface EnergyStorageData {
+
+        int capacity();
+
+    }
+
 }

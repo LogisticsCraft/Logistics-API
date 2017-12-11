@@ -1,23 +1,26 @@
 package com.logisticscraft.logisticsapi;
 
-import ch.jalu.configme.SettingsManager;
-import ch.jalu.injector.Injector;
-import ch.jalu.injector.InjectorBuilder;
-import co.aikar.commands.BukkitCommandManager;
-import com.logisticscraft.logisticsapi.command.LogisticsApiCommand;
-import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
-import com.logisticscraft.logisticsapi.energy.wire.WireManager;
-import com.logisticscraft.logisticsapi.liquid.FluidManager;
-import com.logisticscraft.logisticsapi.settings.DataFolder;
-import com.logisticscraft.logisticsapi.settings.SettingsProvider;
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
-import lombok.Getter;
+import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
+import com.logisticscraft.logisticsapi.block.PowerManager;
+import com.logisticscraft.logisticsapi.command.LogisticsApiCommand;
+import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
+import com.logisticscraft.logisticsapi.liquid.FluidManager;
+import com.logisticscraft.logisticsapi.settings.DataFolder;
+import com.logisticscraft.logisticsapi.settings.SettingsProvider;
+import com.logisticscraft.logisticsapi.util.logger.Tracer;
+
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.injector.Injector;
+import ch.jalu.injector.InjectorBuilder;
+import co.aikar.commands.BukkitCommandManager;
+import lombok.Getter;
 
 public final class LogisticsApiPlugin extends JavaPlugin {
 
@@ -74,14 +77,13 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         Tracer.info("Commands registered");
     }
 
-    private static void enableEnergyManagers() {
+    private void enableEnergyManagers() {
         Tracer.info("Enabling EnergyManagers...");
-        EnergyManager.init();
-        WireManager.init();
+        Bukkit.getPluginManager().registerEvents(new PowerManager(), this);
         Tracer.info("EnergyManagers has been enabled");
     }
 
-    private static void enableFluidManager() {
+    private void enableFluidManager() {
         Tracer.info("Enabling FluidManager...");
         FluidManager.getFluid("water");
         Tracer.info("FluidManager has been enabled");

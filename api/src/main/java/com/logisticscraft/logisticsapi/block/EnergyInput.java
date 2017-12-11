@@ -5,8 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public interface EnergyInput extends PowerHolder {
+public interface EnergyInput extends EnergyStorage {
 
+    default long receiveEnergy(int maxEnergy, boolean simulate){
+        long energyReceived = Math.min(getMaxEnergyStored()-getStoredEnergy(), Math.min(getMaxReceive(), maxEnergy));
+        if(!simulate)setStoredEnergy(getStoredEnergy()+energyReceived);
+        return energyReceived;
+    }
+    
     default long getMaxReceive() {
         return AnnotationUtils.getAnnotation(this, EnergyInputData.class).maxReceive();
     }

@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
 
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 
+import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.Getter;
 
 public class LogisticBlockRegisterEvent extends Event {
@@ -16,11 +17,14 @@ public class LogisticBlockRegisterEvent extends Event {
 	private final Location location;
     @Getter
 	private final LogisticBlock logisticblock;
+    @Getter
+    private final NBTCompound blockdata;
 
-	public LogisticBlockRegisterEvent(Location location, LogisticBlock logisticblock) {
+	public LogisticBlockRegisterEvent(Location location, LogisticBlock logisticblock, NBTCompound blockdata) {
         super();
         this.location = location;
         this.logisticblock = logisticblock;
+        this.blockdata = blockdata;
     }
 
 	public Block getBlock(){

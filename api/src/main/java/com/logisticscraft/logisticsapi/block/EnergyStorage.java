@@ -1,20 +1,18 @@
 package com.logisticscraft.logisticsapi.block;
 
-import de.tr7zw.itemnbtapi.NBTCompound;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public interface EnergyStorage extends PowerHolder, NBTContainer {
+public interface EnergyStorage extends BlockSelector {
 
     default long getMaxEnergyStored() {
         return AnnotationUtils.getAnnotation(this, EnergyStorageData.class).capacity();
     }
 
     default long getStoredEnergy() {
-        return getPower();
+        return PowerManager.getInstance().getPower(getId());
     }
 
     default void setStoredEnergy(long energy) {
@@ -23,17 +21,7 @@ public interface EnergyStorage extends PowerHolder, NBTContainer {
         } else if (energy < 0) {
             energy = 0;
         }
-        setPower(energy);
-    }
-
-    @Override
-    default void saveNBT(NBTCompound nbtCompound) {
-        nbtCompound.setLong("power", getStoredEnergy());
-    }
-
-    @Override
-    default void loadNBT(NBTCompound nbtcompound) {
-        setStoredEnergy(nbtcompound.getLong("power"));
+        PowerManager.getInstance().setPower(getId(), energy);
     }
 
     @Target(ElementType.TYPE)

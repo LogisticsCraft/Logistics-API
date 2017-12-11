@@ -1,17 +1,19 @@
 package com.logisticscraft.logisticsapi.block;
 
-public abstract class LogisticBlock implements PowerHolder {
+public abstract class LogisticBlock implements BlockSelector {
 
-    private long power = 0;
-
-    @Override
-    public long getPower() {
-        return power;
+    private static Integer COUNTER = 0;
+    private final int id;
+    
+    public LogisticBlock() {
+        synchronized (COUNTER) {
+            id = ++COUNTER;
+        }
     }
-
+    
     @Override
-    public void setPower(long power) {
-        this.power = power;
+    public int getId() {
+        return id;
     }
-
+    
 }

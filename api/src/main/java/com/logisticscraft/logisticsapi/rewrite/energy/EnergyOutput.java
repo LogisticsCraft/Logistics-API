@@ -18,7 +18,7 @@ public interface EnergyOutput extends EnergyStorage {
     }
 
     default long getMaxExtract() {
-        return AnnotationUtils.getAnnotation(this, EnergyOutputData.class).maxExtract();
+        return AnnotationUtils.getClassAnnotation(this, EnergyOutputData.class).maxExtract();
     }
 
     @Target(ElementType.TYPE)

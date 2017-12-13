@@ -18,7 +18,7 @@ public interface EnergyInput extends EnergyStorage {
     }
 
     default long getMaxReceive() {
-        return AnnotationUtils.getAnnotation(this, EnergyInputData.class).maxReceive();
+        return AnnotationUtils.getClassAnnotation(this, EnergyInputData.class).maxReceive();
     }
 
     @Target(ElementType.TYPE)

@@ -9,8 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.logisticscraft.logisticsapi.event.ItemContainerRegisterEvent;
-import com.logisticscraft.logisticsapi.event.ItemContainerUnregisterEvent;
+import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerRegisterEvent;
+import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerUnregisterEvent;
 import com.logisticscraft.logisticsapi.util.logger.Tracer;
 
 import de.tr7zw.itemnbtapi.NBTItem;

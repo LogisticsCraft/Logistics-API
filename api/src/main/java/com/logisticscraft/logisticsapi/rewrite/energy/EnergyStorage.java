@@ -13,7 +13,7 @@ public interface EnergyStorage extends Metadatable {
     String STORED_ENERGY_META_TAG = "storedEnergy";
 
     default long getMaxEnergyStored() {
-        return AnnotationUtils.getAnnotation(this, EnergyStorageData.class).capacity();
+        return AnnotationUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
     }
 
     default long getStoredEnergy() {

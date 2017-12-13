@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
 @UtilityClass
 public class AnnotationUtils {
 
-    public static <T extends Annotation> T getAnnotation(Object object, Class<T> annotation) {
+    public static <T extends Annotation> T getClassAnnotation(Object object, Class<T> annotation) {
         Class<?> clazz = object.getClass();
         T result = clazz.getAnnotation(annotation);
         if(result == null){

@@ -1,6 +1,7 @@
 package com.logisticscraft.logisticsapi.rewrite.block;
 
 import com.logisticscraft.logisticsapi.rewrite.Metadatable;
+import com.logisticscraft.logisticsapi.rewrite.storage.PersistantData;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public abstract class LogisticBlock implements Metadatable {
 
+    @PersistantData
     private Map<String, Object> metadata = new HashMap<>();
 
     @Override

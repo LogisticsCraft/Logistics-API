@@ -21,7 +21,7 @@ public class NbtTypeStorage {
     }
 
     @SuppressWarnings("unchecked")
-    public void saveData(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
+    public void saveFieldData(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
         // Check custom converters
         if (converters.containsKey(data.getClass())) {
             ((DataConverter<Object>) converters.get(data.getClass())).store(data, nbtCompound);
@@ -38,7 +38,7 @@ public class NbtTypeStorage {
             hasAnnotation = true;
             field.setAccessible(true);
             try {
-                saveData(field.get(data), nbtCompound.addCompound(field.getName()));
+                saveFieldData(field.get(data), nbtCompound.addCompound(field.getName()));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -52,7 +52,7 @@ public class NbtTypeStorage {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T loadData(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
+    public <T> T loadFieldData(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
         if (converters.containsKey(type)) {
             return (T) converters.get(type).parse(nbtCompound);
         }

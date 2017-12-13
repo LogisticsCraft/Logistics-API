@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.util.nms;
 
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

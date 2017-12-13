@@ -1,6 +1,5 @@
-package com.logisticscraft.logisticsapi.util.file;
+package com.logisticscraft.logisticsapi.rewrite.utils;
 
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
 import lombok.experimental.UtilityClass;
 
 import java.io.File;

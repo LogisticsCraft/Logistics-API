@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 
 import java.util.HashMap;
 import java.util.Map;

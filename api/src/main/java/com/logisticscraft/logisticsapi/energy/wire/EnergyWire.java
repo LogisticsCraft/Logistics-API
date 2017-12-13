@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 
 public interface EnergyWire {
     ///////////////////////////////////////////////////////////////////////////

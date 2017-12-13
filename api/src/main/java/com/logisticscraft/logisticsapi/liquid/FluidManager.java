@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.liquid;
 
 
 import com.logisticscraft.logisticsapi.LogisticsApiPlugin;
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.Material;

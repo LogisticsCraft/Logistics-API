@@ -1,25 +1,23 @@
 package com.logisticscraft.logisticsapi;
 
-import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
-
-import org.bukkit.Server;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
-
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.injector.Injector;
+import ch.jalu.injector.InjectorBuilder;
+import co.aikar.commands.BukkitCommandManager;
 import com.logisticscraft.logisticsapi.command.LogisticsApiCommand;
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.liquid.FluidManager;
 import com.logisticscraft.logisticsapi.rewrite.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
-
-import ch.jalu.configme.SettingsManager;
-import ch.jalu.injector.Injector;
-import ch.jalu.injector.InjectorBuilder;
-import co.aikar.commands.BukkitCommandManager;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 import lombok.Getter;
+import org.bukkit.Server;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
+
+import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
 
 public final class LogisticsApiPlugin extends JavaPlugin {
 

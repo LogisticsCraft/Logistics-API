@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.util.logger;
+package com.logisticscraft.logisticsapi.rewrite.utils;
 
 import lombok.Setter;
 import org.bukkit.ChatColor;

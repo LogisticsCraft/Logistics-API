@@ -1,6 +1,7 @@
 package com.logisticscraft.logisticsapi.rewrite.energy;
 
-import com.logisticscraft.logisticsapi.rewrite.LogisticDataHolder;
+import com.logisticscraft.logisticsapi.rewrite.data.LogisticDataHolder;
+import com.logisticscraft.logisticsapi.rewrite.data.LogisticKey;
 import com.logisticscraft.logisticsapi.rewrite.utils.AnnotationUtils;
 
 import java.lang.annotation.ElementType;
@@ -10,14 +11,14 @@ import java.lang.annotation.Target;
 
 public interface EnergyStorage extends LogisticDataHolder {
 
-    String STORED_ENERGY_META_TAG = "storedEnergy";
+    LogisticKey STORED_ENERGY_META_KEY = new LogisticKey("LogisticsAPI", "storedEnergy");
 
     default long getMaxEnergyStored() {
         return AnnotationUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
     }
 
     default long getStoredEnergy() {
-        return getLogisticData(STORED_ENERGY_META_TAG, Long.class).orElse(0L);
+        return getLogisticData(STORED_ENERGY_META_KEY, Long.class).orElse(0L);
     }
 
     default void setStoredEnergy(final long energy) {
@@ -29,7 +30,7 @@ public interface EnergyStorage extends LogisticDataHolder {
         } else {
             newEnergy = energy;
         }
-        setLogisticData(STORED_ENERGY_META_TAG, newEnergy);
+        setLogisticData(STORED_ENERGY_META_KEY, newEnergy);
     }
 
     @Target(ElementType.TYPE)

@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerRegisterEvent;
 import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerUnregisterEvent;
-import com.logisticscraft.logisticsapi.util.logger.Tracer;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 

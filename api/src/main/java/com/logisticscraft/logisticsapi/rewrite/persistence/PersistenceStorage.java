@@ -1,31 +1,34 @@
-package com.logisticscraft.logisticsapi.rewrite.storage;
+package com.logisticscraft.logisticsapi.rewrite.persistence;
+
+import com.google.gson.Gson;
+import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.DataAdapter;
+import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.MapDataAdapter;
+import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.StringDataAdapter;
+import de.tr7zw.itemnbtapi.NBTCompound;
+import lombok.NonNull;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.logisticscraft.logisticsapi.rewrite.storage.convertion.DataConverter;
-import com.logisticscraft.logisticsapi.rewrite.storage.convertion.HashMapDataConverter;
-import com.logisticscraft.logisticsapi.rewrite.storage.convertion.StringDataConverter;
+public class PersistenceStorage {
 
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.NonNull;
+    private Gson gson;
+    private Map<Class<?>, DataAdapter<?>> converters;
 
-public class NbtTypeStorage {
+    public PersistenceStorage() {
+        gson = new Gson();
+        converters = new HashMap<>();
 
-    private Gson gson = new Gson();
-    private Map<Class<?>, DataConverter<?>> converters = new HashMap<>();
-
-    public NbtTypeStorage(){
-        registerDataConverter(String.class, new StringDataConverter(), false);
-        registerDataConverter(HashMap.class, new HashMapDataConverter(), false);
+        // Register default converters
+        registerDataConverter(String.class, new StringDataAdapter(), false);
+        registerDataConverter(HashMap.class, new MapDataAdapter(), false);
     }
 
-    public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataConverter<T> converter, boolean replace) {
-        if(replace){
+    public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataAdapter<T> converter, boolean replace) {
+        if (replace) {
             converters.put(clazz, converter);
-        }else{
+        } else {
             converters.putIfAbsent(clazz, converter);
         }
     }
@@ -34,14 +37,14 @@ public class NbtTypeStorage {
     public void saveFieldData(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
         // Check custom converters
         if (converters.containsKey(data.getClass())) {
-            ((DataConverter<Object>) converters.get(data.getClass())).store(data, nbtCompound);
+            ((DataAdapter<Object>) converters.get(data.getClass())).store(this, data, nbtCompound);
             return;
         }
 
         // Check annotated fields
         boolean hasAnnotation = false;
         for (Field field : data.getClass().getDeclaredFields()) {
-            if (field.getAnnotation(PersistantData.class) == null) {
+            if (field.getAnnotation(Persistent.class) == null) {
                 continue;
             }
 
@@ -64,7 +67,7 @@ public class NbtTypeStorage {
     @SuppressWarnings("unchecked")
     public <T> T loadFieldData(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
         if (converters.containsKey(type)) {
-            return (T) converters.get(type).parse(nbtCompound);
+            return (T) converters.get(type).parse(this, nbtCompound);
         }
 
         // TODO: Implement annotated fields loading!

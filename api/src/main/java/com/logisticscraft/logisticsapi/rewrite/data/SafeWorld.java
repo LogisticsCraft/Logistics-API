@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.rewrite.data;
 
-import com.logisticscraft.logisticsapi.rewrite.storage.PersistantData;
+import com.logisticscraft.logisticsapi.rewrite.persistence.Persistent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class SafeWorld {
 
     @NonNull
-    @PersistantData
+    @Persistent
     private final String name;
 
     public SafeWorld(@NonNull World world) {

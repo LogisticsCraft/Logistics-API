@@ -10,7 +10,7 @@ public class AnnotationUtils {
     public static <T extends Annotation> T getClassAnnotation(Object object, Class<T> annotation) {
         Class<?> clazz = object.getClass();
         T result = clazz.getAnnotation(annotation);
-        if(result == null){
+        if (result == null) {
             throw new IllegalStateException("The class '" + clazz.getName() + "' does not have the @" + annotation.getSimpleName() + " Annotation!");
         }
         return result;

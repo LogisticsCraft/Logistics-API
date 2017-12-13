@@ -1,14 +1,14 @@
 package com.logisticscraft.logisticsapi.rewrite.energy;
 
+import com.logisticscraft.logisticsapi.rewrite.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.rewrite.utils.AnnotationUtils;
-import com.logisticscraft.logisticsapi.rewrite.LogisticData;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public interface EnergyStorage extends LogisticData {
+public interface EnergyStorage extends LogisticDataHolder {
 
     String STORED_ENERGY_META_TAG = "storedEnergy";
 

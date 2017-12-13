@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.rewrite.data;
 
-import com.logisticscraft.logisticsapi.rewrite.storage.PersistantData;
+import com.logisticscraft.logisticsapi.rewrite.persistence.Persistent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -8,33 +8,33 @@ import lombok.experimental.Delegate;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import java.util.Optional;
+
 @Data
 @AllArgsConstructor
 public class SafeBlockLocation {
 
     @NonNull
     @Delegate
-    @PersistantData
+    @Persistent
     private SafeWorld safeWorld;
-    @PersistantData
+    @Persistent
     private int x;
-    @PersistantData
+    @Persistent
     private int y;
-    @PersistantData
+    @Persistent
     private int z;
 
     public SafeBlockLocation(Location location) {
         this(new SafeWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
-    
-    public Location getLocation(){
-        if(!safeWorld.getWorld().isPresent())return null;
-        return new Location(safeWorld.getWorld().get(), x, y, z);
+
+    public Optional<Location> getLocation() {
+        return getWorld().map(world -> new Location(world, x, y, z));
     }
-    
-    public Block getBlock(){
-        if(!safeWorld.getWorld().isPresent())return null;
-        return getLocation().getBlock();
+
+    public Optional<Block> getBlock() {
+        return getLocation().map(Location::getBlock);
     }
 
 }

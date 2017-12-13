@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.logisticscraft.logisticsapi.command.LogisticsApiCommand;
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.liquid.FluidManager;
-import com.logisticscraft.logisticsapi.rewrite.storage.NbtTypeStorage;
+import com.logisticscraft.logisticsapi.rewrite.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.util.logger.Tracer;
@@ -29,8 +29,6 @@ public final class LogisticsApiPlugin extends JavaPlugin {
     private Injector injector;
     private SettingsManager settings;
     private BukkitCommandManager commandManager;
-    @Getter
-    private NbtTypeStorage nbtTypeStorage;
 
     public LogisticsApiPlugin() {
     }
@@ -63,9 +61,8 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         settings = injector.getSingleton(SettingsManager.class);
         Tracer.setDebug(settings.getProperty(DEBUG_ENABLE));
 
-        nbtTypeStorage = new NbtTypeStorage();
-        
         // Enable services
+        injector.getSingleton(PersistenceStorage.class);
         enableFluidManager();
         registerCommands();
 

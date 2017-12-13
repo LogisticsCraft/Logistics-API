@@ -1,7 +1,7 @@
 package com.logisticscraft.logisticsapi.rewrite.block;
 
-import com.logisticscraft.logisticsapi.rewrite.LogisticData;
-import com.logisticscraft.logisticsapi.rewrite.storage.PersistantData;
+import com.logisticscraft.logisticsapi.rewrite.LogisticDataHolder;
+import com.logisticscraft.logisticsapi.rewrite.persistence.Persistent;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @NoArgsConstructor
-public abstract class LogisticBlock implements LogisticData {
+public abstract class LogisticBlock implements LogisticDataHolder {
 
-    @PersistantData
+    @Persistent
     private Map<String, Object> metadata = new HashMap<>();
 
     @Override

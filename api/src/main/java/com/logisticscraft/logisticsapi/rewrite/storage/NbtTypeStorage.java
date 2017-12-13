@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.logisticscraft.logisticsapi.rewrite.storage.convertion.DataConverter;
+import com.logisticscraft.logisticsapi.rewrite.storage.convertion.HashMapDataConverter;
 import com.logisticscraft.logisticsapi.rewrite.storage.convertion.StringDataConverter;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
@@ -18,6 +19,7 @@ public class NbtTypeStorage {
 
     public NbtTypeStorage(){
         registerDataConverter(String.class, new StringDataConverter(), false);
+        registerDataConverter(HashMap.class, new HashMapDataConverter(), false);
     }
 
     public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataConverter<T> converter, boolean replace) {

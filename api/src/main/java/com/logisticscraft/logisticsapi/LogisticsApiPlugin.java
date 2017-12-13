@@ -8,7 +8,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.logisticscraft.logisticsapi.block.PowerManager;
+import com.logisticscraft.logisticsapi.rewrite.PowerManager;
 import com.logisticscraft.logisticsapi.command.LogisticsApiCommand;
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.liquid.FluidManager;

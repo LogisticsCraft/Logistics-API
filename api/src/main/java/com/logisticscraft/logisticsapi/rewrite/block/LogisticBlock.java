@@ -1,5 +1,6 @@
-package com.logisticscraft.logisticsapi.block;
+package com.logisticscraft.logisticsapi.rewrite.block;
 
+import com.logisticscraft.logisticsapi.rewrite.Metadatable;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 

@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.block;
+package com.logisticscraft.logisticsapi.rewrite;
 
 import lombok.NonNull;
 

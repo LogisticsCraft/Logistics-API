@@ -26,14 +26,14 @@ public interface EnergyStorage extends EnergyWire {
     }
 
     /**
-     * Get the Share-Priority of block to describe it's ability to share energy with nearest blocks:
+     * Get the Share-Priority of rewrite to describe it's ability to share energy with nearest blocks:
      * <ul>
      * <li><br>Blocks with similar priority <b>don't share</b> Energy</li>
      * <li><br>Blocks with lower priority <b>share</b> Energy with blocks of higher priority</li>
      * <li><br>Blocks with NEVER priority <b>don't share</b> Energy with any blocks</li>
      * <li><br>Blocks with ALWAYS priority <b>share</b> Energy with all blocks</li>
      * </ul>
-     * @return priority representing block's ability to share Energy
+     * @return priority representing rewrite's ability to share Energy
      */
     @NonNull
     default EnergySharePriority getEnergySharePriority() {
@@ -145,13 +145,13 @@ public interface EnergyStorage extends EnergyWire {
     void setEnergy(long energy);
 
     /**
-     * Gets maximal amount of energy which the block can store
+     * Gets maximal amount of energy which the rewrite can store
      * Small not serious energy losses can happen if hard tests are not performes with this value,
-     * e.g. if something produces <i>n</i> energy but the block requires <i>n-x</i> energy to be filled (<i>x less than 0</i>)
-     * and so the block is filled to it's maximal possible storage and some energy disappears
+     * e.g. if something produces <i>n</i> energy but the rewrite requires <i>n-x</i> energy to be filled (<i>x less than 0</i>)
+     * and so the rewrite is filled to it's maximal possible storage and some energy disappears
      * "transforms" into thermal (or inner) energy.
      *
-     * @return {@link long} maximal amount of energy which the block can store
+     * @return {@link long} maximal amount of energy which the rewrite can store
      */
     long getMaxEnergy();
 
@@ -226,7 +226,7 @@ public interface EnergyStorage extends EnergyWire {
                     //Check priority
                     //Priority NEVER
                     if (nearBlock.getEnergySharePriority() == EnergySharePriority.NEVER
-                            //Priority of block to take energy from is too low
+                            //Priority of rewrite to take energy from is too low
                             || nearBlock.getEnergySharePriority().ordinal() < getEnergySharePriority().ordinal()) continue;
 
                     //Get amount available
@@ -353,7 +353,7 @@ public interface EnergyStorage extends EnergyWire {
     default void setEnergyBar(BossBar bossBar) {}
 
     /**
-     * Generates block's BossBar according to it's getters
+     * Generates rewrite's BossBar according to it's getters
      * No checks on ID being null are performed so created BossBar may be anonymous
      */
     default void setupEnergyBar() {

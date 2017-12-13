@@ -1,6 +1,6 @@
-package com.logisticscraft.logisticsapi.block.energy;
+package com.logisticscraft.logisticsapi.rewrite.energy;
 
-import com.logisticscraft.logisticsapi.block.utils.AnnotationUtils;
+import com.logisticscraft.logisticsapi.rewrite.utils.AnnotationUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

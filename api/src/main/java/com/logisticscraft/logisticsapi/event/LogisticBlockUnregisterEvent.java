@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.event;
 
 import org.bukkit.Location;
 
-import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.rewrite.block.LogisticBlock;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 

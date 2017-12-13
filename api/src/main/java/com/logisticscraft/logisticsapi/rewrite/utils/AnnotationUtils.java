@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.block.utils;
+package com.logisticscraft.logisticsapi.rewrite.utils;
 
 import lombok.experimental.UtilityClass;
 

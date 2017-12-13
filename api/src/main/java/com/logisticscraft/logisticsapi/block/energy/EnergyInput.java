@@ -1,4 +1,6 @@
-package com.logisticscraft.logisticsapi.block;
+package com.logisticscraft.logisticsapi.block.energy;
+
+import com.logisticscraft.logisticsapi.block.utils.AnnotationUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,12 +9,14 @@ import java.lang.annotation.Target;
 
 public interface EnergyInput extends EnergyStorage {
 
-    default long receiveEnergy(int maxEnergy, boolean simulate){
-        long energyReceived = Math.min(getMaxEnergyStored()-getStoredEnergy(), Math.min(getMaxReceive(), maxEnergy));
-        if(!simulate)setStoredEnergy(getStoredEnergy()+energyReceived);
+    default long receiveEnergy(final long maxEnergy, final boolean simulate) {
+        long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(), Math.min(getMaxReceive(), maxEnergy));
+        if (!simulate) {
+            setStoredEnergy(getStoredEnergy() + energyReceived);
+        }
         return energyReceived;
     }
-    
+
     default long getMaxReceive() {
         return AnnotationUtils.getAnnotation(this, EnergyInputData.class).maxReceive();
     }

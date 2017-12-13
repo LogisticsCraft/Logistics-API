@@ -59,7 +59,7 @@ public class FileUtils {
     }
 
     /**
-     * Returns a JAR file as stream. Returns null if it doesn't exist.
+     * Returns a JAR file getValue stream. Returns null if it doesn't exist.
      *
      * @param clazz a class contained by the jar
      * @param path  the local path (starting from resources project, e.g. "config.yml" for 'resources/config.yml')

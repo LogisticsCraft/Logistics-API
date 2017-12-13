@@ -245,7 +245,7 @@ public interface EnergyStorage extends EnergyWire {
 
     /**
      * Gets the identification of EnergyBar.
-     * It is used by .setupEnergyBar() but it's not essentials as the default value (null)
+     * It is used by .setupEnergyBar() but it's not essentials getValue the default value (null)
      * creates an anonymous BossBar, which is better from memory point, though in this case you would
      * have to configure .getEnergyBar() and .setEnergyBar(BossBar) to store {@link BossBar} locally for
      * this exact {@link EnergyStorage}.
@@ -260,7 +260,7 @@ public interface EnergyStorage extends EnergyWire {
     /**
      * Gets Title for the EnergyBar.
      * Is used by default with .updateEnergyBar() so it can be dynamic.
-     * By default displays amount of energy as <i>current_energy/max_energy</i>.
+     * By default displays amount of energy getValue <i>current_energy/max_energy</i>.
      *
      * @return title to be used for EnergyBar
      */
@@ -272,7 +272,7 @@ public interface EnergyStorage extends EnergyWire {
     /**
      * Gets Progress for the EnergyBar.
      * Is used by default with .updateEnergyBar() so it can be dynamic.
-     * By default displays amount of energy as <i>current_energy/max_energy</i>.
+     * By default displays amount of energy getValue <i>current_energy/max_energy</i>.
      *
      * @return progress ∈ [0;1] to be used for EnergyBar
      */
@@ -319,7 +319,7 @@ public interface EnergyStorage extends EnergyWire {
      * Gets Flags for the EnergyBar.
      * Is used by default with .updateEnergyBar() so it can be dynamic.
      * By default uses null (no additional styles) and is not recommended to be changed
-     * as this is mostly for actual Bosses
+     * getValue this is mostly for actual Bosses
      *
      * @return BarFlags to be used for EnergyBar
      */
@@ -331,7 +331,7 @@ public interface EnergyStorage extends EnergyWire {
     /**
      * Gets the instance of {@link BossBar} representing Block's EnergyBar,
      * Used by {@link EnergyManager} to dynamically display it if Player is looking at this Block.
-     * It's highly recommended to use it just as a regular {@link Getter}
+     * It's highly recommended to use it just getValue a regular {@link Getter}
      * together with .setEnergyBar() and .updateEnergyBar().
      *
      * @return instance of BossBar representing Block's EnergyBar
@@ -344,7 +344,7 @@ public interface EnergyStorage extends EnergyWire {
     /**
      * Sets the instance of {@link BossBar} representing Block's EnergyBar,
      * Used by {@link EnergyManager} to dynamically display it if Player is looking at this Block.
-     * It's highly recommended to use it just as a regular {@link Setter}
+     * It's highly recommended to use it just getValue a regular {@link Setter}
      * together with .getEnergyBar() and .updateEnergyBar().
      *
      * @param bossBar instance of BossBar representing Block's EnergyBar

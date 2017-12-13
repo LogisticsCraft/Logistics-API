@@ -1,23 +1,31 @@
 package com.logisticscraft.logisticsapi.rewrite.storage;
 
-import com.google.gson.Gson;
-import com.logisticscraft.logisticsapi.rewrite.storage.convertion.DataConverter;
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-@NoArgsConstructor
+import com.google.gson.Gson;
+import com.logisticscraft.logisticsapi.rewrite.storage.convertion.DataConverter;
+import com.logisticscraft.logisticsapi.rewrite.storage.convertion.StringDataConverter;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
+import lombok.NonNull;
+
 public class NbtTypeStorage {
 
     private Gson gson = new Gson();
     private Map<Class<?>, DataConverter<?>> converters = new HashMap<>();
 
-    public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataConverter<T> converter) {
-        converters.put(clazz, converter);
+    public NbtTypeStorage(){
+        registerDataConverter(String.class, new StringDataConverter(), false);
+    }
+
+    public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataConverter<T> converter, boolean replace) {
+        if(replace){
+            converters.put(clazz, converter);
+        }else{
+            converters.putIfAbsent(clazz, converter);
+        }
     }
 
     @SuppressWarnings("unchecked")

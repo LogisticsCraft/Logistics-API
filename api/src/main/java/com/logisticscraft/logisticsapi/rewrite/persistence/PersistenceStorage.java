@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.rewrite.persistence;
 
 import com.google.gson.Gson;
 import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.DataAdapter;
-import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.MapDataAdapter;
+import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.HashMapDataAdapter;
 import com.logisticscraft.logisticsapi.rewrite.persistence.adapters.StringDataAdapter;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
@@ -22,7 +22,7 @@ public class PersistenceStorage {
 
         // Register default converters
         registerDataConverter(String.class, new StringDataAdapter(), false);
-        registerDataConverter(HashMap.class, new MapDataAdapter(), false);
+        registerDataConverter(HashMap.class, new HashMapDataAdapter(), false);
     }
 
     public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataAdapter<T> converter, boolean replace) {

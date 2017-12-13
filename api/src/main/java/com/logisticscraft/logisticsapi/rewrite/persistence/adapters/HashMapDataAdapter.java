@@ -5,14 +5,13 @@ import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @NoArgsConstructor
-public class MapDataAdapter implements DataAdapter<Map<?, ?>> {
+public class HashMapDataAdapter implements DataAdapter<HashMap<?, ?>> {
 
     @Override
-    public void store(PersistenceStorage persistenceStorage, Map<?, ?> value, NBTCompound nbtCompound) {
-        for (Map.Entry<?, ?> entry : value.entrySet()) {
+    public void store(final PersistenceStorage persistenceStorage, final HashMap<?, ?> value, final NBTCompound nbtCompound) {
+        for (HashMap.Entry<?, ?> entry : value.entrySet()) {
             Object entryKey = entry.getKey();
             Object entryValue = entry.getValue();
             NBTCompound container = nbtCompound.addCompound("" + entryKey.hashCode());
@@ -26,10 +25,10 @@ public class MapDataAdapter implements DataAdapter<Map<?, ?>> {
     }
 
     @Override
-    public Map parse(PersistenceStorage persistenceStorage, NBTCompound nbtCompound) {
-        Map<Object, Object> map = new HashMap<>();
-        for (String k : nbtCompound.getKeys()) {
-            NBTCompound container = nbtCompound.getCompound(k);
+    public HashMap<Object, Object> parse(PersistenceStorage persistenceStorage, NBTCompound nbtCompound) {
+        HashMap<Object, Object> map = new HashMap<>();
+        for (String key : nbtCompound.getKeys()) {
+            NBTCompound container = nbtCompound.getCompound(key);
             NBTCompound keyData = container.getCompound("key");
             NBTCompound data = container.getCompound("data");
             try {

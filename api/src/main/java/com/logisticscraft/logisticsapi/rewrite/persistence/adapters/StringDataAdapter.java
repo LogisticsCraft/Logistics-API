@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 public class StringDataAdapter implements DataAdapter<String> {
 
     @Override
-    public void store(PersistenceStorage persistenceStorage, String value, NBTCompound nbtCompound) {
+    public void store(final PersistenceStorage persistenceStorage, final String value, final NBTCompound nbtCompound) {
         nbtCompound.setString("data", value);
     }
 
     @Override
-    public String parse(PersistenceStorage persistenceStorage, NBTCompound nbtCompound) {
+    public String parse(final PersistenceStorage persistenceStorage, final NBTCompound nbtCompound) {
         if (!nbtCompound.hasKey("data")) {
             return null;
         }

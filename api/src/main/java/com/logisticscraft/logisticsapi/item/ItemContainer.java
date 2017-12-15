@@ -1,10 +1,9 @@
 package com.logisticscraft.logisticsapi.item;
 
-import java.util.List;
-
+import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 import org.bukkit.inventory.ItemStack;
 
-import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
+import java.util.List;
 
 public interface ItemContainer {
 

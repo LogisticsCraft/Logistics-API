@@ -13,9 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SafeWorld {
 
-    @NonNull
-    @Persistent
-    private final String name;
+    @NonNull @Persistent private final String name;
 
     public SafeWorld(@NonNull World world) {
         this(world.getName());

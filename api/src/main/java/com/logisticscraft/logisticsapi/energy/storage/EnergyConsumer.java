@@ -9,9 +9,8 @@ public interface EnergyConsumer extends EnergyStorage {
         return 0;
     }
 
-    @NonNull
     @Override
-    default EnergySharePriority getEnergySharePriority() {
+    @NonNull default EnergySharePriority getEnergySharePriority() {
         return EnergySharePriority.NEVER;
     }
 }

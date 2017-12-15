@@ -1,13 +1,12 @@
 package com.logisticscraft.logisticsapi.item;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
+import java.util.Collection;
+import java.util.List;
 
 public interface InventoryContainer extends ItemContainer {
 

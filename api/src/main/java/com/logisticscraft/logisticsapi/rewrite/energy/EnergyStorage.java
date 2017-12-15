@@ -22,14 +22,10 @@ public interface EnergyStorage extends LogisticDataHolder {
     }
 
     default void setStoredEnergy(final long energy) {
-        long newEnergy;
-        if (energy > getMaxEnergyStored()) {
-            newEnergy = getMaxEnergyStored();
-        } else if (energy < 0) {
-            newEnergy = 0;
-        } else {
-            newEnergy = energy;
-        }
+        final long newEnergy;
+        if (energy > getMaxEnergyStored()) newEnergy = getMaxEnergyStored();
+        else if (energy < 0) newEnergy = 0;
+        else newEnergy = energy;
 
         if(newEnergy == 0) {
             removeLogisticData(STORED_ENERGY_META_KEY);

@@ -1,7 +1,7 @@
 package com.logisticscraft.logisticsapi.energy.storage;
 
-import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 import com.logisticscraft.logisticsapi.energy.wire.EnergyWire;
+import com.logisticscraft.logisticsapi.util.bukkit.BlockSide;
 import com.logisticscraft.logisticsapi.visual.BossBarManager;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;

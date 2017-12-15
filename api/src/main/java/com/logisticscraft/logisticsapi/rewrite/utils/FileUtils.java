@@ -15,9 +15,9 @@ public class FileUtils {
     /**
      * Copy a resource file (from the JAR) to the given file if it doesn't exist.
      *
-     * @param clazz           A class contained by the jar
+     * @param clazz A class contained by the jar
      * @param destinationFile The file to check and copy to (outside of JAR)
-     * @param resourcePath    Local path to the resource file (path to file within JAR)
+     * @param resourcePath Local path to the resource file (path to file within JAR)
      * @return False if the file does not exist and could not be copied, true otherwise
      */
     public static boolean copyFileFromResource(Class<?> clazz, File destinationFile, String resourcePath) {
@@ -61,7 +61,7 @@ public class FileUtils {
      * Returns a JAR file getValue stream. Returns null if it doesn't exist.
      *
      * @param clazz a class contained by the jar
-     * @param path  the local path (starting from resources project, e.g. "config.yml" for 'resources/config.yml')
+     * @param path the local path (starting from resources project, e.g. "config.yml" for 'resources/config.yml')
      * @return the stream if the file exists, or false otherwise
      */
     public static InputStream getResourceFromJar(Class<?> clazz, String path) {

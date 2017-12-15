@@ -12,6 +12,8 @@ import com.logisticscraft.logisticsapi.rewrite.settings.DataFolder;
 import com.logisticscraft.logisticsapi.rewrite.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.val;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +21,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import static com.logisticscraft.logisticsapi.rewrite.settings.SettingsProperties.DEBUG_ENABLE;
 
+@NoArgsConstructor
 public final class LogisticsApiPlugin extends JavaPlugin {
 
     @Getter
@@ -27,9 +30,6 @@ public final class LogisticsApiPlugin extends JavaPlugin {
     private Injector injector;
     private SettingsManager settings;
     private BukkitCommandManager commandManager;
-
-    public LogisticsApiPlugin() {
-    }
 
     @Override
     public void onEnable() {
@@ -40,9 +40,9 @@ public final class LogisticsApiPlugin extends JavaPlugin {
         Tracer.setDebug(false); // Disabled by default TODO: load from config
 
         // Print the greeting message and logo
-        PluginDescriptionFile description = getDescription();
+        val description = getDescription();
         Tracer.info(Constants.ASCII_LOGO);
-        String authors = description.getAuthors().toString();
+        val authors = description.getAuthors().toString();
         Tracer.info("by: " + authors.substring(1, authors.length() - 1));
         Tracer.info("Server version: " + getServer().getVersion(),
                 "Bukkit version: " + getServer().getBukkitVersion());

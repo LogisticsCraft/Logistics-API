@@ -7,8 +7,7 @@ import org.bukkit.event.HandlerList;
 
 public class LogisticBlockLoadEvent extends LogisticBlockEvent {
 
-    @Getter
-    private static final HandlerList handlerList = new HandlerList();
+    @Getter private static final HandlerList handlerList = new HandlerList();
 
     public LogisticBlockLoadEvent(SafeBlockLocation safeBlockLocation, LogisticBlock logisticBlock) {
         super(safeBlockLocation, logisticBlock);

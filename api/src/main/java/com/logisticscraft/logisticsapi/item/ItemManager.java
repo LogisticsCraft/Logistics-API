@@ -1,66 +1,47 @@
 package com.logisticscraft.logisticsapi.item;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerRegisterEvent;
+import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerUnregisterEvent;
+import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
+import de.tr7zw.itemnbtapi.NBTItem;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerRegisterEvent;
-import com.logisticscraft.logisticsapi.rewrite.event.ItemContainerUnregisterEvent;
-import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import de.tr7zw.itemnbtapi.NBTItem;
-
+@UtilityClass
 public class ItemManager {
+    ///////////////////////////////////////////////////////////////////////////
+    // Containers storage
+    ///////////////////////////////////////////////////////////////////////////
 
-    private static Map<Location, ItemContainer> itemContainers = new HashMap<>();
-    
-    public static NBTItem getNBTItem(ItemStack item){
-        return new NBTItem(item);
+    @Getter private Map<Location, ItemContainer> itemContainers = new ConcurrentHashMap<>();
+
+    public boolean isContainerAt(@NonNull final Location location) {
+        return itemContainers.containsKey(location);
     }
-    
-    public static ItemStack brandItemStack(Plugin plugin, ItemStack item){
-        NBTItem nbti = getNBTItem(item);
-        nbti.setString("pluginid", plugin.getName());
-        return nbti.getItem();
+
+    public boolean isContainerRegistered(@NonNull final ItemContainer container) {
+        return itemContainers.containsValue(container);
     }
-    
-    public static String getPluginName(ItemStack item){
-        NBTItem nbti = getNBTItem(item);
-        return nbti.getString("pluginid");
+
+    public ItemContainer getContainerAt(@NonNull final Location location) {
+        return itemContainers.get(location);
     }
-    
-    public static Boolean isPluginItem(ItemStack item){
-        return getPluginName(item) != null;
+
+    public Location getContainerLocation(@NonNull final ItemContainer itemContainer) {
+        for (val entry : itemContainers.entrySet()) if (entry.getValue() == itemContainer) return entry.getKey();
+        return null;
     }
-    
-    public static Plugin getPlugin(ItemStack item){
-        String name = getPluginName(item);
-        if(name == null)return null;
-        return Bukkit.getPluginManager().getPlugin(name);
-    }
-    
-    public static ItemStack setOreDictionary(ItemStack item, String type){
-        NBTItem nbti = getNBTItem(item);
-        nbti.setString("oredictionary", type);
-        return nbti.getItem();
-    }
-    
-    public static String getOreDictionary(ItemStack item){
-        NBTItem nbti = getNBTItem(item);
-        return nbti.getString("oredictionary");
-    }
-    
-    public static Boolean hasOreDictionary(ItemStack item){
-        return getOreDictionary(item) != null;
-    }
-    
-    public static void registerItemContainer(@NonNull final Location location,
-            @NonNull final ItemContainer itemContainer) {
+
+    public void registerItemContainer(@NonNull final Location location, @NonNull final ItemContainer itemContainer) {
         if (itemContainers.putIfAbsent(location, itemContainer) == null) {
             Tracer.info("ItemContainer registered at " + location.toString());
             Bukkit.getPluginManager().callEvent(new ItemContainerRegisterEvent(location, itemContainer));
@@ -68,36 +49,55 @@ public class ItemManager {
         else Tracer.warn("Trying to register ItemContainer at occupied location: " + location.toString());
     }
 
-    public static void unregisterItemContainer(@NonNull final Location location) {
-        ItemContainer container = itemContainers.get(location);
+    public void unregisterItemContainer(@NonNull final Location location) {
+        val container = itemContainers.get(location);
         if(container != null){
             Bukkit.getPluginManager().callEvent(new ItemContainerUnregisterEvent(location, container));
             itemContainers.remove(location);
-        }else{
-            Tracer.warn("Attempt to unregister unknown ItemContainer");
-        }
+        } else Tracer.warn("Attempt to unregister unknown ItemContainer");
     }
 
-    public static boolean isContainerAt(@NonNull final Location location) {
-        return itemContainers.containsKey(location);
+    ///////////////////////////////////////////////////////////////////////////
+    // NBTItems
+    ///////////////////////////////////////////////////////////////////////////
+
+    public static NBTItem getNBTItem(ItemStack item){
+        return new NBTItem(item);
     }
 
-    public static boolean isContainerRegistered(@NonNull final ItemContainer container) {
-        return itemContainers.containsValue(container);
+    public ItemStack brandItemStack(Plugin plugin, ItemStack item){
+        val nbtItem = getNBTItem(item);
+        nbtItem.setString("pluginid", plugin.getName());
+        return nbtItem.getItem();
     }
 
-    public static ItemContainer getContainerAt(@NonNull final Location location) {
-        return itemContainers.get(location);
+    public String getPluginName(ItemStack item){
+        val nbtItem = getNBTItem(item);
+        return nbtItem.getString("pluginid");
     }
 
-    public static Location getContainerLocation(@NonNull final ItemContainer itemContainer) {
-        for (Map.Entry<Location, ItemContainer> entry : itemContainers.entrySet()) if (entry.getValue()
-                == itemContainer) return entry.getKey();
-        return null;
+    public boolean isPluginItem(ItemStack item){
+        return getPluginName(item) != null;
     }
-    
-    public static Map<Location, ItemContainer> getContainers(){
-        return itemContainers;
+
+    public Plugin getPlugin(ItemStack item){
+        val name = getPluginName(item);
+        return name == null ? null : Bukkit.getPluginManager().getPlugin(name);
     }
-    
+
+    public ItemStack setOreDictionary(ItemStack item, String type){
+        val nbtItem = getNBTItem(item);
+        nbtItem.setString("oredictionary", type);
+        return nbtItem.getItem();
+    }
+
+    public String getOreDictionary(ItemStack item){
+        val nbtItem = getNBTItem(item);
+        return nbtItem.getString("oredictionary");
+    }
+
+    public boolean hasOreDictionary(ItemStack item){
+        return getOreDictionary(item) != null;
+    }
+
 }

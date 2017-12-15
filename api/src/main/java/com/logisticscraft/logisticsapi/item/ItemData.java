@@ -1,8 +1,8 @@
 package com.logisticscraft.logisticsapi.item;
 
-import java.util.List;
-
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class ItemData {
 

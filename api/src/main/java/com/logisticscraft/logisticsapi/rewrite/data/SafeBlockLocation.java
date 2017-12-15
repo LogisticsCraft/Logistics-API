@@ -14,16 +14,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SafeBlockLocation {
 
-    @NonNull
-    @Delegate
-    @Persistent
-    private SafeWorld safeWorld;
-    @Persistent
-    private int x;
-    @Persistent
-    private int y;
-    @Persistent
-    private int z;
+    @NonNull @Delegate @Persistent private SafeWorld safeWorld;
+    @Persistent private int x;
+    @Persistent private int y;
+    @Persistent private int z;
 
     public SafeBlockLocation(Location location) {
         this(new SafeWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());

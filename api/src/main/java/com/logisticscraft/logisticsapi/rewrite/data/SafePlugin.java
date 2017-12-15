@@ -13,9 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SafePlugin {
 
-    @NonNull
-    @Persistent
-    private final String name;
+    @NonNull @Persistent private final String name;
 
     public SafePlugin(@NonNull Plugin plugin) {
         this(plugin.getName());

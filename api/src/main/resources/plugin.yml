@@ -5,5 +5,5 @@ authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]
 softdepend: [PlaceholderAPI]
 commands:
   logisticsapi:
-    description: 'Main info about Logistics-API running at the moment'
+    description: 'Base command of Logistics-API running at the moment'
     aliases: [logisticapi, logistics, logistic, lapi, la, l]

@@ -1,6 +1,5 @@
 package com.logisticscraft.logisticsapi.rewrite.data;
 
-import com.logisticscraft.logisticsapi.rewrite.data.LogisticKey;
 import lombok.NonNull;
 
 import java.util.Optional;

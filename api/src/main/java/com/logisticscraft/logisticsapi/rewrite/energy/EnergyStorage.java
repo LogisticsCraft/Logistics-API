@@ -30,6 +30,12 @@ public interface EnergyStorage extends LogisticDataHolder {
         } else {
             newEnergy = energy;
         }
+
+        if(newEnergy == 0) {
+            removeLogisticData(STORED_ENERGY_META_KEY);
+            return;
+        }
+
         setLogisticData(STORED_ENERGY_META_KEY, newEnergy);
     }
 

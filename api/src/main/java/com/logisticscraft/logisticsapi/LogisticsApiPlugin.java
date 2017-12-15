@@ -8,8 +8,8 @@ import com.logisticscraft.logisticsapi.command.LogisticsApiCommand;
 import com.logisticscraft.logisticsapi.energy.storage.EnergyManager;
 import com.logisticscraft.logisticsapi.liquid.FluidManager;
 import com.logisticscraft.logisticsapi.rewrite.persistence.PersistenceStorage;
-import com.logisticscraft.logisticsapi.settings.DataFolder;
-import com.logisticscraft.logisticsapi.settings.SettingsProvider;
+import com.logisticscraft.logisticsapi.rewrite.settings.DataFolder;
+import com.logisticscraft.logisticsapi.rewrite.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.rewrite.utils.Tracer;
 import lombok.Getter;
 import org.bukkit.Server;
@@ -17,7 +17,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
+import static com.logisticscraft.logisticsapi.rewrite.settings.SettingsProperties.DEBUG_ENABLE;
 
 public final class LogisticsApiPlugin extends JavaPlugin {
 

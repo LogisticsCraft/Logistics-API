@@ -82,10 +82,6 @@ public interface FluidStorage extends LogisticDataHolder {
 
         int capacity();
 
-        Class[] blacklist();
-
-        Class[] whitelist();
-
     }
 
 }

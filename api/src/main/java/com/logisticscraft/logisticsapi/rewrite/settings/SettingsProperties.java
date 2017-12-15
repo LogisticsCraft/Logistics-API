@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.settings;
+package com.logisticscraft.logisticsapi.rewrite.settings;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.settings;
+package com.logisticscraft.logisticsapi.rewrite.settings;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.rewrite.test;
+package com.logisticscraft.logisticsexample.blocks;
 
 import com.logisticscraft.logisticsapi.rewrite.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.rewrite.energy.EnergyInput;

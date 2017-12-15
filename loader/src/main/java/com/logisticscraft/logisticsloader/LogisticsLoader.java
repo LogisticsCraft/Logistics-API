@@ -1,5 +1,6 @@
 package com.logisticscraft.logisticsloader;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -14,60 +15,57 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Properties;
 
-/**
- * @author JARvis (Пётр) PROgrammer
- */
+@UtilityClass
 public class LogisticsLoader {
-    private final static String FILE_NAME;
-    private final static String DOWNLOAD_URL;
 
-    static {
-        Properties properties = new Properties();
-        String fileName = null;
-        String downloadUrl = null;
-        try {
-            properties.load(LogisticsLoader.class.getResourceAsStream("/logistics_download.properties"));
-            String repository = properties.getProperty("repository");
-            String groupId = properties.getProperty("groupId").replaceAll("\\.", "/");
-            String artifactId = properties.getProperty("artifactId").replaceAll("\\.", "/");
-            String version = properties.getProperty("version");
-            fileName = artifactId + "-" + version + ".jar";
-            downloadUrl = repository + groupId + "/" + artifactId + "/" + version + "/" + fileName;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        FILE_NAME = fileName;
-        DOWNLOAD_URL = downloadUrl;
-    }
-
-    public static void load() {
+    public static boolean install() throws LogisticInstallException {
         PluginManager pluginManager = Bukkit.getPluginManager();
         if (pluginManager.isPluginEnabled("LogisticsAPI")) {
-            return;
+            return false;
         }
-        install();
-    }
 
-    private static void install() {
-        File pluginFolder = new File("plugins");
-        File outputFile = new File(pluginFolder, FILE_NAME);
-        if (!outputFile.isFile()) {
-            try {
-                URL website = new URL(DOWNLOAD_URL);
-                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                FileOutputStream fos = new FileOutputStream(outputFile);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-        }
+        // Read the download url from the resource file
+        URL downloadUrl;
         try {
-            PluginManager pluginManager = Bukkit.getPluginManager();
+            downloadUrl = getDownloadUrl();
+        } catch (IOException e) {
+            throw new LogisticInstallException(e);
+        }
+
+        File pluginFolder = new File("plugins");
+        File outputFile = new File(pluginFolder, downloadUrl.getFile());
+
+        if (outputFile.isFile()) {
+            return false;
+        }
+
+        // Download the file
+        try {
+            ReadableByteChannel readableByteChannel;
+            readableByteChannel = Channels.newChannel(downloadUrl.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+        } catch (IOException e) {
+            throw new LogisticInstallException(e);
+        }
+
+        try {
             Plugin plugin = pluginManager.loadPlugin(outputFile);
             pluginManager.enablePlugin(plugin);
         } catch (InvalidPluginException | InvalidDescriptionException e) {
-            e.printStackTrace();
+            throw new LogisticInstallException(e);
         }
+
+        return true;
+    }
+
+    private static URL getDownloadUrl() throws IOException {
+        Properties properties = new Properties();
+        properties.load(LogisticsLoader.class.getResourceAsStream("/logistics_download.properties"));
+        String repo = properties.getProperty("repository");
+        String group = properties.getProperty("groupId").replaceAll("\\.", "/");
+        String artifact = properties.getProperty("artifactId").replaceAll("\\.", "/");
+        String version = properties.getProperty("version");
+        return new URL(repo + group + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar");
     }
 }

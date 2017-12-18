@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 public class LogisticBlockStorage {
 
@@ -27,14 +28,14 @@ public class LogisticBlockStorage {
         nbtFile = new NBTFile(new File(dataFolder, "blocks.nbt"));
     }
 
-    public Map<Location, LogisticBlock> getLogisticBlocksInChunk(Chunk chunk) {
+    public Set<LogisticBlock> getLogisticBlocksInChunk(Chunk chunk) {
         NBTCompound worldData = nbtFile.getCompound(chunk.getWorld().getName());
         if(worldData == null) {
-            return Collections.emptyMap();
+            return Collections.emptySet();
         }
         NBTList chunkData = worldData.getList(chunk.getX() + "," +  chunk.getZ(), NBTType.NBTTagCompound);
         if(chunkData == null) {
-            return Collections.emptyMap();
+            return Collections.emptySet();
         }
         // TODO: iterate list?
     }

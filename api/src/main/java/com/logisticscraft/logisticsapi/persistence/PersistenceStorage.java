@@ -25,7 +25,7 @@ public class PersistenceStorage {
         registerDataConverter(HashMap.class, new HashMapDataAdapter(), false);
     }
 
-    public <T> void registerDataConverter(@NonNull Class<? extends T> clazz, @NonNull DataAdapter<T> converter, boolean replace) {
+    public <T> void registerDataConverter(@NonNull Class<T> clazz, @NonNull DataAdapter<? extends T> converter, boolean replace) {
         if (replace) {
             converters.put(clazz, converter);
         } else {

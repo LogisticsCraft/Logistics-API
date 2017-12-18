@@ -1,23 +1,22 @@
 package com.logisticscraft.logisticsapi.block;
 
+import java.util.HashMap;
+import java.util.Optional;
+
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Delegate;
-
-import java.util.HashMap;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public abstract class LogisticBlock implements LogisticDataHolder {
 
     @NonNull
     @Getter
-    @Delegate
     @Persistent
     private SafeBlockLocation safeLocation;
 

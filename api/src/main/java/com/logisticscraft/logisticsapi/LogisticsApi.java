@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
-import com.logisticscraft.logisticsapi.block.LogisticBlockStorage;
+import com.logisticscraft.logisticsapi.block.LogisticWorldStorage;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.listeners.ChunkEventListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
@@ -65,7 +65,7 @@ public final class LogisticsApi extends JavaPlugin {
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
-        injector.getSingleton(LogisticBlockStorage.class);
+        injector.getSingleton(LogisticWorldStorage.class);
         injector.getSingleton(LogisticBlockCache.class);
 
         // Register events

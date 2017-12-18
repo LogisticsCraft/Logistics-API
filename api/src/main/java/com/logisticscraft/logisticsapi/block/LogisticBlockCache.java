@@ -62,7 +62,7 @@ public class LogisticBlockCache {
      * @throws IllegalArgumentException if the given location isn't loaded
      */
     @Synchronized
-    public void unregisterLogisticBlock(@NonNull final Location location) {
+    public void unloadLogisticBlock(@NonNull final Location location) {
         Chunk chunk = location.getChunk();
         if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided location must be loaded!");
         Map<Location, LogisticBlock> loadedBlocksInChunk = logisticBlocks.get(chunk);

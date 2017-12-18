@@ -3,7 +3,7 @@ package com.logisticscraft.logisticsapi;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
-import com.logisticscraft.logisticsapi.block.LogisticBlockManager;
+import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
@@ -59,7 +59,7 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
-        injector.getSingleton(LogisticBlockManager.class);
+        injector.getSingleton(LogisticBlockCache.class);
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }

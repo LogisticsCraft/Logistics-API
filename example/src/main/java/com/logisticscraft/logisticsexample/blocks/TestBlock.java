@@ -1,9 +1,9 @@
 package com.logisticscraft.logisticsexample.blocks;
 
-import com.logisticscraft.logisticsapi.rewrite.block.LogisticBlock;
-import com.logisticscraft.logisticsapi.rewrite.energy.EnergyInput;
-import com.logisticscraft.logisticsapi.rewrite.energy.EnergyOutput;
-import com.logisticscraft.logisticsapi.rewrite.energy.EnergyStorage;
+import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.energy.EnergyInput;
+import com.logisticscraft.logisticsapi.energy.EnergyOutput;
+import com.logisticscraft.logisticsapi.energy.EnergyStorage;
 
 @EnergyStorage.EnergyStorageData(capacity = 10000)
 @EnergyInput.EnergyInputData(maxReceive = 100)

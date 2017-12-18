@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This is an internal class, not to be confused with the public API.
  */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class LogisticBlockManager {
+public class LogisticBlockCache {
 
     @Inject
     private PluginManager pluginManager;

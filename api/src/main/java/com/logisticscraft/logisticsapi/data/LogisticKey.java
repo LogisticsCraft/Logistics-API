@@ -19,11 +19,11 @@ public class LogisticKey {
 		this.name = name;
 	}
 
-	public LogisticKey(@NotNull String key){
-		if(key.split(":").length == 2){
+	public LogisticKey (@NotNull String key){
+		if (key.split(":").length == 2) {
 			this.namespace = key.split(":")[0];
 			this.name = key.split(":")[1];
-		}else{
+		} else {
 			this.namespace = "Unknown";
 			this.name = key.replace(":", "");
 		}

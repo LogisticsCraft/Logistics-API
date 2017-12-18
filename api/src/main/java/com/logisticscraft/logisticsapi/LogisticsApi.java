@@ -4,8 +4,9 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
+import com.logisticscraft.logisticsapi.block.LogisticBlockStorage;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
-import com.logisticscraft.logisticsapi.listeners.ChunkListener;
+import com.logisticscraft.logisticsapi.listeners.ChunkEventListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
@@ -27,7 +28,6 @@ public final class LogisticsApi extends JavaPlugin {
     private static LogisticsApi instance;
 
     // Internal
-    private PluginManager pluginManager;
     private Injector injector;
     private SettingsManager settings;
 
@@ -65,11 +65,12 @@ public final class LogisticsApi extends JavaPlugin {
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
+        injector.getSingleton(LogisticBlockStorage.class);
         injector.getSingleton(LogisticBlockCache.class);
 
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(injector.getSingleton(ChunkListener.class), instance);
+        pluginManager.registerEvents(injector.getSingleton(ChunkEventListener.class), instance);
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }

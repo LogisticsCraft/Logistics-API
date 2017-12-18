@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ChunkListener implements Listener {
+public class ChunkEventListener implements Listener {
 
     @Inject
     private LogisticBlockStorage blockStorage;
@@ -31,6 +31,7 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
+
         blockCache.unloadLogisticBlock();
     }
 

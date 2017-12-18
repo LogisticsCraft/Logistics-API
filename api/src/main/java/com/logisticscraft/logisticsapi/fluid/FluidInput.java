@@ -18,12 +18,12 @@ public interface FluidInput extends FluidStorage {
     }
 
     default long getMaxReceive() {
-        return AnnotationUtils.getClassAnnotation(this, EnergyInputData.class).maxReceive();
+        return AnnotationUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
     }
 
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
-    @interface EnergyInputData {
+    @interface FluidInputData {
 
         int maxReceive();
 

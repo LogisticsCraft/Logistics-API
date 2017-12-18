@@ -18,12 +18,12 @@ public interface FluidOutput extends FluidStorage {
     }
 
     default long getMaxExtract() {
-        return AnnotationUtils.getClassAnnotation(this, EnergyOutputData.class).maxExtract();
+        return AnnotationUtils.getClassAnnotation(this, FluidOutputData.class).maxExtract();
     }
 
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
-    @interface EnergyOutputData {
+    @interface FluidOutputData {
 
         int maxExtract();
 

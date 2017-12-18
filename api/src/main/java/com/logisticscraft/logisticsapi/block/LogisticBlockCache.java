@@ -29,7 +29,7 @@ public class LogisticBlockCache {
     @Inject
     private PluginManager pluginManager;
 
-    private ConcurrentHashMap<Chunk, ConcurrentHashMap<Location, LogisticBlock>> logisticBlocks =
+    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks =
             new ConcurrentHashMap<>();
 
     /**
@@ -37,7 +37,6 @@ public class LogisticBlockCache {
      * a stored block is loaded from the disk.
      *
      * @param block the block
-     *
      * @throws IllegalArgumentException if the given block location isn't loaded
      */
     public void loadLogisticBlock(@NonNull final LogisticBlock block) {
@@ -58,7 +57,6 @@ public class LogisticBlockCache {
      * a chunk is unloaded.
      *
      * @param location the block location
-     *
      * @throws IllegalArgumentException if the given location isn't loaded
      */
     @Synchronized
@@ -93,7 +91,7 @@ public class LogisticBlockCache {
     public LogisticBlock getLoadedLogisticBlockAt(@NonNull final Location location) {
         Chunk chunk = location.getChunk();
         if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided location must be loaded!");
-        ConcurrentHashMap<Location, LogisticBlock> loadedBlockInChunk = logisticBlocks.get(chunk);
+        Map<Location, LogisticBlock> loadedBlockInChunk = logisticBlocks.get(chunk);
         if (loadedBlockInChunk == null) return null;
         return loadedBlockInChunk.get(location);
     }

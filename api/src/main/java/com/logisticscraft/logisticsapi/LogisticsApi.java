@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
+import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.listeners.ChunkListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
@@ -12,7 +13,6 @@ import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.val;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -64,6 +64,7 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
+        injector.getSingleton(LogisticBlockTypeRegister.class);
         injector.getSingleton(LogisticBlockCache.class);
 
         // Register events

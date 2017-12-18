@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
+import com.logisticscraft.logisticsapi.listeners.ChunkListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
@@ -11,7 +12,9 @@ import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -24,6 +27,7 @@ public final class LogisticsApi extends JavaPlugin {
     private static LogisticsApi instance;
 
     // Internal
+    private PluginManager pluginManager;
     private Injector injector;
     private SettingsManager settings;
 
@@ -47,8 +51,9 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Prepare the injector
         injector = new InjectorBuilder().addDefaultHandlers("com.logisticscraft.logisticsapi").create();
-        injector.register(LogisticsApi.class, this);
+        injector.register(LogisticsApi.class, instance);
         injector.register(Server.class, getServer());
+        injector.register(PluginManager.class, getServer().getPluginManager());
         injector.register(BukkitScheduler.class, getServer().getScheduler());
         injector.provide(DataFolder.class, getDataFolder());
         injector.registerProvider(SettingsManager.class, SettingsProvider.class);
@@ -60,6 +65,10 @@ public final class LogisticsApi extends JavaPlugin {
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
         injector.getSingleton(LogisticBlockCache.class);
+
+        // Register events
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(injector.getSingleton(ChunkListener.class), instance);
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }

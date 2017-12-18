@@ -5,13 +5,14 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 import javax.inject.Inject;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ChunkListener {
+public class ChunkListener implements Listener {
 
     @Inject
     private LogisticBlockCache blockCache;

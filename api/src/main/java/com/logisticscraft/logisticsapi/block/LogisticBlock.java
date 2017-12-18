@@ -2,12 +2,12 @@ package com.logisticscraft.logisticsapi.block;
 
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
-import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -18,7 +18,8 @@ public abstract class LogisticBlock implements LogisticDataHolder {
     @NonNull
     @Getter
     @Delegate
-    private Location location;
+    @Persistent
+    private SafeBlockLocation safeLocation;
 
     @Persistent
     private HashMap<LogisticKey, Object> data = new HashMap<>();

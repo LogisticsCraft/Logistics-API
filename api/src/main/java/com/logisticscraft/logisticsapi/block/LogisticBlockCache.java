@@ -12,11 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.plugin.PluginManager;
 
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -40,9 +37,10 @@ public class LogisticBlockCache {
      * @throws IllegalArgumentException if the given block location isn't loaded
      */
     public void loadLogisticBlock(@NonNull final LogisticBlock block) {
-        Location location = block.getLocation();
+        Optional<Location> safeLocation = block.getLocation();
+        if (!safeLocation.isPresent()) throw new IllegalArgumentException("The provided block must be loaded!");
+        Location location = safeLocation.get();
         Chunk chunk = location.getChunk();
-        if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided block must be loaded!");
         pluginManager.callEvent(new LogisticBlockLoadEvent(location, block));
         if (logisticBlocks.computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
                 .putIfAbsent(location, block) == null) {
@@ -84,7 +82,9 @@ public class LogisticBlockCache {
 
     @Synchronized
     public boolean isLogisticBlockLoaded(@NonNull final LogisticBlock block) {
-        return block.getLocation() != null && block.equals(getLoadedLogisticBlockAt(block.getLocation()));
+        Optional<Location> location = block.getLocation();
+        if (!location.isPresent()) throw new IllegalArgumentException("The provided block must be loaded!");
+        return block.getLocation() != null && block.equals(getLoadedLogisticBlockAt(location.get()));
     }
 
     @Synchronized

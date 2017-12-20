@@ -20,8 +20,8 @@ public interface FluidStorage extends LogisticDataHolder {
         return AnnotationUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
     }
 
-    default Optional<FluidType> getStoredFluidType() {
-        return getLogisticData(STORED_FLUID_TYPE_META_KEY, FluidType.class);
+    default Optional<LogisticFluid> getStoredFluidType() {
+        return getLogisticData(STORED_FLUID_TYPE_META_KEY, LogisticFluid.class);
     }
 
     default long getStoredFluid() {
@@ -51,8 +51,8 @@ public interface FluidStorage extends LogisticDataHolder {
         setLogisticData(STORED_FLUID_META_KEY, newFluid);
     }
 
-    default void setStoredFluid(@NonNull final FluidType fluidType, final long fluid) {
-        Optional<FluidType> currentFluid = getStoredFluidType();
+    default void setStoredFluid(@NonNull final LogisticFluid fluidType, final long fluid) {
+        Optional<LogisticFluid> currentFluid = getStoredFluidType();
         if (currentFluid.isPresent() && !currentFluid.get().equals(fluidType)) {
             throw new IllegalStateException("Tried to change the fluid type of a non empty fluid storage!");
         }

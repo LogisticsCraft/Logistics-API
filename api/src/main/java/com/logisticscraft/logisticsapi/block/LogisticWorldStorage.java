@@ -1,24 +1,21 @@
 package com.logisticscraft.logisticsapi.block;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.inject.Inject;
-
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
-
+import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTFile;
-import de.tr7zw.itemnbtapi.NBTList;
-import de.tr7zw.itemnbtapi.NBTType;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Synchronized;
+import org.bukkit.Chunk;
+import org.bukkit.World;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class LogisticWorldStorage {
 
@@ -30,47 +27,57 @@ public class LogisticWorldStorage {
     @Getter
     private NBTFile nbtFile;
 
-    public LogisticWorldStorage(World world) throws IOException {
+    public LogisticWorldStorage(@NonNull final World world) throws IOException {
         this.world = world;
-        nbtFile = new NBTFile(new File(world.getWorldFolder(), "logisticapi.nbt"));
+        nbtFile = new NBTFile(new File(world.getWorldFolder(), "logisticblocks.nbt"));
         nbtFile.addCompound("chunks");
     }
 
+    public void save() throws IOException {
+        nbtFile.save();
+    }
+
     @Synchronized
-    public Set<LogisticBlock> getLogisticBlocksInChunk(Chunk chunk) {
+    public Optional<Set<? extends LogisticBlock>> getLogisticBlocksInChunk(@NonNull final Chunk chunk) {
         NBTCompound chunks = nbtFile.getCompound("chunks");
-        if (chunks == null) {
-            return Collections.emptySet();
-        }
+
         NBTCompound chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
-        if (chunkData == null) {
-            return Collections.emptySet();
+        if (chunkData == null) return Optional.empty();
+
+        Set<LogisticBlock> blocks = new HashSet<>();
+        for (String key : chunkData.getKeys()) {
+            NBTCompound blockData = chunkData.getCompound(key);
+            blocks.add(persistence.loadObject(LogisticBlock.class, blockData));
         }
-        for(String key : chunkData.getKeys()){
-            NBTCompound blockdata = chunkData.getCompound(key);
-            //TODO: Load block using its data. Put location, logisticblocktype, ids what ever into this Compound.
-            
+
+        if (blocks.isEmpty()) return Optional.empty(); // Just in case
+        return Optional.of(blocks);
+    }
+
+    @Synchronized
+    public void removeLogisticBlock(@NonNull final LogisticBlock logisticBlock) {
+        NBTCompound chunks = nbtFile.getCompound("chunks");
+
+        SafeBlockLocation location = logisticBlock.getLocation();
+        NBTCompound chunkData = chunks.getCompound(location.getChunkX() + ";" + location.getChunkZ());
+        if (chunkData == null) return;
+
+        if (chunkData.hasKey(location.getX() + ";" + location.getY() + ";" + location.getZ())) {
+            chunkData.removeKey(location.getX() + ";" + location.getY() + ";" + location.getZ());
+        }
+        if (chunkData.getKeys().size() == 0) {
+            chunks.removeKey(location.getChunkX() + ";" + location.getChunkZ());
         }
     }
 
     @Synchronized
-    public void removeLogisticBlock(LogisticBlock logisticBlock){
+    public void saveLogisticBlock(@NonNull final LogisticBlock logisticBlock) {
         NBTCompound chunks = nbtFile.getCompound("chunks");
-        if (chunks == null)return;
-        Location loc = logisticBlock.getSafeLocation().getLocation().get();
-        NBTCompound chunkData = chunks.getCompound(loc.getChunk().getX() + ";" + loc.getChunk().getZ());
-        if (chunkData == null)return;
-        if (chunkData.hasKey(loc.getBlockX() + ";" + loc.getBlockY() + ";" + loc.getBlockZ())){
-            chunkData.removeKey(loc.getBlockX() + ";" + loc.getBlockY() + ";" + loc.getBlockZ());
-        }
-        if(chunkData.getKeys().size() == 0){
-            chunks.removeKey(loc.getChunk().getX() + ";" + loc.getChunk().getZ());
-        }
-    }
-    
-    @Synchronized
-    public void saveLogisticBlock(LogisticBlock logisticBlock) {
-        persistence.saveFieldData(logisticBlock);
+
+        SafeBlockLocation location = logisticBlock.getLocation();
+        NBTCompound chunkData = chunks.addCompound(location.getChunkX() + ";" + location.getChunkZ());
+        NBTCompound blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
+        persistence.saveObject(LogisticBlock.class, blockData);
     }
 
 }

@@ -1,23 +1,22 @@
 package com.logisticscraft.logisticsapi.data;
 
-import com.logisticscraft.logisticsapi.persistence.Persistent;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Value;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 @Value
 @AllArgsConstructor
-public class SafePlugin {
+public class SafePlugin implements Serializable {
 
     @NonNull
-    @Persistent
     private final String name;
 
-    public SafePlugin(@NonNull Plugin plugin) {
+    public SafePlugin(@NonNull final Plugin plugin) {
         this(plugin.getName());
     }
 

@@ -10,8 +10,10 @@ import org.bukkit.event.Event;
 @Getter
 @RequiredArgsConstructor
 public abstract class LogisticBlockEvent extends Event {
+
     @NonNull
     private final Location location;
     @NonNull
     private final LogisticBlock logisticBlock;
+
 }

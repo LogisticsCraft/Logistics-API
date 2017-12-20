@@ -1,32 +1,35 @@
 package com.logisticscraft.logisticsapi.data;
 
-import com.logisticscraft.logisticsapi.persistence.Persistent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.experimental.Delegate;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 @Data
 @AllArgsConstructor
-public class SafeBlockLocation {
+public class SafeBlockLocation implements Serializable {
 
     @NonNull
-    @Delegate
-    @Persistent
     private SafeWorld safeWorld;
-    @Persistent
-    private int x;
-    @Persistent
-    private int y;
-    @Persistent
-    private int z;
+    @NonNull
+    private Integer x;
+    @NonNull
+    private Integer y;
+    @NonNull
+    private Integer z;
 
     public SafeBlockLocation(Location location) {
         this(new SafeWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
+    public Optional<World> getWorld() {
+        return safeWorld.getWorld();
     }
 
     public Optional<Location> getLocation() {
@@ -37,4 +40,15 @@ public class SafeBlockLocation {
         return getLocation().map(Location::getBlock);
     }
 
+    public Optional<Chunk> getChunk() {
+        return getLocation().map(Location::getChunk);
+    }
+
+    public Integer getChunkX() {
+        return (int) Math.ceil(x / 16);
+    }
+
+    public Integer getChunkZ() {
+        return (int) Math.ceil(z / 16);
+    }
 }

@@ -1,23 +1,22 @@
 package com.logisticscraft.logisticsapi.data;
 
-import com.logisticscraft.logisticsapi.persistence.Persistent;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Value;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 @Value
 @AllArgsConstructor
-public class SafeWorld {
+public class SafeWorld implements Serializable {
 
     @NonNull
-    @Persistent
-    private final String name;
+    private String name;
 
-    public SafeWorld(@NonNull World world) {
+    public SafeWorld(@NonNull final World world) {
         this(world.getName());
     }
 

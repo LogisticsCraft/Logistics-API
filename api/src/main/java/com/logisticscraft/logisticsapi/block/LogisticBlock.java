@@ -1,42 +1,47 @@
 package com.logisticscraft.logisticsapi.block;
 
-import java.util.HashMap;
-import java.util.Optional;
-
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
-import com.logisticscraft.logisticsapi.persistence.Persistent;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Optional;
+
 @RequiredArgsConstructor
-public abstract class LogisticBlock implements LogisticDataHolder {
+public abstract class LogisticBlock implements LogisticDataHolder, Serializable {
 
     @NonNull
     @Getter
-    @Persistent
-    private SafeBlockLocation safeLocation;
+    private final LogisticKey typeId;
 
-    @Persistent
-    private HashMap<LogisticKey, Object> data = new HashMap<>();
+    @NonNull
+    @Getter
+    private String name;
+
+    @NonNull
+    @Getter
+    private final SafeBlockLocation location;
+
+    private HashMap<LogisticKey, Object> blockData = new HashMap<>();
 
     @Override
     public <T> void setLogisticData(@NonNull LogisticKey key, T value) {
-        data.put(key, value);
+        blockData.put(key, value);
     }
 
     @Override
     public void removeLogisticData(@NonNull LogisticKey key) {
-        data.remove(key);
+        blockData.remove(key);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> Optional<T> getLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
-        return Optional.ofNullable((T) data.get(key));
+        return Optional.ofNullable((T) blockData.get(key));
     }
 
 }

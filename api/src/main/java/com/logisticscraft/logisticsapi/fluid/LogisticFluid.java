@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 
+import java.io.Serializable;
+
 @Data
-public class FluidType {
+public class LogisticFluid implements Serializable {
 
     @NonNull
-    @Delegate
     private final LogisticKey id;
 
 }

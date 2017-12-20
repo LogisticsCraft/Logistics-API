@@ -1,36 +1,36 @@
 package com.logisticscraft.logisticsapi.items;
 
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+import de.tr7zw.itemnbtapi.NBTItem;
+import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.logisticscraft.logisticsapi.data.LogisticKey;
+import java.io.Serializable;
 
-import de.tr7zw.itemnbtapi.NBTItem;
-import lombok.Getter;
+public class LogisticItem implements Serializable {
 
-public class LogisticItem {
+    @Getter
+    private LogisticKey key;
 
-	@Getter
-	private LogisticKey key;
-	@Getter
-	private Plugin plugin;
-	private ItemStack itemStack;
-	private NBTItem nbtItem;
-	
-	public LogisticItem(Plugin plugin, String name, ItemStack baseStack){
-		key = new LogisticKey(plugin, name);
-		itemStack = baseStack.clone();
-		nbtItem = new NBTItem(itemStack);
-		nbtItem.setString("itemid", key.toString());
-	}
-	
-	public ItemStack getItemStack(int amount){
-		ItemStack tmp = nbtItem.getItem().clone();
-		tmp.setAmount(amount);
-		return tmp;
-	}
-	
-    public void setItemDictionary(String type) {
+    private ItemStack itemStack;
+    private NBTItem nbtItem;
+
+    public LogisticItem(@NonNull final Plugin plugin, @NonNull final String name, @NonNull final ItemStack baseStack) {
+        key = new LogisticKey(plugin, name);
+        itemStack = baseStack.clone();
+        nbtItem = new NBTItem(itemStack);
+        nbtItem.setString("itemid", key.toString());
+    }
+
+    public ItemStack getItemStack(int amount) {
+        ItemStack tmp = nbtItem.getItem().clone();
+        tmp.setAmount(amount);
+        return tmp;
+    }
+
+    public void setItemDictionary(@NonNull final String type) {
         nbtItem.setString("itemdictionary", type);
     }
 
@@ -41,5 +41,5 @@ public class LogisticItem {
     public boolean hasItemDictionary() {
         return getItemDictionary() != null;
     }
-	
+
 }

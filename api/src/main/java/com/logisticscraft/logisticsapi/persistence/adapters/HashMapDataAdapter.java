@@ -19,8 +19,8 @@ public class HashMapDataAdapter implements DataAdapter<HashMap<?, ?>> {
             NBTCompound data = container.addCompound("data");
             nbtCompound.setString("keyclass", entryKey.getClass().getName());
             nbtCompound.setString("dataclass", entryValue.getClass().getName());
-            persistenceStorage.saveFieldData(entryKey, keyData);
-            persistenceStorage.saveFieldData(entryValue, data);
+            persistenceStorage.saveObject(entryKey, keyData);
+            persistenceStorage.saveObject(entryValue, data);
         }
     }
 
@@ -32,8 +32,8 @@ public class HashMapDataAdapter implements DataAdapter<HashMap<?, ?>> {
             NBTCompound keyData = container.getCompound("key");
             NBTCompound data = container.getCompound("data");
             try {
-                map.put(persistenceStorage.loadFieldData(Class.forName(container.getString("keyclass")), keyData),
-                        persistenceStorage.loadFieldData(Class.forName(container.getString("dataclass")), data));
+                map.put(persistenceStorage.loadObject(Class.forName(container.getString("keyclass")), keyData),
+                        persistenceStorage.loadObject(Class.forName(container.getString("dataclass")), data));
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
             }

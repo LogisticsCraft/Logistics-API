@@ -43,9 +43,8 @@ public class LogisticBlockCache {
      * @throws IllegalArgumentException if the given block location isn't loaded
      */
     public void loadLogisticBlock(@NonNull final LogisticBlock block) {
-        Optional<Location> safeLocation = block.getSafeLocation().getLocation();
-        if (!safeLocation.isPresent()) throw new IllegalArgumentException("The provided block must be loaded!");
-        Location location = safeLocation.get();
+        Location location = block.getLocation().getLocation()
+                .orElseThrow(() -> new IllegalArgumentException("The provided block must be loaded!"));
         Chunk chunk = location.getChunk();
         pluginManager.callEvent(new LogisticBlockLoadEvent(location, block));
         if (logisticBlocks.computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
@@ -94,9 +93,9 @@ public class LogisticBlockCache {
 
     @Synchronized
     public boolean isLogisticBlockLoaded(@NonNull final LogisticBlock block) {
-        Optional<Location> location = block.getSafeLocation().getLocation();
+        Optional<Location> location = block.getLocation().getLocation();
         if (!location.isPresent()) throw new IllegalArgumentException("The provided block must be loaded!");
-        return block.getSafeLocation().getLocation() != null && block.equals(getLoadedLogisticBlockAt(location.get()));
+        return block.getLocation().getLocation() != null && block.equals(getLoadedLogisticBlockAt(location.get()));
     }
 
     @Synchronized

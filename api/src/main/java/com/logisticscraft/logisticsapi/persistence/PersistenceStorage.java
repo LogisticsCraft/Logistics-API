@@ -6,18 +6,24 @@ import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
 import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
+import org.objenesis.Objenesis;
+import org.objenesis.ObjenesisStd;
 
-import java.lang.reflect.Field;
+import java.io.Serializable;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PersistenceStorage {
 
     private Gson gson;
+    private Objenesis objenesis;
     private Map<Class<?>, DataAdapter<?>> converters;
 
     public PersistenceStorage() {
         gson = new Gson();
+        objenesis = new ObjenesisStd();
         converters = new HashMap<>();
 
         // Register default converters
@@ -34,29 +40,28 @@ public class PersistenceStorage {
     }
 
     @SuppressWarnings("unchecked")
-    public void saveFieldData(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
+    public void saveObject(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
+        Class<?> clazz = data.getClass();
+
         // Check custom converters
         if (converters.containsKey(data.getClass())) {
-            ((DataAdapter<Object>) converters.get(data.getClass())).store(this, data, nbtCompound);
+            ((DataAdapter<Object>) converters.get(clazz)).store(this, data, nbtCompound);
             return;
         }
 
-        // Check annotated fields
-        boolean hasAnnotation = false;
-        for (Field field : data.getClass().getDeclaredFields()) {
-            if (field.getAnnotation(Persistent.class) == null) {
-                continue;
-            }
-
-            hasAnnotation = true;
-            field.setAccessible(true);
-            try {
-                saveFieldData(field.get(data), nbtCompound.addCompound(field.getName()));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        if (hasAnnotation) {
+        // Check serializable
+        if (clazz.isAssignableFrom(Serializable.class)) {
+            Arrays.stream(clazz.getDeclaredFields())
+                    .filter(field -> !Modifier.isTransient(field.getModifiers()))
+                    .forEach(field -> {
+                        field.setAccessible(true);
+                        try {
+                            saveObject(field.get(data), nbtCompound.addCompound(field.getName()));
+                        } catch (IllegalAccessException e) {
+                            throw new IllegalStateException("Unable to serialize field " + clazz.getSimpleName()
+                                    + "." + field.getName(), e);
+                        }
+                    });
             return;
         }
 
@@ -65,17 +70,39 @@ public class PersistenceStorage {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T loadFieldData(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
+    public <T> T loadObject(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
         if (converters.containsKey(type)) {
             return (T) converters.get(type).parse(this, nbtCompound);
         }
 
-        // TODO: Implement annotated fields loading!
+        if (type.isAssignableFrom(Serializable.class)) {
+            T object = objenesis.newInstance(type);
+            Arrays.stream(type.getDeclaredFields())
+                    .filter(field -> !Modifier.isTransient(field.getModifiers()))
+                    .forEach(field -> {
+                        field.setAccessible(true);
+                        try {
+                            Object value = loadObject(field.getType(), nbtCompound.getCompound(field.getName()));
+                            field.set(object, value);
+                        } catch (IllegalAccessException e) {
+                            try {
+                                // Can't find any value for the field, check default value, throw exception if missing.
+                                if (field.get(object) == null) {
+                                    throw new IllegalStateException("Unable to deserialize field " + type.getSimpleName()
+                                            + "." + field.getName(), e);
+                                }
+                            } catch (IllegalAccessException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    });
+        }
 
         // Fallback to Json
         if (nbtCompound.hasKey("json")) {
             return gson.fromJson(nbtCompound.getString("json"), type);
         }
+
         return null;
     }
 

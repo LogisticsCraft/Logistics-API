@@ -105,9 +105,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-			<groupId>com.github.tr7zw.Item-NBT-API</groupId>
+			<groupId>de.tr7zw</groupId>
 			<artifactId>item-nbt-api</artifactId>
-			<version>-SNAPSHOT</version>
+			<version>1.7-SNAPSHOT</version>
             <scope>compile</scope>
 		</dependency>
         <dependency>

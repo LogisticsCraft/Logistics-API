@@ -58,7 +58,7 @@
         </repository>
         <repository>
             <id>logisticscraft-repo</id>
-            <url>http://ci.logisticscraft.com/plugin/repository/everything/</url>
+            <url>http://repo.frontfight.net/repository/maven-public/</url>
         </repository>
         <repository>
             <id>aikar</id>

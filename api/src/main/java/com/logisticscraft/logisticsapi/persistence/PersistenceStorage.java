@@ -1,109 +1,121 @@
 package com.logisticscraft.logisticsapi.persistence;
 
-import com.google.gson.Gson;
-import com.logisticscraft.logisticsapi.persistence.adapters.DataAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.NonNull;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 
-import java.io.Serializable;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.persistence.adapters.DataAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
+import lombok.NonNull;
 
 public class PersistenceStorage {
 
-    private Gson gson;
-    private Objenesis objenesis;
-    private Map<Class<?>, DataAdapter<?>> converters;
+	private Gson gson;
+	private Objenesis objenesis; //TODO: not sure rather we should use it
+	private Map<Class<?>, DataAdapter<?>> converters;
 
-    public PersistenceStorage() {
-        gson = new Gson();
-        objenesis = new ObjenesisStd();
-        converters = new HashMap<>();
+	public PersistenceStorage() {
+		gson = new Gson();
+		objenesis = new ObjenesisStd();
+		converters = new HashMap<>();
 
-        // Register default converters
-        registerDataConverter(String.class, new StringDataAdapter(), false);
-        registerDataConverter(HashMap.class, new HashMapDataAdapter(), false);
-    }
+		// Register default converters
+		registerDataConverter(String.class, new StringDataAdapter(), false);
+		registerDataConverter(HashMap.class, new HashMapDataAdapter(), false);
+	}
 
-    public <T> void registerDataConverter(@NonNull Class<T> clazz, @NonNull DataAdapter<? extends T> converter, boolean replace) {
-        if (replace) {
-            converters.put(clazz, converter);
-        } else {
-            converters.putIfAbsent(clazz, converter);
-        }
-    }
+	public <T> void registerDataConverter(@NonNull Class<T> clazz, @NonNull DataAdapter<? extends T> converter, boolean replace) {
+		if (replace) {
+			converters.put(clazz, converter);
+		} else {
+			converters.putIfAbsent(clazz, converter);
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    public void saveObject(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
-        Class<?> clazz = data.getClass();
+	public void saveFields(@NonNull Object object, @NonNull NBTCompound nbtCompound){
+		Arrays.stream(getFieldsUpTo(object.getClass(), LogisticBlock.class).toArray(new Field[0]))
+		.filter(field -> field.getAnnotation(Persistent.class) != null)
+		.forEach(field -> {
+			field.setAccessible(true);
+			try {
+				saveObject(field.get(object), nbtCompound.addCompound(field.getName()));
+			} catch (IllegalAccessException e) {
+				throw new IllegalStateException("Unable to save field " + object.getClass().getSimpleName()
+						+ "." + field.getName(), e);
+			}
+		});
+	}
 
-        // Check custom converters
-        if (converters.containsKey(data.getClass())) {
-            ((DataAdapter<Object>) converters.get(clazz)).store(this, data, nbtCompound);
-            return;
-        }
+	public void loadFields(@NonNull Object object, @NonNull NBTCompound nbtCompound){
+		Arrays.stream(getFieldsUpTo(object.getClass(), LogisticBlock.class).toArray(new Field[0]))
+		.filter(field -> field.getAnnotation(Persistent.class) != null)
+		.forEach(field -> {
+			field.setAccessible(true);
+			if(nbtCompound.hasKey(field.getName())){
+				try {
+					field.set(object, loadObject(field.getType(), nbtCompound.addCompound(field.getName())));
+				} catch (IllegalAccessException e) {
+					throw new IllegalStateException("Unable to load field " + object.getClass().getSimpleName()
+							+ "." + field.getName(), e);
+				}
+			}
+		});
+	}
 
-        // Check serializable
-        if (clazz.isAssignableFrom(Serializable.class)) {
-            Arrays.stream(clazz.getDeclaredFields())
-                    .filter(field -> !Modifier.isTransient(field.getModifiers()))
-                    .forEach(field -> {
-                        field.setAccessible(true);
-                        try {
-                            saveObject(field.get(data), nbtCompound.addCompound(field.getName()));
-                        } catch (IllegalAccessException e) {
-                            throw new IllegalStateException("Unable to serialize field " + clazz.getSimpleName()
-                                    + "." + field.getName(), e);
-                        }
-                    });
-            return;
-        }
+	@SuppressWarnings("unchecked")
+	public void saveObject(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
+		Class<?> clazz = data.getClass();
 
-        // Fallback to Json
-        nbtCompound.setString("json", gson.toJson(data));
-    }
+		// Check custom converters
+		if (converters.containsKey(data.getClass())) {
+			((DataAdapter<Object>) converters.get(clazz)).store(this, data, nbtCompound);
+			return;
+		}
 
-    @SuppressWarnings("unchecked")
-    public <T> T loadObject(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
-        if (converters.containsKey(type)) {
-            return (T) converters.get(type).parse(this, nbtCompound);
-        }
+		// Fallback to Json
+		nbtCompound.setString("json", gson.toJson(data));
+	}
 
-        if (type.isAssignableFrom(Serializable.class)) {
-            T object = objenesis.newInstance(type);
-            Arrays.stream(type.getDeclaredFields())
-                    .filter(field -> !Modifier.isTransient(field.getModifiers()))
-                    .forEach(field -> {
-                        field.setAccessible(true);
-                        try {
-                            Object value = loadObject(field.getType(), nbtCompound.getCompound(field.getName()));
-                            field.set(object, value);
-                        } catch (IllegalAccessException e) {
-                            try {
-                                // Can't find any value for the field, check default value, throw exception if missing.
-                                if (field.get(object) == null) {
-                                    throw new IllegalStateException("Unable to deserialize field " + type.getSimpleName()
-                                            + "." + field.getName(), e);
-                                }
-                            } catch (IllegalAccessException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                    });
-        }
+	@SuppressWarnings("unchecked")
+	public <T> T loadObject(@NonNull Class<T> type, @NonNull NBTCompound nbtCompound) {
+		if (converters.containsKey(type)) {
+			return (T) converters.get(type).parse(this, nbtCompound);
+		}
 
-        // Fallback to Json
-        if (nbtCompound.hasKey("json")) {
-            return gson.fromJson(nbtCompound.getString("json"), type);
-        }
+		// Fallback to Json
+		if (nbtCompound.hasKey("json")) {
+			return gson.fromJson(nbtCompound.getString("json"), type);
+		}
 
-        return null;
-    }
+		return null;
+	}
+
+	private ArrayList<Field> getFieldsUpTo(@NonNull Class<?> startClass, 
+			Class<?> exclusiveParent) {
+
+		ArrayList<Field> currentClassFields = Lists.newArrayList(startClass.getDeclaredFields());
+		Class<?> parentClass = startClass.getSuperclass();
+
+		if (parentClass != null && 
+				(exclusiveParent == null || !(parentClass.equals(exclusiveParent)))) {
+			List<Field> parentClassFields = 
+					(List<Field>) getFieldsUpTo(parentClass, exclusiveParent);
+			currentClassFields.addAll(parentClassFields);
+		}
+
+		return currentClassFields;
+	}
 
 }

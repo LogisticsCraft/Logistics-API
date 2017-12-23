@@ -77,7 +77,10 @@ public class LogisticWorldStorage {
         SafeBlockLocation location = logisticBlock.getLocation();
         NBTCompound chunkData = chunks.addCompound(location.getChunkX() + ";" + location.getChunkZ());
         NBTCompound blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
-        persistence.saveObject(LogisticBlock.class, blockData);
+        persistence.saveFields(logisticBlock, blockData);
+        //TODO: Save blocktype, energy levels, Blockdata etc.
     }
 
+    //TODO: Loading blocks
+    
 }

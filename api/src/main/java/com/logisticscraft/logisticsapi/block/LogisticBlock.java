@@ -1,18 +1,18 @@
 package com.logisticscraft.logisticsapi.block;
 
+import java.util.HashMap;
+import java.util.Optional;
+
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Optional;
-
 @RequiredArgsConstructor
-public abstract class LogisticBlock implements LogisticDataHolder, Serializable {
+public abstract class LogisticBlock implements LogisticDataHolder {
 
     @NonNull
     @Getter

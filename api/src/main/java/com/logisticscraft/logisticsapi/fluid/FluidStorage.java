@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface FluidStorage extends LogisticDataHolder {
 
     LogisticKey STORED_FLUID_TYPE_META_KEY = new LogisticKey("LogisticsAPI", "storedFluidType");
-    LogisticKey STORED_FLUID_META_KEY = new LogisticKey("LogisticsAPI", "storedFluid");
+    LogisticKey STORED_FLUID_AMOUNT_META_KEY = new LogisticKey("LogisticsAPI", "storedFluidAmount");
 
     default long getMaxFluidStored() {
         return ReflectionUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
@@ -24,56 +24,56 @@ public interface FluidStorage extends LogisticDataHolder {
         return getLogisticData(STORED_FLUID_TYPE_META_KEY, LogisticFluid.class);
     }
 
-    default long getStoredFluid() {
-        return getLogisticData(STORED_FLUID_META_KEY, Long.class).orElse(0L);
+    default long getStoredFluidAmount() {
+        return getLogisticData(STORED_FLUID_AMOUNT_META_KEY, Long.class).orElse(0L);
     }
 
-    default void setStoredFluid(final long fluid) {
+    default void setStoredFluidAmount(final long fluid) {
         if (!getStoredFluidType().isPresent()) {
             throw new IllegalStateException("Tried to set the amount of fluid in an empty storage!");
         }
 
-        long newFluid;
+        long newAmount;
         if (fluid > getMaxFluidStored()) {
-            newFluid = getMaxFluidStored();
+            newAmount = getMaxFluidStored();
         } else if (fluid < 0) {
-            newFluid = 0;
+            newAmount = 0;
         } else {
-            newFluid = fluid;
+            newAmount = fluid;
         }
 
-        if (newFluid == 0) {
+        if (newAmount == 0) {
             removeLogisticData(STORED_FLUID_TYPE_META_KEY);
-            removeLogisticData(STORED_FLUID_META_KEY);
+            removeLogisticData(STORED_FLUID_AMOUNT_META_KEY);
             return;
         }
 
-        setLogisticData(STORED_FLUID_META_KEY, newFluid);
+        setLogisticData(STORED_FLUID_AMOUNT_META_KEY, newAmount);
     }
 
-    default void setStoredFluid(@NonNull final LogisticFluid fluidType, final long fluid) {
+    default void setStoredFluid(@NonNull final LogisticFluid fluidType, final long amount) {
         Optional<LogisticFluid> currentFluid = getStoredFluidType();
         if (currentFluid.isPresent() && !currentFluid.get().equals(fluidType)) {
             throw new IllegalStateException("Tried to change the fluid type of a non empty fluid storage!");
         }
 
-        long newFluid;
-        if (fluid > getMaxFluidStored()) {
-            newFluid = getMaxFluidStored();
-        } else if (fluid < 0) {
-            newFluid = 0;
+        long newAmount;
+        if (amount > getMaxFluidStored()) {
+            newAmount = getMaxFluidStored();
+        } else if (amount < 0) {
+            newAmount = 0;
         } else {
-            newFluid = fluid;
+            newAmount = amount;
         }
 
-        if (newFluid == 0) {
+        if (newAmount == 0) {
             removeLogisticData(STORED_FLUID_TYPE_META_KEY);
-            removeLogisticData(STORED_FLUID_META_KEY);
+            removeLogisticData(STORED_FLUID_AMOUNT_META_KEY);
             return;
         }
 
         setLogisticData(STORED_FLUID_TYPE_META_KEY, fluidType);
-        setLogisticData(STORED_FLUID_META_KEY, newFluid);
+        setLogisticData(STORED_FLUID_AMOUNT_META_KEY, newAmount);
     }
 
     @Target(ElementType.TYPE)

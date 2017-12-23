@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 
 public interface FluidInput extends FluidStorage {
 
-    default long receiveEnergy(final long maxEnergy, final boolean simulate) {
-        long energyReceived = Math.min(getMaxFluidStored() - getStoredFluid(), Math.min(getMaxReceive(), maxEnergy));
+    default long receiveEnergy(final long available, final boolean simulate) {
+        long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxReceive(), available));
         if (!simulate) {
-            setStoredFluid(getStoredFluid() + energyReceived);
+            setStoredFluidAmount(getStoredFluidAmount() + amountReceived);
         }
-        return energyReceived;
+        return amountReceived;
     }
 
     default long getMaxReceive() {

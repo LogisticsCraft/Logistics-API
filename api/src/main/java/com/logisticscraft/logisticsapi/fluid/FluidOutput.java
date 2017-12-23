@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 
 public interface FluidOutput extends FluidStorage {
 
-    default long extractEnergy(final long maxExtract, final boolean simulate) {
-        long energyExtracted = Math.min(getStoredFluid(), Math.min(getMaxExtract(), maxExtract));
+    default long extractEnergy(final long available, final boolean simulate) {
+        long amountExtracted = Math.min(getStoredFluidAmount(), Math.min(getMaxExtract(), available));
         if (!simulate) {
-            setStoredFluid(getStoredFluid() - energyExtracted);
+            setStoredFluidAmount(getStoredFluidAmount() - amountExtracted);
         }
-        return energyExtracted;
+        return amountExtracted;
     }
 
     default long getMaxExtract() {

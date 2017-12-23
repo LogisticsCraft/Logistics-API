@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.items;
+package com.logisticscraft.logisticsapi.item;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import de.tr7zw.itemnbtapi.NBTItem;

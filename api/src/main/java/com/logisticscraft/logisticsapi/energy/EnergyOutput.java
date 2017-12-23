@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 public interface EnergyOutput extends EnergyStorage {
 
-    default long extractEnergy(final long maxExtract, final boolean simulate) {
-        long energyExtracted = Math.min(getStoredEnergy(), Math.min(getMaxExtract(), maxExtract));
+    default long extractEnergy(final long available, final boolean simulate) {
+        long energyExtracted = Math.min(getStoredEnergy(), Math.min(getMaxExtract(), available));
         if (!simulate) {
             setStoredEnergy(getStoredEnergy() - energyExtracted);
         }

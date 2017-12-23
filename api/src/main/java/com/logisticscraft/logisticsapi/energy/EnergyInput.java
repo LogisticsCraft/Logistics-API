@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 public interface EnergyInput extends EnergyStorage {
 
-    default long receiveEnergy(final long maxEnergy, final boolean simulate) {
-        long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(), Math.min(getMaxReceive(), maxEnergy));
+    default long receiveEnergy(final long available, final boolean simulate) {
+        long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(), Math.min(getMaxReceive(), available));
         if (!simulate) {
             setStoredEnergy(getStoredEnergy() + energyReceived);
         }

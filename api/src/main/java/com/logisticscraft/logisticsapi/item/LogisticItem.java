@@ -1,15 +1,15 @@
 package com.logisticscraft.logisticsapi.item;
 
-import com.logisticscraft.logisticsapi.data.LogisticKey;
-import de.tr7zw.itemnbtapi.NBTItem;
-import lombok.Getter;
-import lombok.NonNull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.io.Serializable;
+import com.logisticscraft.logisticsapi.data.LogisticKey;
 
-public class LogisticItem implements Serializable {
+import de.tr7zw.itemnbtapi.NBTItem;
+import lombok.Getter;
+import lombok.NonNull;
+
+public class LogisticItem {
 
     @Getter
     private LogisticKey key;

@@ -8,7 +8,7 @@ import lombok.experimental.Delegate;
 import java.io.Serializable;
 
 @Data
-public class LogisticFluid implements Serializable {
+public class LogisticFluid {
 
     @NonNull
     private final LogisticKey id;

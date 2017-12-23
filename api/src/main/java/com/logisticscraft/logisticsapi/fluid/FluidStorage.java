@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.fluid;
 
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.utils.AnnotationUtils;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import lombok.NonNull;
 
 import java.lang.annotation.ElementType;
@@ -17,7 +17,7 @@ public interface FluidStorage extends LogisticDataHolder {
     LogisticKey STORED_FLUID_META_KEY = new LogisticKey("LogisticsAPI", "storedFluid");
 
     default long getMaxFluidStored() {
-        return AnnotationUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
+        return ReflectionUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
     }
 
     default Optional<LogisticFluid> getStoredFluidType() {

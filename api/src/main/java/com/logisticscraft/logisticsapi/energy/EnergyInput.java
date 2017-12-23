@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.energy;
 
-import com.logisticscraft.logisticsapi.utils.AnnotationUtils;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,7 +18,7 @@ public interface EnergyInput extends EnergyStorage {
     }
 
     default long getMaxReceive() {
-        return AnnotationUtils.getClassAnnotation(this, EnergyInputData.class).maxReceive();
+        return ReflectionUtils.getClassAnnotation(this, EnergyInputData.class).maxReceive();
     }
 
     @Target(ElementType.TYPE)

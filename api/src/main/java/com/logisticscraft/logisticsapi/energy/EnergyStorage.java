@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.energy;
 
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.utils.AnnotationUtils;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +14,7 @@ public interface EnergyStorage extends LogisticDataHolder {
     LogisticKey STORED_ENERGY_META_KEY = new LogisticKey("LogisticsAPI", "storedEnergy");
 
     default long getMaxEnergyStored() {
-        return AnnotationUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
+        return ReflectionUtils.getClassAnnotation(this, EnergyStorageData.class).capacity();
     }
 
     default long getStoredEnergy() {

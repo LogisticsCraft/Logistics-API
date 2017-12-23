@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.fluid;
 
-import com.logisticscraft.logisticsapi.utils.AnnotationUtils;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,7 +18,7 @@ public interface FluidOutput extends FluidStorage {
     }
 
     default long getMaxExtract() {
-        return AnnotationUtils.getClassAnnotation(this, FluidOutputData.class).maxExtract();
+        return ReflectionUtils.getClassAnnotation(this, FluidOutputData.class).maxExtract();
     }
 
     @Target(ElementType.TYPE)

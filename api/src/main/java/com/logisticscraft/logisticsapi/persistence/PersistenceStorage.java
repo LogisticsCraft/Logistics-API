@@ -1,18 +1,15 @@
 package com.logisticscraft.logisticsapi.persistence;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.persistence.adapters.DataAdapter;
 import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
 import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PersistenceStorage {
@@ -38,7 +35,7 @@ public class PersistenceStorage {
     }
 
     public void saveFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
-        getSerializableFields(object.getClass(), LogisticBlock.class).stream()
+        ReflectionUtils.getFieldsRecursively(object.getClass(), LogisticBlock.class).stream()
                 .filter(field -> field.getAnnotation(Persistent.class) != null)
                 .forEach(field -> {
                     field.setAccessible(true);
@@ -52,7 +49,7 @@ public class PersistenceStorage {
     }
 
     public void loadFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
-        getSerializableFields(object.getClass(), LogisticBlock.class).stream()
+        ReflectionUtils.getFieldsRecursively(object.getClass(), LogisticBlock.class).stream()
                 .filter(field -> field.getAnnotation(Persistent.class) != null)
                 .forEach(field -> {
                     field.setAccessible(true);
@@ -93,18 +90,6 @@ public class PersistenceStorage {
         }
 
         return null;
-    }
-
-    private static ArrayList<Field> getSerializableFields(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
-        ArrayList<Field> currentClassFields = Lists.newArrayList(startClass.getDeclaredFields());
-        Class<?> parentClass = startClass.getSuperclass();
-
-        if (parentClass != null && (exclusiveParent == null || !(parentClass.equals(exclusiveParent)))) {
-            List<Field> parentClassFields = getSerializableFields(parentClass, exclusiveParent);
-            currentClassFields.addAll(parentClassFields);
-        }
-
-        return currentClassFields;
     }
 
 }

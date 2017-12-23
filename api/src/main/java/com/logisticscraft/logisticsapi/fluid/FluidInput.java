@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.fluid;
 
-import com.logisticscraft.logisticsapi.utils.AnnotationUtils;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,7 +18,7 @@ public interface FluidInput extends FluidStorage {
     }
 
     default long getMaxReceive() {
-        return AnnotationUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
+        return ReflectionUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
     }
 
     @Target(ElementType.TYPE)

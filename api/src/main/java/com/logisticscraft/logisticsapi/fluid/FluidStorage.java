@@ -52,11 +52,6 @@ public interface FluidStorage extends LogisticDataHolder {
     }
 
     default void setStoredFluid(@NonNull final LogisticFluid fluidType, final long amount) {
-        Optional<LogisticFluid> currentFluid = getStoredFluidType();
-        if (currentFluid.isPresent() && !currentFluid.get().equals(fluidType)) {
-            throw new IllegalStateException("Tried to change the fluid type of a non empty fluid storage!");
-        }
-
         long newAmount;
         if (amount > getMaxFluidStored()) {
             newAmount = getMaxFluidStored();

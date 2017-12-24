@@ -15,14 +15,15 @@ public interface FluidInput extends FluidStorage {
 
     default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available, final boolean simulate) {
         if(!allowFluidInput(blockFace, Optional.of(fluid)))return 0;
-    	long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxReceive(), available));
+        if(getStoredFluidType().isPresent() && !getStoredFluidType().get().equals(fluid))return 0;
+    	long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxFluidReceive(), available));
         if (!simulate) {
-            setStoredFluidAmount(getStoredFluidAmount() + amountReceived);
+        	setStoredFluid(fluid, getStoredFluidAmount() + amountReceived);
         }
         return amountReceived;
     }
 
-    default long getMaxReceive() {
+    default long getMaxFluidReceive() {
         return ReflectionUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
     }
     

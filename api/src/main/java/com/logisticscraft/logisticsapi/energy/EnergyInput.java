@@ -1,19 +1,19 @@
 package com.logisticscraft.logisticsapi.energy;
 
-import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
-
-import lombok.NonNull;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+
+import lombok.NonNull;
+
 public interface EnergyInput extends EnergyStorage {
 
     default long receiveEnergy(@NonNull LogisticBlockFace blockFace, final long available, final boolean simulate) {
-        if(!allowInput(blockFace))return 0;
+        if(!allowEnergyInput(blockFace))return 0;
     	long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(), Math.min(getMaxReceive(), available));
         if (!simulate) {
             setStoredEnergy(getStoredEnergy() + energyReceived);
@@ -25,7 +25,7 @@ public interface EnergyInput extends EnergyStorage {
         return ReflectionUtils.getClassAnnotation(this, EnergyInputData.class).maxReceive();
     }
     
-    default boolean allowInput(@NonNull LogisticBlockFace blockFace){
+    default boolean allowEnergyInput(@NonNull LogisticBlockFace blockFace){
     	return true;
     }
 

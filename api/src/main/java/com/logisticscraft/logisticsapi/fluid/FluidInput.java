@@ -10,10 +10,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface FluidInput extends FluidStorage {
 
     default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available, final boolean simulate) {
-        if(!allowInput(blockFace, fluid))return 0;
+        if(!allowFluidInput(blockFace, fluid))return 0;
     	long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxReceive(), available));
         if (!simulate) {
             setStoredFluidAmount(getStoredFluidAmount() + amountReceived);
@@ -25,7 +27,10 @@ public interface FluidInput extends FluidStorage {
         return ReflectionUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
     }
     
-    default boolean allowInput(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid){
+    /*
+     * Null fluid is allowed for pipes to check for connecting to blockfaces
+    */
+    default boolean allowFluidInput(@NonNull LogisticBlockFace blockFace, @Nullable LogisticFluid fluid){
     	return true;
     }
 

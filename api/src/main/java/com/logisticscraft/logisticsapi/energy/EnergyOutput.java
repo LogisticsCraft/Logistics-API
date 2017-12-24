@@ -13,6 +13,7 @@ import lombok.NonNull;
 public interface EnergyOutput extends EnergyStorage {
 
     default long extractEnergy(@NonNull LogisticBlockFace blockFace, final long available, final boolean simulate) {
+    	if(!allowOutput(blockFace))return 0;
     	long energyExtracted = Math.min(getStoredEnergy(), Math.min(getMaxExtract(), available));
         if (!simulate) {
             setStoredEnergy(getStoredEnergy() - energyExtracted);
@@ -22,6 +23,10 @@ public interface EnergyOutput extends EnergyStorage {
 
     default long getMaxExtract() {
         return ReflectionUtils.getClassAnnotation(this, EnergyOutputData.class).maxExtract();
+    }
+    
+    default boolean allowOutput(@NonNull LogisticBlockFace blockFace){
+    	return true;
     }
 
     @Target(ElementType.TYPE)

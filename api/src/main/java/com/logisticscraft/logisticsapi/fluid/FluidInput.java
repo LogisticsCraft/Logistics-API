@@ -1,6 +1,9 @@
 package com.logisticscraft.logisticsapi.fluid;
 
+import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+
+import lombok.NonNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,8 +12,9 @@ import java.lang.annotation.Target;
 
 public interface FluidInput extends FluidStorage {
 
-    default long receiveEnergy(final long available, final boolean simulate) {
-        long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxReceive(), available));
+    default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available, final boolean simulate) {
+        if(!allowInput(blockFace, fluid))return 0;
+    	long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxReceive(), available));
         if (!simulate) {
             setStoredFluidAmount(getStoredFluidAmount() + amountReceived);
         }
@@ -19,6 +23,10 @@ public interface FluidInput extends FluidStorage {
 
     default long getMaxReceive() {
         return ReflectionUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
+    }
+    
+    default boolean allowInput(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid){
+    	return true;
     }
 
     @Target(ElementType.TYPE)

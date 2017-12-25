@@ -1,7 +1,7 @@
 package com.logisticscraft.logisticsapi.excluded.energy.wire;
 
-import com.logisticscraft.logisticsapi.excluded.annotation.ApiComponent;
 import com.logisticscraft.logisticsapi.LogisticsApi;
+import com.logisticscraft.logisticsapi.excluded.annotation.ApiComponent;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.NonNull;
 import org.bukkit.Bukkit;

@@ -10,4 +10,5 @@ public class EnergyConduit extends Conduit implements EnergyInput, EnergyOutput 
     public EnergyConduit(LogisticKey typeId, String name, SafeBlockLocation location) {
         super(typeId, name, location);
     }
+
 }

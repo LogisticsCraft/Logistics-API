@@ -9,4 +9,5 @@ public abstract class Conduit extends LogisticBlock {
     public Conduit(LogisticKey typeId, String name, SafeBlockLocation location) {
         super(typeId, name, location);
     }
+
 }

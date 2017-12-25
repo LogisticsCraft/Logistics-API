@@ -15,26 +15,26 @@ import com.logisticscraft.logisticsapi.item.InventoryStorage;
 @EnergyStorage.EnergyStorageData(capacity = 10000)
 @EnergyInput.EnergyInputData(maxReceive = 100)
 @EnergyOutput.EnergyOutputData(maxExtract = 100)
-@InventoryStorage.InventoryData(rows=1, name="TestBlock")
+@InventoryStorage.InventoryData(rows = 1, name = "TestBlock")
 public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutput, InventoryStorage, InventoryHolder {
 
     public TestBlock(LogisticKey typeId, String name, SafeBlockLocation location) {
         super(typeId, name, location);
     }
-    
-    
+
     @LogisticTickManager.Ticking(ticks = 10)
-    public void update(){
-    	//Running every 10 ticks
+    public void update() {
+        //Running every 10 ticks
     }
 
-	@Override
-	public InventoryHolder getInventoryHolder() {
-		return this;
-	}
+    @Override
+    public InventoryHolder getInventoryHolder() {
+        return this;
+    }
 
-	@Override
-	public Inventory getInventory() {
-		return getStoredInventory();
-	}
+    @Override
+    public Inventory getInventory() {
+        return getStoredInventory();
+    }
+
 }

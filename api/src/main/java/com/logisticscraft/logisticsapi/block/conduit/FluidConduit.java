@@ -10,4 +10,5 @@ public class FluidConduit extends Conduit implements FluidInput, FluidOutput {
     public FluidConduit(LogisticKey typeId, String name, SafeBlockLocation location) {
         super(typeId, name, location);
     }
+
 }

@@ -51,4 +51,5 @@ public class SafeBlockLocation implements Serializable {
     public Integer getChunkZ() {
         return (int) Math.ceil(z / 16);
     }
+
 }

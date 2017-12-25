@@ -82,5 +82,5 @@ public class LogisticWorldStorage {
     }
 
     //TODO: Loading blocks
-    
+
 }

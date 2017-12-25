@@ -1,13 +1,11 @@
 package com.logisticscraft.logisticsapi.item;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-
 import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.Getter;
 import lombok.NonNull;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 public class LogisticItem {
 

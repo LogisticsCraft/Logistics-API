@@ -1,12 +1,10 @@
 package com.logisticscraft.logisticsapi.fluid;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-
 import lombok.Data;
 import lombok.NonNull;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 @Data
 public class LogisticFluid {
@@ -24,8 +22,8 @@ public class LogisticFluid {
     private boolean gaseous;
     private int temperature;
 
-    public LogisticFluid(@NonNull Plugin plugin, @NonNull String internalName, @NonNull String displayName, 
-    		@NonNull String fluidDictionary, ItemStack representingItem, float density, boolean gaseous, int temperature) {
+    public LogisticFluid(@NonNull Plugin plugin, @NonNull String internalName, @NonNull String displayName,
+                         @NonNull String fluidDictionary, ItemStack representingItem, float density, boolean gaseous, int temperature) {
         this.id = new LogisticKey(plugin, internalName);
         this.displayName = displayName;
         this.parentPlugin = plugin;
@@ -37,17 +35,17 @@ public class LogisticFluid {
     }
 
     @Override
-    public boolean equals(Object object){
-    	if(!(object instanceof LogisticFluid))return false;
-    	LogisticFluid fluid = (LogisticFluid) object;
-    	if(getId().equals(fluid.getId()))return true;
-    	if(getFluidDictionary().equals(fluid.getFluidDictionary()))return true;
-    	return false;
+    public boolean equals(Object object) {
+        if (!(object instanceof LogisticFluid)) return false;
+        LogisticFluid fluid = (LogisticFluid) object;
+        if (getId().equals(fluid.getId())) return true;
+        if (getFluidDictionary().equals(fluid.getFluidDictionary())) return true;
+        return false;
     }
-    
+
     @Override
-    public int hashCode(){
-    	return id.toString().hashCode();
+    public int hashCode() {
+        return id.toString().hashCode();
     }
-    
+
 }

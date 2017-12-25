@@ -14,7 +14,6 @@ import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 
 import javax.inject.Inject;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -47,16 +46,16 @@ public class LogisticBlockCache {
      * @throws IllegalArgumentException if the given block location isn't loaded
      */
     public void loadLogisticBlock(@NonNull final LogisticBlock block) {
-    	if(!typeRegister.isBlockRegistert(block)){
-    		throw new IllegalArgumentException("The class " + block.getName() + " is not registert!");
-    	}
+        if (!typeRegister.isBlockRegistert(block)) {
+            throw new IllegalArgumentException("The class " + block.getName() + " is not registert!");
+        }
         Location location = block.getLocation().getLocation()
                 .orElseThrow(() -> new IllegalArgumentException("The provided block must be loaded!"));
         Chunk chunk = location.getChunk();
         pluginManager.callEvent(new LogisticBlockLoadEvent(location, block));
         if (logisticBlocks.computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
                 .putIfAbsent(location, block) == null) {
-        	tickManager.addTickingBlock(block);
+            tickManager.addTickingBlock(block);
             Tracer.debug("Block loaded: " + location.toString());
         } else {
             Tracer.warn("Trying to load a block at occupied location: " + location.toString());
@@ -85,10 +84,10 @@ public class LogisticBlockCache {
             return;
         }
         tickManager.removeTickingBlock(logisticBlock);
-        if(save){
+        if (save) {
             pluginManager.callEvent(new LogisticBlockSaveEvent(location, logisticBlock));
             worldStorage.get(location.getWorld()).saveLogisticBlock(logisticBlock);
-        }else{
+        } else {
             pluginManager.callEvent(new LogisticBlockUnloadEvent(location, logisticBlock));
             worldStorage.get(location.getWorld()).removeLogisticBlock(logisticBlock);
         }
@@ -124,16 +123,16 @@ public class LogisticBlockCache {
     }
 
     @Synchronized
-    public Set<Chunk> getChunksinWorld(@NonNull World world){
+    public Set<Chunk> getChunksinWorld(@NonNull World world) {
         HashSet<Chunk> chunks = new HashSet<>();
-        for(Chunk c : logisticBlocks.keySet())
-            if(c.getWorld().equals(world))
+        for (Chunk c : logisticBlocks.keySet())
+            if (c.getWorld().equals(world))
                 chunks.add(c);
         return Collections.unmodifiableSet(chunks);
     }
 
     @Synchronized
-    public void registerWorld(@NonNull World world){
+    public void registerWorld(@NonNull World world) {
         try {
             worldStorage.put(world, new LogisticWorldStorage(world));
         } catch (IOException e) {
@@ -142,10 +141,10 @@ public class LogisticBlockCache {
     }
 
     @Synchronized
-    public void unregisterWorld(@NonNull World world){
-        if(worldStorage.containsKey(world)){
-            for(Chunk chunk : getChunksinWorld(world)){
-                for(Entry<Location, LogisticBlock> data : getLogisticBlocksInChunk(chunk))
+    public void unregisterWorld(@NonNull World world) {
+        if (worldStorage.containsKey(world)) {
+            for (Chunk chunk : getChunksinWorld(world)) {
+                for (Entry<Location, LogisticBlock> data : getLogisticBlocksInChunk(chunk))
                     unloadLogisticBlock(data.getKey(), true);
             }
             LogisticWorldStorage storage = worldStorage.get(world);
@@ -155,14 +154,14 @@ public class LogisticBlockCache {
                 e.printStackTrace();
             }
             worldStorage.remove(world);
-        }else{
+        } else {
             Tracer.warn("Attempt to unregister an unknown World: " + world.getName());
         }
     }
-    
+
     @Synchronized
-    public Map<Chunk, Map<Location, LogisticBlock>> getAllLogisticBlocks(){
-    	return logisticBlocks;
+    public Map<Chunk, Map<Location, LogisticBlock>> getAllLogisticBlocks() {
+        return logisticBlocks;
     }
 
     // TODO: Missing: World getter, Point where loading/events/listener are located

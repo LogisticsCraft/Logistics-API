@@ -31,13 +31,13 @@ public class ReflectionUtils {
 
         return fields;
     }
-    
+
     public static Collection<Method> getMethodsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
         Collection<Method> methods = Lists.newArrayList(startClass.getDeclaredMethods());
         Class<?> parentClass = startClass.getSuperclass();
 
         if (parentClass != null && (exclusiveParent == null || !(parentClass.equals(exclusiveParent)))) {
-        	methods.addAll(getMethodsRecursively(parentClass, exclusiveParent));
+            methods.addAll(getMethodsRecursively(parentClass, exclusiveParent));
         }
 
         return methods;

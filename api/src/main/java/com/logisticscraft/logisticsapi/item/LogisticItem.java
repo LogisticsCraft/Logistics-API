@@ -4,6 +4,7 @@ import com.logisticscraft.logisticsapi.data.LogisticKey;
 import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.val;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -23,7 +24,7 @@ public class LogisticItem {
     }
 
     public ItemStack getItemStack(int amount) {
-        ItemStack tmp = nbtItem.getItem().clone();
+        val tmp = nbtItem.getItem().clone();
         tmp.setAmount(amount);
         return tmp;
     }

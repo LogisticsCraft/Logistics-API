@@ -7,6 +7,7 @@ import de.tr7zw.itemnbtapi.NBTFile;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Synchronized;
+import lombok.val;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
@@ -39,14 +40,14 @@ public class LogisticWorldStorage {
 
     @Synchronized
     public Optional<Set<? extends LogisticBlock>> getLogisticBlocksInChunk(@NonNull final Chunk chunk) {
-        NBTCompound chunks = nbtFile.getCompound("chunks");
+        val chunks = nbtFile.getCompound("chunks");
 
-        NBTCompound chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
+        val chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
         if (chunkData == null) return Optional.empty();
 
-        Set<LogisticBlock> blocks = new HashSet<>();
+        val blocks = new HashSet<LogisticBlock>();
         for (String key : chunkData.getKeys()) {
-            NBTCompound blockData = chunkData.getCompound(key);
+            val blockData = chunkData.getCompound(key);
             blocks.add(persistence.loadObject(LogisticBlock.class, blockData));
         }
 
@@ -56,10 +57,10 @@ public class LogisticWorldStorage {
 
     @Synchronized
     public void removeLogisticBlock(@NonNull final LogisticBlock logisticBlock) {
-        NBTCompound chunks = nbtFile.getCompound("chunks");
+        val chunks = nbtFile.getCompound("chunks");
 
-        SafeBlockLocation location = logisticBlock.getLocation();
-        NBTCompound chunkData = chunks.getCompound(location.getChunkX() + ";" + location.getChunkZ());
+        val location = logisticBlock.getLocation();
+        val chunkData = chunks.getCompound(location.getChunkX() + ";" + location.getChunkZ());
         if (chunkData == null) return;
 
         if (chunkData.hasKey(location.getX() + ";" + location.getY() + ";" + location.getZ())) {
@@ -72,11 +73,11 @@ public class LogisticWorldStorage {
 
     @Synchronized
     public void saveLogisticBlock(@NonNull final LogisticBlock logisticBlock) {
-        NBTCompound chunks = nbtFile.getCompound("chunks");
+        val chunks = nbtFile.getCompound("chunks");
 
-        SafeBlockLocation location = logisticBlock.getLocation();
-        NBTCompound chunkData = chunks.addCompound(location.getChunkX() + ";" + location.getChunkZ());
-        NBTCompound blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
+        val location = logisticBlock.getLocation();
+        val chunkData = chunks.addCompound(location.getChunkX() + ";" + location.getChunkZ());
+        val blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
         persistence.saveFields(logisticBlock, blockData);
         //TODO: Save blocktype, energy levels, Blockdata etc.
     }

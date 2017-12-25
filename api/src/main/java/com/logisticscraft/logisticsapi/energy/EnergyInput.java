@@ -3,6 +3,7 @@ package com.logisticscraft.logisticsapi.energy;
 import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import lombok.NonNull;
+import lombok.val;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +14,7 @@ public interface EnergyInput extends EnergyStorage {
 
     default long receiveEnergy(@NonNull LogisticBlockFace blockFace, final long available, final boolean simulate) {
         if (!allowEnergyInput(blockFace)) return 0;
-        long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(), Math.min(getMaxEnergyReceive(), available));
+        val energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(), Math.min(getMaxEnergyReceive(), available));
         if (!simulate) {
             setStoredEnergy(getStoredEnergy() + energyReceived);
         }

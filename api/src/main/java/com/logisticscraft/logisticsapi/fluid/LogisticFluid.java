@@ -3,6 +3,7 @@ package com.logisticscraft.logisticsapi.fluid;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.val;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -23,7 +24,7 @@ public class LogisticFluid {
     private int temperature;
 
     public LogisticFluid(@NonNull Plugin plugin, @NonNull String internalName, @NonNull String displayName,
-                         @NonNull String fluidDictionary, ItemStack representingItem, float density, boolean gaseous, int temperature) {
+                         @NonNull String fluidDictionary, @NonNull ItemStack representingItem, float density, boolean gaseous, int temperature) {
         this.id = new LogisticKey(plugin, internalName);
         this.displayName = displayName;
         this.parentPlugin = plugin;
@@ -37,10 +38,8 @@ public class LogisticFluid {
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof LogisticFluid)) return false;
-        LogisticFluid fluid = (LogisticFluid) object;
-        if (getId().equals(fluid.getId())) return true;
-        if (getFluidDictionary().equals(fluid.getFluidDictionary())) return true;
-        return false;
+        val fluid = (LogisticFluid) object;
+        return getId().equals(fluid.getId()) || getFluidDictionary().equals(fluid.getFluidDictionary());
     }
 
     @Override

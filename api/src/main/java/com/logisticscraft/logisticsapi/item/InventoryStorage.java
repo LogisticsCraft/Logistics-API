@@ -2,8 +2,10 @@ package com.logisticscraft.logisticsapi.item;
 
 import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.utils.ItemUtils;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import lombok.NonNull;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -29,60 +31,50 @@ public interface InventoryStorage extends ItemStorage {
         return ReflectionUtils.getClassAnnotation(this, InventoryData.class).name();
     }
 
-    static ItemStack changeAmount(ItemStack item, int amountDelta) {
-        ItemStack copy = item.clone();
-        if (item.getAmount() + amountDelta > 0) {
-            copy.setAmount(Math.min(item.getMaxStackSize(), item.getAmount() + amountDelta));
-        } else {
-            copy = null;
-        }
-        return copy;
-    }
-
     InventoryHolder getInventoryHolder();
 
     default Inventory getStoredInventory() {
-        Optional<Inventory> optionalInventory = getLogisticData(STORED_INVENTORY_META_KEY, Inventory.class);
+        val optionalInventory = getLogisticData(STORED_INVENTORY_META_KEY, Inventory.class);
         if (optionalInventory.isPresent()) return optionalInventory.get();
-        Inventory inventory = Bukkit.createInventory(getInventoryHolder(), getRowAmount() * 9, getInventoryName());
+        val inventory = Bukkit.createInventory(getInventoryHolder(), getRowAmount() * 9, getInventoryName());
         setLogisticData(STORED_INVENTORY_META_KEY, inventory);
         return inventory;
     }
 
     @Override
-    default ItemStack extractItem(LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate) {
-        Inventory cachedInv = getStoredInventory();
+    default ItemStack extractItem(@NonNull LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate) {
+        val cachedInv = getStoredInventory();
         ItemStack takenIs = null;
         for (int i = 0; i < cachedInv.getSize(); i++) {
             if (cachedInv.getItem(i) != null) {
                 int amountBefore = takenIs != null ? takenIs.getAmount() : 0;
-                if (takenIs == null && allowItemExtraction(extractionSide, Optional.of(cachedInv.getItem(i)))) {
+                if (takenIs == null && allowItemExtraction(extractionSide, cachedInv.getItem(i))) {
                     takenIs = cachedInv.getItem(i).clone();
                     takenIs.setAmount(Math.min(maxExtractAmount, takenIs.getAmount()));
                 } else if (takenIs.isSimilar(cachedInv.getItem(i))) {
                     takenIs.setAmount(Math.min(maxExtractAmount, amountBefore + cachedInv.getItem(i).getAmount()));
                 }
-                ItemStack invItem = cachedInv.getItem(i);
+                val invItem = cachedInv.getItem(i);
                 if (!simulate)
-                    cachedInv.setItem(i, changeAmount(invItem, -(takenIs.getAmount() - amountBefore)));
+                    cachedInv.setItem(i, ItemUtils.changeItemAmount(invItem, -(takenIs.getAmount() - amountBefore)));
             }
         }
         return takenIs;
     }
 
     @Override
-    default ItemStack insertItem(LogisticBlockFace insertSide, ItemStack insertedItem, boolean simulate) {
+    default ItemStack insertItem(@NonNull LogisticBlockFace insertSide, @NonNull ItemStack insertedItem, boolean simulate) {
         if (simulate) {
             int space = howMuchSpaceForItemAsync(insertSide, insertedItem);
             if (space == 0) return insertedItem;
             if (space >= insertedItem.getAmount()) return null;
-            ItemStack cloneItem = insertedItem.clone();
+            val cloneItem = insertedItem.clone();
             cloneItem.setAmount(cloneItem.getAmount() - space);
             return cloneItem;
         }
-        if (!allowItemInsertion(insertSide, Optional.of(insertedItem))) return insertedItem;
-        Inventory cachedInv = getStoredInventory();
-        Collection<ItemStack> overflow = cachedInv.addItem(insertedItem).values();
+        if (!allowItemInsertion(insertSide, insertedItem)) return insertedItem;
+        val cachedInv = getStoredInventory();
+        val overflow = cachedInv.addItem(insertedItem).values();
         if (overflow.isEmpty()) {
             return null;
         } else {
@@ -92,11 +84,11 @@ public interface InventoryStorage extends ItemStorage {
 
     @Override
     default int howMuchSpaceForItemAsync(@NonNull LogisticBlockFace insertDirection, @NonNull ItemStack insertion) {
-        if (!allowItemInsertion(insertDirection, Optional.of(insertion))) return 0;
-        Inventory cachedInv = getStoredInventory();
+        if (!allowItemInsertion(insertDirection, insertion)) return 0;
+        val cachedInv = getStoredInventory();
         int freeSpace = 0;
         for (int i = 0; i < cachedInv.getSize(); i++) {
-            ItemStack is = cachedInv.getItem(i);
+            val is = cachedInv.getItem(i);
             if (is == null || is.getType() == Material.AIR) {
                 freeSpace += insertion.getMaxStackSize();
             } else if (is.isSimilar(insertion) && is.getAmount() < is.getMaxStackSize()) {

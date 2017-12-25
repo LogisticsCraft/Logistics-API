@@ -1,34 +1,37 @@
 package com.logisticscraft.logisticsapi.block;
 
+import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+import lombok.NonNull;
 import lombok.Synchronized;
+import lombok.val;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class LogisticTickManager {
 
-    public LogisticTickManager(Plugin plugin) {
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> onTick(), 1, 1);
-    }
-
     private HashMap<Class<? extends LogisticBlock>, HashMap<Method, Integer>> classCache = new HashMap<>();
     private HashSet<LogisticBlock> trackedBlocks = new HashSet<>();
     private long tick = 0;
 
-    public void onTick() {
+    @Inject
+    LogisticTickManager(LogisticsApi plugin) {
+        Bukkit.getScheduler().runTaskTimer(plugin, this::onTick, 1, 1);
+    }
+
+    private void onTick() {
         tick++;
-        for (LogisticBlock logisticBlock : trackedBlocks) {
-            HashMap<Method, Integer> tickMap = classCache.get(logisticBlock.getClass());
-            for (Method method : tickMap.keySet()) {
+        for (val logisticBlock : trackedBlocks) {
+            val tickMap = classCache.get(logisticBlock.getClass());
+            for (val method : tickMap.keySet()) {
                 if (tick % tickMap.get(method) == 0) {
                     try {
                         method.invoke(logisticBlock);
@@ -47,30 +50,31 @@ public class LogisticTickManager {
     }
 
     @Synchronized
-    public void addTickingBlock(LogisticBlock block) {
+    public void addTickingBlock(@NonNull LogisticBlock block) {
         if (classCache.containsKey(block.getClass())) {
             trackedBlocks.add(block);
         }
     }
 
     @Synchronized
-    public void removeTickingBlock(LogisticBlock block) {
+    public void removeTickingBlock(@NonNull LogisticBlock block) {
         trackedBlocks.remove(block);
     }
 
     @Synchronized
-    public void registerLogisticBlockClass(Class<? extends LogisticBlock> clazz) {
+    public void registerLogisticBlockClass(@NonNull Class<? extends LogisticBlock> clazz) {
         if (!classCache.containsKey(clazz)) {
-            Collection<Method> methods = ReflectionUtils.getMethodsRecursively(clazz, LogisticBlock.class);
-            HashMap<Method, Integer> tickingMethods = new HashMap<>();
-            for (Method method : methods) {
-                Ticking ticking = method.getAnnotation(Ticking.class);
+            val methods = ReflectionUtils.getMethodsRecursively(clazz, LogisticBlock.class);
+            val tickingMethods = new HashMap<Method, Integer>();
+            for (val method : methods) {
+                val ticking = method.getAnnotation(Ticking.class);
                 if (ticking != null && method.getParameterCount() == 0) {
                     tickingMethods.put(method, ticking.ticks());
                 }
             }
-            if (tickingMethods.size() > 0)
+            if (tickingMethods.size() > 0) {
                 classCache.put(clazz, tickingMethods);
+            }
         }
     }
 

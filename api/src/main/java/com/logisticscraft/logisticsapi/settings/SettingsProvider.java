@@ -7,6 +7,7 @@ import ch.jalu.configme.resource.YamlFileResource;
 import com.logisticscraft.logisticsapi.utils.FileUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.val;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -29,11 +30,11 @@ public class SettingsProvider implements Provider<SettingsManager> {
      */
     @Override
     public SettingsManager get() {
-        File configFile = new File(dataFolder, "config.yml");
+        val configFile = new File(dataFolder, "config.yml");
         if (!configFile.exists()) {
             FileUtils.create(configFile);
         }
-        PropertyResource resource = new YamlFileResource(configFile);
+        val resource = new YamlFileResource(configFile);
         return new SettingsManager(resource, new PlainMigrationService(), SettingsProperties.class);
     }
 

@@ -8,6 +8,7 @@ import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
+import lombok.val;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class PersistenceStorage {
 
     @SuppressWarnings("unchecked")
     public void saveObject(@NonNull Object data, @NonNull NBTCompound nbtCompound) {
-        Class<?> clazz = data.getClass();
+        val clazz = data.getClass();
 
         // Check custom converters
         if (converters.containsKey(data.getClass())) {

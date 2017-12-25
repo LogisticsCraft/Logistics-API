@@ -4,6 +4,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.energy.EnergyInput;
@@ -19,6 +20,12 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
 
     public TestBlock(LogisticKey typeId, String name, SafeBlockLocation location) {
         super(typeId, name, location);
+    }
+    
+    
+    @LogisticTickManager.Ticking(ticks = 10)
+    public void update(){
+    	//Running every 10 ticks
     }
 
 	@Override

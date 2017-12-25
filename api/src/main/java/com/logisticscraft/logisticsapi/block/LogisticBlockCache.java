@@ -150,6 +150,11 @@ public class LogisticBlockCache {
             Tracer.warn("Attempt to unregister an unknown World: " + world.getName());
         }
     }
+    
+    @Synchronized
+    public Map<Chunk, Map<Location, LogisticBlock>> getAllLogisticBlocks(){
+    	return logisticBlocks;
+    }
 
     // TODO: Missing: World getter, Point where loading/events/listener are located
 }

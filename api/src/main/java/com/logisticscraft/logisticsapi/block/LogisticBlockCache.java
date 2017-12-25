@@ -29,6 +29,10 @@ public class LogisticBlockCache {
 
     @Inject
     private PluginManager pluginManager;
+    @Inject
+    private LogisticBlockTypeRegister typeRegister;
+    @Inject
+    private LogisticTickManager tickManager;
 
     private Map<World, LogisticWorldStorage> worldStorage = new ConcurrentHashMap<>();
 
@@ -43,12 +47,16 @@ public class LogisticBlockCache {
      * @throws IllegalArgumentException if the given block location isn't loaded
      */
     public void loadLogisticBlock(@NonNull final LogisticBlock block) {
+    	if(!typeRegister.isBlockRegistert(block)){
+    		throw new IllegalArgumentException("The class " + block.getName() + " is not registert!");
+    	}
         Location location = block.getLocation().getLocation()
                 .orElseThrow(() -> new IllegalArgumentException("The provided block must be loaded!"));
         Chunk chunk = location.getChunk();
         pluginManager.callEvent(new LogisticBlockLoadEvent(location, block));
         if (logisticBlocks.computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
                 .putIfAbsent(location, block) == null) {
+        	tickManager.addTickingBlock(block);
             Tracer.debug("Block loaded: " + location.toString());
         } else {
             Tracer.warn("Trying to load a block at occupied location: " + location.toString());
@@ -76,6 +84,7 @@ public class LogisticBlockCache {
             Tracer.warn("Attempt to unregister an unknown LogisticBlock: " + location.toString());
             return;
         }
+        tickManager.removeTickingBlock(logisticBlock);
         if(save){
             pluginManager.callEvent(new LogisticBlockSaveEvent(location, logisticBlock));
             worldStorage.get(location.getWorld()).saveLogisticBlock(logisticBlock);

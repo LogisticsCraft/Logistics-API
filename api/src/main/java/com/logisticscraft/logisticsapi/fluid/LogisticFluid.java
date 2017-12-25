@@ -47,7 +47,7 @@ public class LogisticFluid {
     
     @Override
     public int hashCode(){
-    	return super.hashCode();
+    	return id.toString().hashCode();
     }
     
 }

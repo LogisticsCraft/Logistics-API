@@ -18,10 +18,6 @@ import com.logisticscraft.logisticsapi.item.InventoryStorage;
 @InventoryStorage.InventoryData(rows = 1, name = "TestBlock")
 public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutput, InventoryStorage, InventoryHolder {
 
-    public TestBlock(LogisticKey typeId, String name, SafeBlockLocation location) {
-        super(typeId, name, location);
-    }
-
     @LogisticTickManager.Ticking(ticks = 10)
     public void update() {
         // Running every 10 ticks

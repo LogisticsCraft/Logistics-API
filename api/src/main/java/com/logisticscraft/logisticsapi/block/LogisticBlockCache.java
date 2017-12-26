@@ -44,7 +44,7 @@ public class LogisticBlockCache {
      */
     public void loadLogisticBlock(@NonNull final LogisticBlock block) {
         if (!typeRegister.isBlockRegistert(block)) {
-            throw new IllegalArgumentException("The class " + block.getName() + " is not registert!");
+            throw new IllegalArgumentException("The class " + block.getClass().getName() + " is not registert!");
         }
         Location location = block.getLocation().getLocation()
                 .orElseThrow(() -> new IllegalArgumentException("The provided block must be loaded!"));

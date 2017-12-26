@@ -12,7 +12,7 @@ import java.util.Collection;
 @UtilityClass
 public class ReflectionUtils {
 
-    public <T extends Annotation> T getClassAnnotation(Object object, Class<T> annotation) {
+    public <T extends Annotation> T getClassAnnotation(@NonNull Object object, @NonNull Class<T> annotation) {
         Class<?> clazz = object.getClass();
         T result = clazz.getAnnotation(annotation);
         if (result == null) {
@@ -21,7 +21,7 @@ public class ReflectionUtils {
         return result;
     }
 
-    public static Collection<Field> getFieldsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
+    public Collection<Field> getFieldsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
         Collection<Field> fields = Lists.newArrayList(startClass.getDeclaredFields());
         Class<?> parentClass = startClass.getSuperclass();
 
@@ -32,7 +32,7 @@ public class ReflectionUtils {
         return fields;
     }
 
-    public static Collection<Method> getMethodsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
+    public Collection<Method> getMethodsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
         Collection<Method> methods = Lists.newArrayList(startClass.getDeclaredMethods());
         Class<?> parentClass = startClass.getSuperclass();
 

@@ -47,19 +47,19 @@ public class LogisticTickManager {
     }
 
     @Synchronized
-    public void addTickingBlock(LogisticBlock block) {
+    public void addTickingBlock(@NonNull LogisticBlock block) {
         if (classCache.containsKey(block.getClass())) {
             trackedBlocks.add(block);
         }
     }
 
     @Synchronized
-    public void removeTickingBlock(LogisticBlock block) {
+    public void removeTickingBlock(@NonNull LogisticBlock block) {
         trackedBlocks.remove(block);
     }
 
     @Synchronized
-    public void registerLogisticBlockClass(Class<? extends LogisticBlock> clazz) {
+    public void registerLogisticBlockClass(@NonNull Class<? extends LogisticBlock> clazz) {
         if (!classCache.containsKey(clazz)) {
             Collection<Method> methods = ReflectionUtils.getMethodsRecursively(clazz, LogisticBlock.class);
             HashMap<Method, Integer> tickingMethods = new HashMap<>();
@@ -69,8 +69,9 @@ public class LogisticTickManager {
                     tickingMethods.put(method, ticking.ticks());
                 }
             }
-            if (tickingMethods.size() > 0)
+            if (tickingMethods.size() > 0) {
                 classCache.put(clazz, tickingMethods);
+            }
         }
     }
 

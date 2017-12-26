@@ -65,10 +65,10 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
+        injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
         injector.getSingleton(LogisticWorldStorage.class);
         injector.getSingleton(LogisticBlockCache.class);
-        injector.getSingleton(LogisticTickManager.class);
 
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();

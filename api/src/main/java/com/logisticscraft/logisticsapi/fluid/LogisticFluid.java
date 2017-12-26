@@ -23,7 +23,7 @@ public class LogisticFluid {
     private int temperature;
 
     public LogisticFluid(@NonNull Plugin plugin, @NonNull String internalName, @NonNull String displayName,
-                         @NonNull String fluidDictionary, ItemStack representingItem, float density, boolean gaseous, int temperature) {
+                         @NonNull String fluidDictionary, @NonNull ItemStack representingItem, float density, boolean gaseous, int temperature) {
         this.id = new LogisticKey(plugin, internalName);
         this.displayName = displayName;
         this.parentPlugin = plugin;

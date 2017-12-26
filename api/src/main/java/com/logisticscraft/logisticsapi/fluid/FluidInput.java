@@ -8,12 +8,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Optional;
 
 public interface FluidInput extends FluidStorage {
 
     default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available, final boolean simulate) {
-        if (!allowFluidInput(blockFace, Optional.of(fluid))) return 0;
+        if (!allowFluidInput(blockFace, fluid)) return 0;
         if (getStoredFluidType().isPresent() && !getStoredFluidType().get().equals(fluid)) return 0;
         long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxFluidReceive(), available));
         if (!simulate) {
@@ -26,7 +25,7 @@ public interface FluidInput extends FluidStorage {
         return ReflectionUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
     }
 
-    default boolean allowFluidInput(@NonNull LogisticBlockFace blockFace, Optional<LogisticFluid> fluid) {
+    default boolean allowFluidInput(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid) {
         return true;
     }
 

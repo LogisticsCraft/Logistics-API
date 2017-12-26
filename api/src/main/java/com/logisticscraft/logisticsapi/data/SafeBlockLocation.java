@@ -24,7 +24,7 @@ public class SafeBlockLocation implements Serializable {
     @NonNull
     private Integer z;
 
-    public SafeBlockLocation(Location location) {
+    public SafeBlockLocation(@NonNull Location location) {
         this(new SafeWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 

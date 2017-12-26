@@ -56,7 +56,7 @@ public interface InventoryStorage extends ItemStorage {
         for (int i = 0; i < cachedInv.getSize(); i++) {
             if (cachedInv.getItem(i) != null) {
                 int amountBefore = takenIs != null ? takenIs.getAmount() : 0;
-                if (takenIs == null && allowItemExtraction(extractionSide, Optional.of(cachedInv.getItem(i)))) {
+                if (takenIs == null && allowItemExtraction(extractionSide, cachedInv.getItem(i))) {
                     takenIs = cachedInv.getItem(i).clone();
                     takenIs.setAmount(Math.min(maxExtractAmount, takenIs.getAmount()));
                 } else if (takenIs.isSimilar(cachedInv.getItem(i))) {
@@ -80,7 +80,7 @@ public interface InventoryStorage extends ItemStorage {
             cloneItem.setAmount(cloneItem.getAmount() - space);
             return cloneItem;
         }
-        if (!allowItemInsertion(insertSide, Optional.of(insertedItem))) return insertedItem;
+        if (!allowItemInsertion(insertSide, insertedItem)) return insertedItem;
         Inventory cachedInv = getStoredInventory();
         Collection<ItemStack> overflow = cachedInv.addItem(insertedItem).values();
         if (overflow.isEmpty()) {
@@ -92,7 +92,7 @@ public interface InventoryStorage extends ItemStorage {
 
     @Override
     default int howMuchSpaceForItemAsync(@NonNull LogisticBlockFace insertDirection, @NonNull ItemStack insertion) {
-        if (!allowItemInsertion(insertDirection, Optional.of(insertion))) return 0;
+        if (!allowItemInsertion(insertDirection, insertion)) return 0;
         Inventory cachedInv = getStoredInventory();
         int freeSpace = 0;
         for (int i = 0; i < cachedInv.getSize(); i++) {

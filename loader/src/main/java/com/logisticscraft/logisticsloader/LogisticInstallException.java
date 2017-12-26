@@ -1,8 +1,10 @@
 package com.logisticscraft.logisticsloader;
 
+import lombok.NonNull;
+
 public class LogisticInstallException extends Exception {
 
-    public LogisticInstallException(Throwable cause) {
+    public LogisticInstallException(@NonNull Throwable cause) {
         super("An exception occurred while downloading and enabling LogisticAPI!", cause);
     }
 

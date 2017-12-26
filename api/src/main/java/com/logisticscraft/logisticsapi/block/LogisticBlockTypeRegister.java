@@ -21,7 +21,7 @@ public class LogisticBlockTypeRegister {
     private Map<LogisticKey, Class<? extends LogisticBlock>> blockTypes = new HashMap<>();
 
     @Synchronized
-    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block) {
+    public void registerLogisticBlock(Plugin plugin, String name, Class<? extends LogisticBlock> block) {
         if (blockTypes.putIfAbsent(new LogisticKey(plugin, name), block) == null) {
             tickManager.registerLogisticBlockClass(block);
             Tracer.debug("LogisticBlock Registert: " + block.getName());

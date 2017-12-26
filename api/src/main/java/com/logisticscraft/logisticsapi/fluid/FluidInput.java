@@ -3,7 +3,6 @@ package com.logisticscraft.logisticsapi.fluid;
 import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import lombok.NonNull;
-import lombok.val;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,9 +13,9 @@ import java.util.Optional;
 public interface FluidInput extends FluidStorage {
 
     default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available, final boolean simulate) {
-        if (!allowFluidInput(blockFace, fluid)) return 0;
+        if (!allowFluidInput(blockFace, Optional.of(fluid))) return 0;
         if (getStoredFluidType().isPresent() && !getStoredFluidType().get().equals(fluid)) return 0;
-        val amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxFluidReceive(), available));
+        long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxFluidReceive(), available));
         if (!simulate) {
             setStoredFluid(fluid, getStoredFluidAmount() + amountReceived);
         }
@@ -27,7 +26,7 @@ public interface FluidInput extends FluidStorage {
         return ReflectionUtils.getClassAnnotation(this, FluidInputData.class).maxReceive();
     }
 
-    default boolean allowFluidInput(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid) {
+    default boolean allowFluidInput(@NonNull LogisticBlockFace blockFace, Optional<LogisticFluid> fluid) {
         return true;
     }
 

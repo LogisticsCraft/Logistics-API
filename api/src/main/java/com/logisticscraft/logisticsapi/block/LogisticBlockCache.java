@@ -4,7 +4,10 @@ import com.logisticscraft.logisticsapi.event.LogisticBlockLoadEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
 import com.logisticscraft.logisticsapi.utils.Tracer;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Synchronized;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -46,9 +49,9 @@ public class LogisticBlockCache {
         if (!typeRegister.isBlockRegistert(block)) {
             throw new IllegalArgumentException("The class " + block.getName() + " is not registert!");
         }
-        val location = block.getLocation().getLocation()
+        Location location = block.getLocation().getLocation()
                 .orElseThrow(() -> new IllegalArgumentException("The provided block must be loaded!"));
-        val chunk = location.getChunk();
+        Chunk chunk = location.getChunk();
         pluginManager.callEvent(new LogisticBlockLoadEvent(location, block));
         if (logisticBlocks.computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
                 .putIfAbsent(location, block) == null) {
@@ -68,14 +71,14 @@ public class LogisticBlockCache {
      */
     @Synchronized
     public void unloadLogisticBlock(@NonNull final Location location, boolean save) {
-        val chunk = location.getChunk();
+        Chunk chunk = location.getChunk();
         if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided location must be loaded!");
-        val loadedBlocksInChunk = logisticBlocks.get(chunk);
+        Map<Location, LogisticBlock> loadedBlocksInChunk = logisticBlocks.get(chunk);
         if (loadedBlocksInChunk == null) {
             Tracer.warn("Attempt to unregister an unloaded LogisticBlock: " + location.toString());
             return;
         }
-        val logisticBlock = loadedBlocksInChunk.get(location);
+        LogisticBlock logisticBlock = loadedBlocksInChunk.get(location);
         if (logisticBlock == null) {
             Tracer.warn("Attempt to unregister an unknown LogisticBlock: " + location.toString());
             return;
@@ -98,16 +101,16 @@ public class LogisticBlockCache {
 
     @Synchronized
     public boolean isLogisticBlockLoaded(@NonNull final LogisticBlock block) {
-        val location = block.getLocation().getLocation();
+        Optional<Location> location = block.getLocation().getLocation();
         if (!location.isPresent()) throw new IllegalArgumentException("The provided block must be loaded!");
         return block.getLocation().getLocation() != null && block.equals(getLoadedLogisticBlockAt(location.get()));
     }
 
     @Synchronized
     public LogisticBlock getLoadedLogisticBlockAt(@NonNull final Location location) {
-        val chunk = location.getChunk();
+        Chunk chunk = location.getChunk();
         if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided location must be loaded!");
-        val loadedBlockInChunk = logisticBlocks.get(chunk);
+        Map<Location, LogisticBlock> loadedBlockInChunk = logisticBlocks.get(chunk);
         if (loadedBlockInChunk == null) return null;
         return loadedBlockInChunk.get(location);
     }
@@ -121,10 +124,10 @@ public class LogisticBlockCache {
 
     @Synchronized
     public Set<Chunk> getChunksinWorld(@NonNull World world) {
-        val chunks = new HashSet<Chunk>();
-        for (Chunk chunk : logisticBlocks.keySet())
-            if (chunk.getWorld().equals(world))
-                chunks.add(chunk);
+        HashSet<Chunk> chunks = new HashSet<>();
+        for (Chunk c : logisticBlocks.keySet())
+            if (c.getWorld().equals(world))
+                chunks.add(c);
         return Collections.unmodifiableSet(chunks);
     }
 
@@ -140,11 +143,11 @@ public class LogisticBlockCache {
     @Synchronized
     public void unregisterWorld(@NonNull World world) {
         if (worldStorage.containsKey(world)) {
-            for (val chunk : getChunksinWorld(world)) {
-                for (val data : getLogisticBlocksInChunk(chunk))
+            for (Chunk chunk : getChunksinWorld(world)) {
+                for (Entry<Location, LogisticBlock> data : getLogisticBlocksInChunk(chunk))
                     unloadLogisticBlock(data.getKey(), true);
             }
-            val storage = worldStorage.get(world);
+            LogisticWorldStorage storage = worldStorage.get(world);
             try {
                 storage.getNbtFile().save();
             } catch (IOException e) {

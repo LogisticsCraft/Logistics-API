@@ -1,7 +1,6 @@
 package com.logisticscraft.logisticsloader;
 
 import lombok.experimental.UtilityClass;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -20,7 +19,7 @@ import java.util.Properties;
 public class LogisticsLoader {
 
     public static boolean install() throws LogisticInstallException {
-        val pluginManager = Bukkit.getPluginManager();
+        PluginManager pluginManager = Bukkit.getPluginManager();
         if (pluginManager.isPluginEnabled("LogisticsAPI")) {
             return false;
         }
@@ -33,8 +32,8 @@ public class LogisticsLoader {
             throw new LogisticInstallException(e);
         }
 
-        val pluginFolder = new File("plugins");
-        val outputFile = new File(pluginFolder, downloadUrl.getFile());
+        File pluginFolder = new File("plugins");
+        File outputFile = new File(pluginFolder, downloadUrl.getFile());
 
         if (outputFile.isFile()) {
             return false;
@@ -42,15 +41,16 @@ public class LogisticsLoader {
 
         // Download the file
         try {
-            val readableByteChannel = Channels.newChannel(downloadUrl.openStream());
-            val fileOutputStream = new FileOutputStream(outputFile);
+            ReadableByteChannel readableByteChannel;
+            readableByteChannel = Channels.newChannel(downloadUrl.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
             fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         } catch (IOException e) {
             throw new LogisticInstallException(e);
         }
 
         try {
-            val plugin = pluginManager.loadPlugin(outputFile);
+            Plugin plugin = pluginManager.loadPlugin(outputFile);
             pluginManager.enablePlugin(plugin);
         } catch (InvalidPluginException | InvalidDescriptionException e) {
             throw new LogisticInstallException(e);
@@ -60,13 +60,12 @@ public class LogisticsLoader {
     }
 
     private static URL getDownloadUrl() throws IOException {
-        val properties = new Properties();
+        Properties properties = new Properties();
         properties.load(LogisticsLoader.class.getResourceAsStream("/logistics_download.properties"));
-        val repo = properties.getProperty("repository");
-        val group = properties.getProperty("groupId").replaceAll("\\.", "/");
-        val artifact = properties.getProperty("artifactId").replaceAll("\\.", "/");
-        val version = properties.getProperty("version");
+        String repo = properties.getProperty("repository");
+        String group = properties.getProperty("groupId").replaceAll("\\.", "/");
+        String artifact = properties.getProperty("artifactId").replaceAll("\\.", "/");
+        String version = properties.getProperty("version");
         return new URL(repo + group + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar");
     }
-
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Value;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -20,13 +21,13 @@ public class LogisticKey implements Serializable {
         this.name = name;
     }
 
-    public LogisticKey(@NonNull final String key) {
+    public LogisticKey(@NotNull final String key) {
         if (key.split(":").length == 2) {
-            namespace = key.split(":")[0];
-            name = key.split(":")[1];
+            this.namespace = key.split(":")[0];
+            this.name = key.split(":")[1];
         } else {
-            namespace = "Unknown";
-            name = key.replace(":", "");
+            this.namespace = "Unknown";
+            this.name = key.replace(":", "");
         }
     }
 

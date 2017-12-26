@@ -1,42 +1,38 @@
 package com.logisticscraft.logisticsapi.utils;
 
-import lombok.NonNull;
 import lombok.Setter;
-import lombok.experimental.UtilityClass;
-import lombok.val;
 import org.bukkit.ChatColor;
 
 import java.util.logging.Logger;
 
-@UtilityClass
 public final class Tracer {
 
     @Setter
-    private boolean debug;
+    private static boolean debug;
     @Setter
-    private Logger logger;
+    private static Logger logger;
 
-    public void info(@NonNull String... messages) {
-        for (val message : messages) {
+    public static void info(String... messages) {
+        for (String message : messages) {
             logger.info(message);
         }
     }
 
-    public void warn(@NonNull String... messages) {
-        for (val message : messages) {
+    public static void warn(String... messages) {
+        for (String message : messages) {
             logger.warning(message);
         }
     }
 
-    public void err(@NonNull String... messages) {
-        for (val message : messages) {
+    public static void err(String... messages) {
+        for (String message : messages) {
             logger.severe(ChatColor.DARK_RED + message);
         }
     }
 
-    public void debug(@NonNull String... messages) {
+    public static void debug(String... messages) {
         if (debug) {
-            for (val message : messages) {
+            for (String message : messages) {
                 logger.info(ChatColor.YELLOW + "Debug: " + ChatColor.ITALIC + message);
             }
         }

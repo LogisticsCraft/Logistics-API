@@ -24,7 +24,7 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
 
     @LogisticTickManager.Ticking(ticks = 10)
     public void update() {
-        // Running every 10 ticks
+        //Running every 10 ticks
     }
 
     @Override

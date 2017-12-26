@@ -2,12 +2,11 @@ package com.logisticscraft.logisticsapi.persistence.adapters;
 
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.NonNull;
 
 public interface DataAdapter<K> {
 
-    void store(@NonNull final PersistenceStorage persistenceStorage, final K value, @NonNull final NBTCompound nbtCompound);
+    void store(final PersistenceStorage persistenceStorage, final K value, final NBTCompound nbtCompound);
 
-    K parse(@NonNull final PersistenceStorage persistenceStorage, @NonNull final NBTCompound nbtCompound);
+    K parse(final PersistenceStorage persistenceStorage, final NBTCompound nbtCompound);
 
 }

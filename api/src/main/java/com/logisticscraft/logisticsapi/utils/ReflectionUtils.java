@@ -3,7 +3,6 @@ package com.logisticscraft.logisticsapi.utils;
 import com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.val;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,8 +12,8 @@ import java.util.Collection;
 @UtilityClass
 public class ReflectionUtils {
 
-    public <T extends Annotation> T getClassAnnotation(@NonNull Object object, @NonNull Class<T> annotation) {
-        val clazz = object.getClass();
+    public <T extends Annotation> T getClassAnnotation(Object object, Class<T> annotation) {
+        Class<?> clazz = object.getClass();
         T result = clazz.getAnnotation(annotation);
         if (result == null) {
             throw new IllegalStateException("The class '" + clazz.getName() + "' does not have the @" + annotation.getSimpleName() + " Annotation!");
@@ -22,8 +21,8 @@ public class ReflectionUtils {
         return result;
     }
 
-    public Collection<Field> getFieldsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
-        val fields = Lists.newArrayList(startClass.getDeclaredFields());
+    public static Collection<Field> getFieldsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
+        Collection<Field> fields = Lists.newArrayList(startClass.getDeclaredFields());
         Class<?> parentClass = startClass.getSuperclass();
 
         if (parentClass != null && (exclusiveParent == null || !(parentClass.equals(exclusiveParent)))) {
@@ -33,8 +32,8 @@ public class ReflectionUtils {
         return fields;
     }
 
-    public Collection<Method> getMethodsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
-        val methods = Lists.newArrayList(startClass.getDeclaredMethods());
+    public static Collection<Method> getMethodsRecursively(@NonNull Class<?> startClass, @NonNull Class<?> exclusiveParent) {
+        Collection<Method> methods = Lists.newArrayList(startClass.getDeclaredMethods());
         Class<?> parentClass = startClass.getSuperclass();
 
         if (parentClass != null && (exclusiveParent == null || !(parentClass.equals(exclusiveParent)))) {

@@ -4,7 +4,6 @@ import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,9 +29,8 @@ public class ChunkEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        for (val data : blockCache.getLogisticBlocksInChunk(event.getChunk())) {
+        for (Entry<Location, LogisticBlock> data : blockCache.getLogisticBlocksInChunk(event.getChunk()))
             blockCache.unloadLogisticBlock(data.getKey(), true);
-        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

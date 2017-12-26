@@ -3,8 +3,6 @@ package com.logisticscraft.logisticsapi.data;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.val;
 import org.bukkit.block.BlockFace;
 
 @AllArgsConstructor
@@ -20,12 +18,9 @@ public enum LogisticBlockFace {
     @Getter
     private BlockFace blockFace;
 
-    public static LogisticBlockFace getBlockFace(@NonNull BlockFace blockFace) {
-        for (val currentFace : values()) {
-            if (currentFace.getBlockFace() == blockFace) {
-                return currentFace;
-            }
-        }
+    public static LogisticBlockFace getBlockFace(BlockFace blockFace) {
+        for (LogisticBlockFace lface : values())
+            if (lface.getBlockFace() == blockFace) return lface;
         Tracer.warn("Trying to get unknown LogisticBlockFace: " + blockFace);
         return LogisticBlockFace.SELF;
     }

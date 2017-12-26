@@ -1,8 +1,6 @@
 package com.logisticscraft.logisticsapi.utils;
 
-import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.val;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +20,7 @@ public class FileUtils {
      * @param resourcePath    Local path to the resource file (path to file within JAR)
      * @return False if the file does not exist and could not be copied, true otherwise
      */
-    public boolean copyFileFromResource(@NonNull Class<?> clazz, @NonNull File destinationFile, @NonNull String resourcePath) {
+    public static boolean copyFileFromResource(Class<?> clazz, File destinationFile, String resourcePath) {
         if (destinationFile.exists()) {
             return true;
         } else if (!createDirectory(destinationFile.getParentFile())) {
@@ -30,7 +28,7 @@ public class FileUtils {
             return false;
         }
 
-        try (val is = getResourceFromJar(clazz, resourcePath)) {
+        try (InputStream is = getResourceFromJar(clazz, resourcePath)) {
             if (is == null) {
                 Tracer.warn(format("Cannot copy resource '%s' to file '%s': cannot load resource",
                         resourcePath, destinationFile.getPath()));
@@ -51,7 +49,7 @@ public class FileUtils {
      * @param dir the directory to create
      * @return true upon success, false otherwise
      */
-    public boolean createDirectory(@NonNull File dir) {
+    public static boolean createDirectory(File dir) {
         if (!dir.exists() && !dir.mkdirs()) {
             Tracer.warn("Could not create directory '" + dir + "'");
             return false;
@@ -66,9 +64,9 @@ public class FileUtils {
      * @param path  the local path (starting from resources project, e.g. "config.yml" for 'resources/config.yml')
      * @return the stream if the file exists, or false otherwise
      */
-    public InputStream getResourceFromJar(@NonNull Class<?> clazz, @NonNull String path) {
+    public static InputStream getResourceFromJar(Class<?> clazz, String path) {
         // ClassLoader#getResourceAsStream does not deal with the '\' path separator: replace to '/'
-        final val normalizedPath = path.replace("\\", "/");
+        final String normalizedPath = path.replace("\\", "/");
         return clazz.getClassLoader().getResourceAsStream(normalizedPath);
     }
 
@@ -77,15 +75,15 @@ public class FileUtils {
      *
      * @param directory The directory to remove
      */
-    public void purgeDirectory(@NonNull File directory) {
+    public static void purgeDirectory(File directory) {
         if (!directory.isDirectory()) {
             return;
         }
-        val files = directory.listFiles();
+        File[] files = directory.listFiles();
         if (files == null) {
             return;
         }
-        for (val target : files) {
+        for (File target : files) {
             if (target.isDirectory()) {
                 purgeDirectory(target);
             }
@@ -99,9 +97,9 @@ public class FileUtils {
      *
      * @param file the file to delete
      */
-    public void delete(@NonNull File file) {
+    public static void delete(File file) {
         if (file != null) {
-            val result = file.delete();
+            boolean result = file.delete();
             if (!result) {
                 Tracer.warn("Could not delete file '" + file + "'");
             }
@@ -113,9 +111,9 @@ public class FileUtils {
      *
      * @param file the file to create
      */
-    public void create(@NonNull File file) {
+    public static void create(File file) {
         try {
-            val result = file.createNewFile();
+            boolean result = file.createNewFile();
             if (!result) {
                 throw new IllegalStateException("Could not create file '" + file + "'");
             }
@@ -130,7 +128,7 @@ public class FileUtils {
      * @param elements The elements to create a path with
      * @return The created path
      */
-    public String makePath(@NonNull String... elements) {
+    public static String makePath(String... elements) {
         return String.join(File.separator, elements);
     }
 

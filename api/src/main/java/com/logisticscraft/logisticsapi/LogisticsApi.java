@@ -16,15 +16,13 @@ import com.logisticscraft.logisticsapi.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.val;
 import org.bukkit.Server;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
-
-import javax.inject.Inject;
 
 @NoArgsConstructor
 public final class LogisticsApi extends JavaPlugin {
@@ -37,6 +35,8 @@ public final class LogisticsApi extends JavaPlugin {
     private SettingsManager settings;
 
     // API
+    @Getter
+    private BlockManager blockManager;
 
     @Override
     public void onEnable() {
@@ -47,9 +47,9 @@ public final class LogisticsApi extends JavaPlugin {
         Tracer.setDebug(false); // Disabled by default TODO: load from config
 
         // Print the greeting message and logo
-        val description = getDescription();
+        PluginDescriptionFile description = getDescription();
         Tracer.info(Constants.ASCII_LOGO);
-        val authors = description.getAuthors().toString();
+        String authors = description.getAuthors().toString();
         Tracer.info("by: " + authors.substring(1, authors.length() - 1));
         Tracer.info("Server version: " + getServer().getVersion(),
                 "Bukkit version: " + getServer().getBukkitVersion());
@@ -79,7 +79,7 @@ public final class LogisticsApi extends JavaPlugin {
         pluginManager.registerEvents(injector.getSingleton(ChunkEventListener.class), instance);
 
         // Create API
-        blockManager = injector.newInstance(BlockManager.class);
+        blockManager = injector.getSingleton(BlockManager.class);
         
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }
@@ -91,14 +91,8 @@ public final class LogisticsApi extends JavaPlugin {
         // TODO: stuff
         instance = null;
 
-        val description = getDescription();
+        PluginDescriptionFile description = getDescription();
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been disabled.");
     }
-    
-    //API
-    
-    @Getter
-    @Inject
-    private BlockManager blockManager;
 
 }

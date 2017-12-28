@@ -3,6 +3,8 @@ package com.logisticscraft.logisticsapi;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
+
+import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
@@ -21,6 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
+
+import javax.inject.Inject;
 
 @NoArgsConstructor
 public final class LogisticsApi extends JavaPlugin {
@@ -74,6 +78,9 @@ public final class LogisticsApi extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(injector.getSingleton(ChunkEventListener.class), instance);
 
+        // Create API
+        blockManager = injector.newInstance(BlockManager.class);
+        
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }
 
@@ -87,5 +94,11 @@ public final class LogisticsApi extends JavaPlugin {
         val description = getDescription();
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been disabled.");
     }
+    
+    //API
+    
+    @Getter
+    @Inject
+    private BlockManager blockManager;
 
 }

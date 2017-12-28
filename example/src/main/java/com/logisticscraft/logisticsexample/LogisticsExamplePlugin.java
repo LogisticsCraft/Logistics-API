@@ -1,5 +1,7 @@
 package com.logisticscraft.logisticsexample;
 
+import com.logisticscraft.logisticsapi.LogisticsApi;
+import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.block.BlockFactory;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
@@ -26,18 +28,19 @@ public final class LogisticsExamplePlugin extends JavaPlugin {
             getLogger().severe("Unable to download the required library, disabling...");
             setEnabled(false);
         }
-        BlockFactory factory = new BlockFactory() {
-			
-			@Override
-			public LogisticBlock onPlace(Player player, ItemStack item, Location location) {
-				return new TestBlock();
-			}
-			
-			@Override
-			public LogisticBlock onLoad(NBTCompound nbtData) {
-				return new TestBlock();
-			}
-		};
+        BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
+        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new BlockFactory() {
+            
+            @Override
+            public LogisticBlock onPlace(Player player, ItemStack item, Location location) {
+                return new TestBlock();
+            }
+            
+            @Override
+            public LogisticBlock onLoad(NBTCompound nbtData) {
+                return new TestBlock();
+            }
+        });
     }
 
 }

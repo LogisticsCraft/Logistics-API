@@ -16,6 +16,14 @@ public class BlockManager {
     @Inject
     private LogisticBlockTypeRegister typeRegister;
 
+    /**
+     * Registers a new block type into the LogisticAPI block registry.
+     *
+     * @param plugin  the plugin that is trying to register the block
+     * @param name    the name of the block
+     * @param block   the block class
+     * @param factory the block factory
+     */
     public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull BlockFactory factory) {
         typeRegister.registerLogisticBlock(plugin, name, block, factory);
     }

@@ -20,19 +20,37 @@ public abstract class LogisticBlock implements LogisticDataHolder {
     @Persistent
     private SafeBlockLocation location;
 
-
     private HashMap<LogisticKey, Object> blockData = new HashMap<>();
 
+    /**
+     * Set the block property value with the given key.
+     *
+     * @param key   the property key
+     * @param value the value
+     * @param <T>   the value type
+     */
     @Override
     public <T> void setLogisticData(@NonNull LogisticKey key, T value) {
         blockData.put(key, value);
     }
 
+    /**
+     * Removes the block property with the given key.
+     *
+     * @param key the property key
+     */
     @Override
     public void removeLogisticData(@NonNull LogisticKey key) {
         blockData.remove(key);
     }
 
+    /**
+     * Get the block property value with the given key.
+     *
+     * @param key  the property key
+     * @param type the expected value type
+     * @return the saved value
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> Optional<T> getLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {

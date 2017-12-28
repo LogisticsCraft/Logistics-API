@@ -35,8 +35,7 @@ public class LogisticBlockCache {
 
     private Map<World, LogisticWorldStorage> worldStorage = new ConcurrentHashMap<>();
 
-    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks =
-            new ConcurrentHashMap<>();
+    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks = new ConcurrentHashMap<>();
 
     /**
      * Loads a LogisticBlock, this method should be called only when a new block is placed or when
@@ -67,6 +66,7 @@ public class LogisticBlockCache {
      * a chunk is unloaded.
      *
      * @param location the block location
+     * @param save     if the block should be saved
      * @throws IllegalArgumentException if the given location isn't loaded
      */
     @Synchronized
@@ -94,11 +94,25 @@ public class LogisticBlockCache {
         logisticBlocks.get(location.getChunk()).remove(location);
     }
 
+    /**
+     * Checks if a LogisticBlock is loaded at the given LOADED location.
+     *
+     * @param location the location to check
+     * @return true if a LogisticBlock is loaded at the given location, false otherwise
+     * @throws IllegalArgumentException if the given location isn't loaded
+     */
     @Synchronized
     public boolean isLoadedLogisticBlockAt(@NonNull final Location location) {
         return getLoadedLogisticBlockAt(location) != null;
     }
 
+    /**
+     * Checks if the given LogisticBlock is loaded.
+     *
+     * @param block the location to check
+     * @return true if a LogisticBlock is loaded at the given location, false otherwise
+     * @throws IllegalArgumentException if the given block location isn't loaded
+     */
     @Synchronized
     public boolean isLogisticBlockLoaded(@NonNull final LogisticBlock block) {
         Optional<Location> location = block.getLocation().getLocation();
@@ -106,6 +120,13 @@ public class LogisticBlockCache {
         return block.getLocation().getLocation() != null && block.equals(getLoadedLogisticBlockAt(location.get()));
     }
 
+    /**
+     * Get the LOADED LogisticBlock at the given location
+     *
+     * @param location the location
+     * @return the LogisticBlock
+     * @throws IllegalArgumentException if the given location isn't loaded
+     */
     @Synchronized
     public LogisticBlock getLoadedLogisticBlockAt(@NonNull final Location location) {
         Chunk chunk = location.getChunk();
@@ -115,6 +136,13 @@ public class LogisticBlockCache {
         return loadedBlockInChunk.get(location);
     }
 
+    /**
+     * Get the LogisticBlocks in the given LOADED chunk
+     *
+     * @param chunk the chunk
+     * @return the LogisticBlock set
+     * @throws IllegalArgumentException if the given chunk isn't loaded
+     */
     @Synchronized
     public Set<Entry<Location, LogisticBlock>> getLogisticBlocksInChunk(@NonNull final Chunk chunk) {
         if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided chunk must be loaded!");
@@ -123,11 +151,11 @@ public class LogisticBlockCache {
     }
 
     @Synchronized
-    public Set<Chunk> getChunksinWorld(@NonNull World world) {
+    public Set<Chunk> getChunksWithLogisticBlocksInWorld(@NonNull World world) {
         HashSet<Chunk> chunks = new HashSet<>();
-        for (Chunk c : logisticBlocks.keySet())
-            if (c.getWorld().equals(world))
-                chunks.add(c);
+        for (Chunk chunk : logisticBlocks.keySet()) {
+            if (chunk.getWorld().equals(world)) chunks.add(chunk);
+        }
         return Collections.unmodifiableSet(chunks);
     }
 
@@ -143,7 +171,7 @@ public class LogisticBlockCache {
     @Synchronized
     public void unregisterWorld(@NonNull World world) {
         if (worldStorage.containsKey(world)) {
-            for (Chunk chunk : getChunksinWorld(world)) {
+            for (Chunk chunk : getChunksWithLogisticBlocksInWorld(world)) {
                 for (Entry<Location, LogisticBlock> data : getLogisticBlocksInChunk(chunk))
                     unloadLogisticBlock(data.getKey(), true);
             }

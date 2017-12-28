@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LogisticBlockTypeRegister {
@@ -19,12 +20,13 @@ public class LogisticBlockTypeRegister {
     private LogisticTickManager tickManager;
 
     private Map<LogisticKey, Class<? extends LogisticBlock>> blockTypes = new HashMap<>();
+    private Map<LogisticKey, BlockFactory> factories = new HashMap<>();
 
     @Synchronized
     public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull BlockFactory factory) {
-        //TODO: Store Factory
     	if (blockTypes.putIfAbsent(new LogisticKey(plugin, name), block) == null) {
-            tickManager.registerLogisticBlockClass(block);
+            factories.put(new LogisticKey(plugin, name), factory);
+    	    tickManager.registerLogisticBlockClass(block);
             Tracer.debug("LogisticBlock Registert: " + block.getName());
         } else {
             Tracer.warn("Trying to reregister known key: " + new LogisticKey(plugin, name).getName());
@@ -34,6 +36,11 @@ public class LogisticBlockTypeRegister {
     @Synchronized
     public boolean isBlockRegistert(@NonNull LogisticBlock block) {
         return blockTypes.containsValue(block.getClass());
+    }
+    
+    @Synchronized
+    public Optional<BlockFactory> getFactory(@NonNull LogisticKey logisticKey){
+        return Optional.ofNullable(factories.get(logisticKey));
     }
 
 }

@@ -6,13 +6,16 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public interface BlockFactory {
+/**
+ * The LogisticBlockFactory. TODO: document
+ */
+public interface LogisticBlockFactory {
 
     /**
      * Called when a new block is placed.
      *
-     * @param player the player who placed the block
-     * @param item the item used by the player
+     * @param player   the player who placed the block
+     * @param item     the item used by the player
      * @param location the block location
      * @return the logistic block instance
      */

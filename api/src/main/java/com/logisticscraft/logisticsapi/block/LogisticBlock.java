@@ -10,6 +10,9 @@ import lombok.NonNull;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * Represents a custom block handled by the API.
+ */
 public abstract class LogisticBlock implements LogisticDataHolder {
 
     @Getter

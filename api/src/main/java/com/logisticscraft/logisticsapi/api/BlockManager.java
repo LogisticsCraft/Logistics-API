@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.api;
 
-import com.logisticscraft.logisticsapi.block.BlockFactory;
+import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import lombok.AccessLevel;
@@ -10,6 +10,9 @@ import org.bukkit.plugin.Plugin;
 
 import javax.inject.Inject;
 
+/**
+ * Manages the registered LogisticBlock types.
+ */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class BlockManager {
 
@@ -24,7 +27,7 @@ public class BlockManager {
      * @param block   the block class
      * @param factory the block factory
      */
-    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull BlockFactory factory) {
+    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull LogisticBlockFactory factory) {
         typeRegister.registerLogisticBlock(plugin, name, block, factory);
     }
 

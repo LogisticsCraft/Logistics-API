@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsexample;
 
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.api.BlockManager;
-import com.logisticscraft.logisticsapi.block.BlockFactory;
+import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
 import com.logisticscraft.logisticsloader.LogisticInstallException;
@@ -29,7 +29,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin {
             setEnabled(false);
         }
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
-        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new BlockFactory() {
+        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new LogisticBlockFactory() {
             
             @Override
             public LogisticBlock onPlace(Player player, ItemStack item, Location location) {

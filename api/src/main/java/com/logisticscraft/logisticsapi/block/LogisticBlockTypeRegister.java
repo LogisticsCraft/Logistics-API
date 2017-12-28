@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Manages internally the registered LogisticBlock types.
+ */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LogisticBlockTypeRegister {
 
@@ -20,10 +23,10 @@ public class LogisticBlockTypeRegister {
     private LogisticTickManager tickManager;
 
     private Map<LogisticKey, Class<? extends LogisticBlock>> blockTypes = new HashMap<>();
-    private Map<LogisticKey, BlockFactory> factories = new HashMap<>();
+    private Map<LogisticKey, LogisticBlockFactory> factories = new HashMap<>();
 
     @Synchronized
-    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull BlockFactory factory) {
+    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull LogisticBlockFactory factory) {
         if (blockTypes.putIfAbsent(new LogisticKey(plugin, name), block) == null) {
             factories.put(new LogisticKey(plugin, name), factory);
             tickManager.registerLogisticBlockClass(block);
@@ -39,7 +42,7 @@ public class LogisticBlockTypeRegister {
     }
 
     @Synchronized
-    public Optional<BlockFactory> getFactory(@NonNull LogisticKey logisticKey) {
+    public Optional<LogisticBlockFactory> getFactory(@NonNull LogisticKey logisticKey) {
         return Optional.ofNullable(factories.get(logisticKey));
     }
 

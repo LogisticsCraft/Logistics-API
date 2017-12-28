@@ -19,6 +19,11 @@ public enum LogisticBlockFace {
     @Getter
     private BlockFace blockFace;
 
+    /**
+     * Translates Bukkit's BlockFaces to LogisticBlockFaces
+     * @param blockFace the BlockFace
+     * @return the LogisticBlockFace
+     */
     public static LogisticBlockFace getBlockFace(@NonNull BlockFace blockFace) {
         for (LogisticBlockFace lface : values())
             if (lface.getBlockFace() == blockFace) return lface;

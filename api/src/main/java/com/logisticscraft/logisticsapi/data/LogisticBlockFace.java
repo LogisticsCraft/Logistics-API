@@ -18,7 +18,7 @@ public enum LogisticBlockFace {
 
     @Getter
     private BlockFace blockFace;
- 
+
     public static LogisticBlockFace getBlockFace(@NonNull BlockFace blockFace) {
         for (LogisticBlockFace lface : values())
             if (lface.getBlockFace() == blockFace) return lface;

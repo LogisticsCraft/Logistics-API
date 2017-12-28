@@ -5,8 +5,6 @@ import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import lombok.NonNull;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
-
 public interface ItemStorage extends LogisticDataHolder {
 
     ItemStack extractItem(@NonNull LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate);

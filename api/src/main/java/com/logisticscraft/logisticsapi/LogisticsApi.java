@@ -3,7 +3,6 @@ package com.logisticscraft.logisticsapi;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
-
 import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
@@ -80,7 +79,7 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Create API
         blockManager = injector.getSingleton(BlockManager.class);
-        
+
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }
 

@@ -24,9 +24,9 @@ public class LogisticBlockTypeRegister {
 
     @Synchronized
     public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull BlockFactory factory) {
-    	if (blockTypes.putIfAbsent(new LogisticKey(plugin, name), block) == null) {
+        if (blockTypes.putIfAbsent(new LogisticKey(plugin, name), block) == null) {
             factories.put(new LogisticKey(plugin, name), factory);
-    	    tickManager.registerLogisticBlockClass(block);
+            tickManager.registerLogisticBlockClass(block);
             Tracer.debug("LogisticBlock Registert: " + block.getName());
         } else {
             Tracer.warn("Trying to reregister known key: " + new LogisticKey(plugin, name).getName());
@@ -37,9 +37,9 @@ public class LogisticBlockTypeRegister {
     public boolean isBlockRegistert(@NonNull LogisticBlock block) {
         return blockTypes.containsValue(block.getClass());
     }
-    
+
     @Synchronized
-    public Optional<BlockFactory> getFactory(@NonNull LogisticKey logisticKey){
+    public Optional<BlockFactory> getFactory(@NonNull LogisticKey logisticKey) {
         return Optional.ofNullable(factories.get(logisticKey));
     }
 

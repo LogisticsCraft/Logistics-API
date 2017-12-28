@@ -87,6 +87,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludePackageNames>*.excluded.*</excludePackageNames>
+                </configuration>
             </plugin>
         </plugins>
     </build>

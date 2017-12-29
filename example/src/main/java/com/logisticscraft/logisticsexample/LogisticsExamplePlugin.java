@@ -11,11 +11,15 @@ import com.logisticscraft.logisticsloader.LogisticsLoader;
 import de.tr7zw.itemnbtapi.NBTCompound;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class LogisticsExamplePlugin extends JavaPlugin {
+public final class LogisticsExamplePlugin extends JavaPlugin implements Listener{
 
     @Override
     public void onEnable() {
@@ -41,6 +45,13 @@ public final class LogisticsExamplePlugin extends JavaPlugin {
                 return new TestBlock();
             }
         });
+    }
+    
+    @EventHandler
+    public void onPlace(BlockPlaceEvent event){
+        if(event.getItemInHand().getType() == Material.WOOL){
+            LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
+        }
     }
 
 }

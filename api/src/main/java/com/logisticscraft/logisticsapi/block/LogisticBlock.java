@@ -1,14 +1,15 @@
 package com.logisticscraft.logisticsapi.block;
 
+import java.util.HashMap;
+import java.util.Optional;
+
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
+
 import lombok.Getter;
 import lombok.NonNull;
-
-import java.util.HashMap;
-import java.util.Optional;
 
 /**
  * Represents a custom block handled by the API.

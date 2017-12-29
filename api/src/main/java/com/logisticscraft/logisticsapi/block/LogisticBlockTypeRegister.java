@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
@@ -39,6 +40,15 @@ public class LogisticBlockTypeRegister {
     @Synchronized
     public boolean isBlockRegistert(@NonNull LogisticBlock block) {
         return blockTypes.containsValue(block.getClass());
+    }
+    
+    @Synchronized
+    public Optional<LogisticKey> getKey(@NonNull LogisticBlock block){
+        for(Entry<LogisticKey, Class<? extends LogisticBlock>> entry : blockTypes.entrySet()){
+            if(entry.getValue() == block.getClass())
+                return Optional.of(entry.getKey());
+        }
+        return Optional.empty();
     }
 
     @Synchronized

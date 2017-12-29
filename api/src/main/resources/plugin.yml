@@ -1,5 +1,5 @@
 name: LogisticsApi
-main: com.logisticscraft.logisticsapi.LogisticsApiPlugin
+main: com.logisticscraft.logisticsapi.LogisticsApi
 version: ${project.version}
 authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]
 softdepend: [PlaceholderAPI]

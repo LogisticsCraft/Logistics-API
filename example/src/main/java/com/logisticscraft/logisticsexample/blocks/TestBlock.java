@@ -1,12 +1,14 @@
 package com.logisticscraft.logisticsexample.blocks;
 
+import java.util.Random;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
-import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.energy.EnergyInput;
 import com.logisticscraft.logisticsapi.energy.EnergyOutput;
 import com.logisticscraft.logisticsapi.energy.EnergyStorage;
@@ -21,6 +23,9 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
     @LogisticTickManager.Ticking(ticks = 10)
     public void update() {
         // Running every 10 ticks
+        Block block = getLocation().getBlock().get();
+        block.setType(Material.WOOL);
+        block.setData((byte) new Random().nextInt(15));
     }
 
     @Override

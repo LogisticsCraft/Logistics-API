@@ -1,5 +1,7 @@
 package com.logisticscraft.logisticsapi.block;
 
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.event.LogisticBlockLoadEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.PluginManager;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -190,6 +193,29 @@ public class LogisticBlockCache {
     @Synchronized
     public Map<Chunk, Map<Location, LogisticBlock>> getAllLogisticBlocks() {
         return logisticBlocks;
+    }
+
+    public Optional<LogisticBlock> injectData(@NonNull LogisticBlock logisticBlock, @NonNull Location location){
+        if(!typeRegister.isBlockRegistert(logisticBlock)){
+            Tracer.warn("Attempt to inject Data into unknown LogisticBlock Class: " + logisticBlock.getClass().getName());
+            return Optional.empty();
+        }
+        Optional<LogisticKey> key = typeRegister.getKey(logisticBlock);
+        if(!key.isPresent()){
+            Tracer.warn("Unable to get Key for class: " + logisticBlock.getClass().getName());
+            return Optional.empty();
+        }
+        try{
+            Field idField = LogisticBlock.class.getDeclaredField("typeId");
+            idField.setAccessible(true);
+            idField.set(logisticBlock, key.get());
+            Field locField = LogisticBlock.class.getDeclaredField("location");
+            locField.setAccessible(true);
+            locField.set(logisticBlock, new SafeBlockLocation(location));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return Optional.of(logisticBlock);
     }
 
     // TODO: Missing: World getter, Point where loading/events/listener are located

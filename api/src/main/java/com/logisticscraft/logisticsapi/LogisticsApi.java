@@ -7,7 +7,6 @@ import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
-import com.logisticscraft.logisticsapi.block.LogisticWorldStorage;
 import com.logisticscraft.logisticsapi.listeners.ChunkEventListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
@@ -70,7 +69,6 @@ public final class LogisticsApi extends JavaPlugin {
         injector.getSingleton(PersistenceStorage.class);
         injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
-        injector.getSingleton(LogisticWorldStorage.class);
         injector.getSingleton(LogisticBlockCache.class);
 
         // Register events

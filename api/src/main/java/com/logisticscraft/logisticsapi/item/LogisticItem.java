@@ -28,12 +28,12 @@ public class LogisticItem {
         return tmp;
     }
 
-    public void setItemDictionary(@NonNull final String type) {
-        nbtItem.setString("itemdictionary", type);
-    }
-
     public String getItemDictionary() {
         return nbtItem.getString("itemdictionary");
+    }
+
+    public void setItemDictionary(@NonNull final String type) {
+        nbtItem.setString("itemdictionary", type);
     }
 
     public boolean hasItemDictionary() {

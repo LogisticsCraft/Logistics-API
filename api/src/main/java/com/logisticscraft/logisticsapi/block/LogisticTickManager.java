@@ -27,7 +27,7 @@ public class LogisticTickManager {
 
     @Inject
     LogisticTickManager(LogisticsApi plugin) {
-        new BukkitRunnable(){
+        new BukkitRunnable() {
 
             @Override
             public void run() {
@@ -53,12 +53,6 @@ public class LogisticTickManager {
                 }
             }
         }
-    }
-
-    @Target(ElementType.METHOD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Ticking {
-        int ticks();
     }
 
     @Synchronized
@@ -88,6 +82,12 @@ public class LogisticTickManager {
                 classCache.put(clazz, tickingMethods);
             }
         }
+    }
+
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Ticking {
+        int ticks();
     }
 
 }

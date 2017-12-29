@@ -1,18 +1,16 @@
 package com.logisticscraft.logisticsapi.block;
 
-import java.util.HashMap;
-import java.util.Optional;
-
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
-
 import lombok.Getter;
 import lombok.NonNull;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Represents a custom block handled by the API.
@@ -63,17 +61,17 @@ public abstract class LogisticBlock implements LogisticDataHolder {
     public <T> Optional<T> getLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
         return Optional.ofNullable((T) blockData.get(key));
     }
-    
-    public void onPlayerBreak(BlockBreakEvent event){
+
+    public void onPlayerBreak(BlockBreakEvent event) {
         // Overwrite to cancel blockbreaking. Uncanceled Blockbreak will remove the LogisticsBlock
     }
-    
-    public void onLeftClick(PlayerInteractEvent event){
-        
+
+    public void onLeftClick(PlayerInteractEvent event) {
+
     }
-    
-    public void onRightClick(PlayerInteractEvent event){
-        
+
+    public void onRightClick(PlayerInteractEvent event) {
+
     }
 
 }

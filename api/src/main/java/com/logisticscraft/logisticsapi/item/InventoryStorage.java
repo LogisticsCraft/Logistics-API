@@ -21,14 +21,6 @@ public interface InventoryStorage extends ItemStorage {
 
     LogisticKey STORED_INVENTORY_META_KEY = new LogisticKey("LogisticsAPI", "storedInventory");
 
-    default int getRowAmount() {
-        return ReflectionUtils.getClassAnnotation(this, InventoryData.class).rows();
-    }
-
-    default String getInventoryName() {
-        return ReflectionUtils.getClassAnnotation(this, InventoryData.class).name();
-    }
-
     static ItemStack changeAmount(ItemStack item, int amountDelta) {
         ItemStack copy = item.clone();
         if (item.getAmount() + amountDelta > 0) {
@@ -37,6 +29,14 @@ public interface InventoryStorage extends ItemStorage {
             copy = null;
         }
         return copy;
+    }
+
+    default int getRowAmount() {
+        return ReflectionUtils.getClassAnnotation(this, InventoryData.class).rows();
+    }
+
+    default String getInventoryName() {
+        return ReflectionUtils.getClassAnnotation(this, InventoryData.class).name();
     }
 
     InventoryHolder getInventoryHolder();

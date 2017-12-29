@@ -21,6 +21,7 @@ public enum LogisticBlockFace {
 
     /**
      * Translates Bukkit's BlockFaces to LogisticBlockFaces
+     *
      * @param blockFace the BlockFace
      * @return the LogisticBlockFace
      */

@@ -6,12 +6,11 @@ import com.logisticscraft.logisticsapi.event.LogisticBlockLoadEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
 import com.logisticscraft.logisticsapi.utils.Tracer;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Synchronized;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 
@@ -26,19 +25,30 @@ import java.util.concurrent.ConcurrentHashMap;
  * Manages all the loaded LogisticBlock s in the server.
  * This is an internal class, not to be confused with the public API.
  */
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LogisticBlockCache {
 
-    @Inject
     private PluginManager pluginManager;
-    @Inject
     private LogisticBlockTypeRegister typeRegister;
-    @Inject
     private LogisticTickManager tickManager;
 
-    private Map<World, LogisticWorldStorage> worldStorage = new ConcurrentHashMap<>();
+    private Map<World, LogisticWorldStorage> worldStorage;
+    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks;
 
-    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks = new ConcurrentHashMap<>();
+    @Inject
+    LogisticBlockCache(PluginManager pluginManager, LogisticBlockTypeRegister typeRegister,
+                       LogisticTickManager tickManager, Server server) {
+        this.pluginManager = pluginManager;
+        this.typeRegister = typeRegister;
+        this.tickManager = tickManager;
+
+        worldStorage = new ConcurrentHashMap<>();
+        logisticBlocks = new ConcurrentHashMap<>();
+
+        // Load already loaded worlds
+        for (World world : server.getWorlds()) {
+            registerWorld(world);
+        }
+    }
 
     /**
      * Loads a LogisticBlock, this method should be called only when a new block is placed or when
@@ -195,24 +205,24 @@ public class LogisticBlockCache {
         return logisticBlocks;
     }
 
-    public Optional<LogisticBlock> injectData(@NonNull LogisticBlock logisticBlock, @NonNull Location location){
-        if(!typeRegister.isBlockRegistert(logisticBlock)){
+    public Optional<LogisticBlock> injectData(@NonNull LogisticBlock logisticBlock, @NonNull Location location) {
+        if (!typeRegister.isBlockRegistert(logisticBlock)) {
             Tracer.warn("Attempt to inject Data into unknown LogisticBlock Class: " + logisticBlock.getClass().getName());
             return Optional.empty();
         }
         Optional<LogisticKey> key = typeRegister.getKey(logisticBlock);
-        if(!key.isPresent()){
+        if (!key.isPresent()) {
             Tracer.warn("Unable to get Key for class: " + logisticBlock.getClass().getName());
             return Optional.empty();
         }
-        try{
+        try {
             Field idField = LogisticBlock.class.getDeclaredField("typeId");
             idField.setAccessible(true);
             idField.set(logisticBlock, key.get());
             Field locField = LogisticBlock.class.getDeclaredField("location");
             locField.setAccessible(true);
             locField.set(logisticBlock, new SafeBlockLocation(location));
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return Optional.of(logisticBlock);

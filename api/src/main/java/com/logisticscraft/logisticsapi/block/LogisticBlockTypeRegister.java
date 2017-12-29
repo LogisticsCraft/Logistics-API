@@ -41,11 +41,11 @@ public class LogisticBlockTypeRegister {
     public boolean isBlockRegistert(@NonNull LogisticBlock block) {
         return blockTypes.containsValue(block.getClass());
     }
-    
+
     @Synchronized
-    public Optional<LogisticKey> getKey(@NonNull LogisticBlock block){
-        for(Entry<LogisticKey, Class<? extends LogisticBlock>> entry : blockTypes.entrySet()){
-            if(entry.getValue() == block.getClass())
+    public Optional<LogisticKey> getKey(@NonNull LogisticBlock block) {
+        for (Entry<LogisticKey, Class<? extends LogisticBlock>> entry : blockTypes.entrySet()) {
+            if (entry.getValue() == block.getClass())
                 return Optional.of(entry.getKey());
         }
         return Optional.empty();

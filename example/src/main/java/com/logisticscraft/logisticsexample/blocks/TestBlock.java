@@ -4,6 +4,8 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -37,5 +39,20 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
     public Inventory getInventory() {
         return getStoredInventory();
     }
+
+    @Override
+    public void onPlayerBreak(BlockBreakEvent event) {
+        event.getPlayer().sendMessage("BlockBreak");
+    }
+
+    @Override
+    public void onLeftClick(PlayerInteractEvent event) {
+        event.getPlayer().sendMessage("LeftClick");
+    }
+
+    @Override
+    public void onRightClick(PlayerInteractEvent event) {
+        event.getPlayer().sendMessage("RightClick");
+    }  
 
 }

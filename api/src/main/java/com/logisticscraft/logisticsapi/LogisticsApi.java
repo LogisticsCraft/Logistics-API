@@ -7,6 +7,7 @@ import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
+import com.logisticscraft.logisticsapi.listeners.BlockListener;
 import com.logisticscraft.logisticsapi.listeners.ChunkEventListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
@@ -73,7 +74,10 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(injector.getSingleton(ChunkEventListener.class), instance);
+        ChunkEventListener chunkListener = injector.getSingleton(ChunkEventListener.class);
+        pluginManager.registerEvents(chunkListener, instance);
+        chunkListener.initLoadedWorlds();
+        pluginManager.registerEvents(injector.getSingleton(BlockListener.class), instance);
 
         // Create API
         blockManager = injector.getSingleton(BlockManager.class);

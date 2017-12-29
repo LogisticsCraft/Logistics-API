@@ -3,6 +3,9 @@ package com.logisticscraft.logisticsapi.block;
 import java.util.HashMap;
 import java.util.Optional;
 
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+
 import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
@@ -59,6 +62,18 @@ public abstract class LogisticBlock implements LogisticDataHolder {
     @SuppressWarnings("unchecked")
     public <T> Optional<T> getLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
         return Optional.ofNullable((T) blockData.get(key));
+    }
+    
+    public void onPlayerBreak(BlockBreakEvent event){
+        // Overwrite to cancel blockbreaking. Uncanceled Blockbreak will remove the LogisticsBlock
+    }
+    
+    public void onLeftClick(PlayerInteractEvent event){
+        
+    }
+    
+    public void onRightClick(PlayerInteractEvent event){
+        
     }
 
 }

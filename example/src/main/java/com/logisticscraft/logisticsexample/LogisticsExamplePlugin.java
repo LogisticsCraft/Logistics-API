@@ -10,6 +10,7 @@ import com.logisticscraft.logisticsloader.LogisticsLoader;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -45,6 +46,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
                 return new TestBlock();
             }
         });
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
     
     @EventHandler

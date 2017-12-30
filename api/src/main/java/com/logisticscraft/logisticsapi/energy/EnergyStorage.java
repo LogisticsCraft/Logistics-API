@@ -1,7 +1,7 @@
 package com.logisticscraft.logisticsapi.energy;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.data.LogisticPersistentDataHolder;
+import com.logisticscraft.logisticsapi.data.PersistentLogisticDataHolder;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public interface EnergyStorage extends LogisticPersistentDataHolder {
+public interface EnergyStorage extends PersistentLogisticDataHolder {
 
     LogisticKey STORED_ENERGY_META_KEY = new LogisticKey("LogisticsAPI", "storedEnergy");
 

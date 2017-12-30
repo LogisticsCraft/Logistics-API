@@ -1,9 +1,9 @@
 package com.logisticscraft.logisticsapi.block;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.data.LogisticPersistentDataHolder;
-import com.logisticscraft.logisticsapi.data.LogisticVolatileDataHolder;
+import com.logisticscraft.logisticsapi.data.PersistentLogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
+import com.logisticscraft.logisticsapi.data.VolatileLogisticDataHolder;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Represents a custom block handled by the API.
  */
-public abstract class LogisticBlock implements LogisticPersistentDataHolder, LogisticVolatileDataHolder {
+public abstract class LogisticBlock implements PersistentLogisticDataHolder, VolatileLogisticDataHolder {
 
     @Getter
     @Persistent
@@ -38,7 +38,7 @@ public abstract class LogisticBlock implements LogisticPersistentDataHolder, Log
      * @param <T>   the value type
      */
     @Override
-    public <T> void setLogisticPersistentData(@NonNull LogisticKey key, T value) {
+    public <T> void setPersistentLogisticData(@NonNull LogisticKey key, T value) {
         persistentBlockData.put(key, value);
     }
 
@@ -48,7 +48,7 @@ public abstract class LogisticBlock implements LogisticPersistentDataHolder, Log
      * @param key the property key
      */
     @Override
-    public void removeLogisticPersistentData(@NonNull LogisticKey key) {
+    public void removePersistentLogisticData(@NonNull LogisticKey key) {
         persistentBlockData.remove(key);
     }
 
@@ -61,7 +61,7 @@ public abstract class LogisticBlock implements LogisticPersistentDataHolder, Log
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Optional<T> getLogisticPersistentData(@NonNull LogisticKey key, @NonNull Class<T> type) {
+    public <T> Optional<T> getPersistentLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
         return Optional.ofNullable((T) persistentBlockData.get(key));
     }
 
@@ -74,8 +74,8 @@ public abstract class LogisticBlock implements LogisticPersistentDataHolder, Log
      * @param <T>   the value type
      */
     @Override
-    public <T> void setLogisticVolatileData(@NonNull LogisticKey key, T value) {
-        persistentBlockData.put(key, value);
+    public <T> void setVolatileLogisticData(@NonNull LogisticKey key, T value) {
+        volatileBlockData.put(key, value);
     }
 
     /**
@@ -84,8 +84,8 @@ public abstract class LogisticBlock implements LogisticPersistentDataHolder, Log
      * @param key the property key
      */
     @Override
-    public void removeLogisticVolatileData(@NonNull LogisticKey key) {
-        persistentBlockData.remove(key);
+    public void removeVolatileLogisticData(@NonNull LogisticKey key) {
+        volatileBlockData.remove(key);
     }
 
     /**
@@ -97,8 +97,8 @@ public abstract class LogisticBlock implements LogisticPersistentDataHolder, Log
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Optional<T> getLogisticVolatileData(@NonNull LogisticKey key, @NonNull Class<T> type) {
-        return Optional.ofNullable((T) persistentBlockData.get(key));
+    public <T> Optional<T> getVolatileLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
+        return Optional.ofNullable((T) volatileBlockData.get(key));
     }
 
     public void onPlayerBreak(BlockBreakEvent event) {

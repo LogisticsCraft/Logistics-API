@@ -41,7 +41,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
             }
 
             @Override
-            public LogisticBlock onLoad(NBTCompound nbtData) {
+            public LogisticBlock onLoad() {
                 return new TestBlock();
             }
         });

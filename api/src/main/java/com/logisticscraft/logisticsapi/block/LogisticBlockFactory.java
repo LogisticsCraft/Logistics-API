@@ -23,10 +23,23 @@ public interface LogisticBlockFactory {
 
     /**
      * Called when a placed block is loaded (when the chunk is loaded).
+     * WARNING: This method allows custom NBT handling, consider using
+     * PersistentLogisticBlockData to store custom data instead!
      *
      * @param nbtData the stored block data
      * @return the logistic block instance
+     * @deprecated as unsafe to use, for advanced use only
      */
-    LogisticBlock onLoad(@NonNull NBTCompound nbtData);
+    @Deprecated
+    default LogisticBlock onLoadUnsafe(@NonNull NBTCompound nbtData) {
+        return onLoad();
+    }
+
+    /**
+     * Called when a placed block is loaded (when the chunk is loaded).
+     *
+     * @return the logistic block instance
+     */
+    LogisticBlock onLoad();
 
 }

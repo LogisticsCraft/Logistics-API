@@ -54,7 +54,7 @@ public class LogisticWorldStorage {
             LogisticKey logisticKey = new LogisticKey(blockData.getString("LogisticBlockID"));
             Optional<LogisticBlockFactory> factory = register.getFactory(logisticKey);
             if (factory.isPresent()) {
-                LogisticBlock block = factory.get().onLoad(blockData);
+                LogisticBlock block = factory.get().onLoadUnsafe(blockData);
                 //TODO: Block onload nbt method
                 persistence.loadFields(block, blockData);
                 blocks.add(block);

@@ -1,16 +1,20 @@
 package com.logisticscraft.logisticsapi.persistence;
 
-import com.google.gson.Gson;
-import com.logisticscraft.logisticsapi.block.LogisticBlock;
-import com.logisticscraft.logisticsapi.persistence.adapters.DataAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.NonNull;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
+import com.logisticscraft.logisticsapi.persistence.adapters.DataAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.LogisticKeyAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.SafeBlockAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
+import lombok.NonNull;
 
 public class PersistenceStorage {
 
@@ -24,6 +28,8 @@ public class PersistenceStorage {
         // Register default converters
         registerDataConverter(String.class, new StringDataAdapter(), false);
         registerDataConverter(HashMap.class, new HashMapDataAdapter(), false);
+        registerDataConverter(SafeBlockLocation.class, new SafeBlockAdapter(), false);
+        registerDataConverter(LogisticKey.class, new LogisticKeyAdapter(), false);
     }
 
     public <T> void registerDataConverter(@NonNull Class<T> clazz, @NonNull DataAdapter<? extends T> converter, boolean replace) {
@@ -35,7 +41,7 @@ public class PersistenceStorage {
     }
 
     public void saveFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
-        ReflectionUtils.getFieldsRecursively(object.getClass(), LogisticBlock.class).stream()
+        ReflectionUtils.getFieldsRecursively(object.getClass(), Object.class).stream()
                 .filter(field -> field.getAnnotation(Persistent.class) != null)
                 .forEach(field -> {
                     field.setAccessible(true);
@@ -49,13 +55,13 @@ public class PersistenceStorage {
     }
 
     public void loadFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
-        ReflectionUtils.getFieldsRecursively(object.getClass(), LogisticBlock.class).stream()
+        ReflectionUtils.getFieldsRecursively(object.getClass(), Object.class).stream()
                 .filter(field -> field.getAnnotation(Persistent.class) != null)
                 .forEach(field -> {
                     field.setAccessible(true);
                     if (nbtCompound.hasKey(field.getName())) {
                         try {
-                            field.set(object, loadObject(field.getType(), nbtCompound.addCompound(field.getName())));
+                            field.set(object, loadObject(field.getType(), nbtCompound.getCompound(field.getName())));
                         } catch (IllegalAccessException e) {
                             throw new IllegalStateException("Unable to load field " + object.getClass().getSimpleName()
                                     + "." + field.getName(), e);

@@ -8,12 +8,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 @Data
 @AllArgsConstructor
-public class SafeBlockLocation implements Serializable {
+public class SafeBlockLocation {
 
     @NonNull
     private SafeWorld safeWorld;
@@ -23,7 +22,7 @@ public class SafeBlockLocation implements Serializable {
     private Integer y;
     @NonNull
     private Integer z;
-
+    
     public SafeBlockLocation(@NonNull Location location) {
         this(new SafeWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }

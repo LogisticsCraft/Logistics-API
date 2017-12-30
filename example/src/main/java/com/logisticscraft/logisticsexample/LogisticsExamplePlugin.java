@@ -2,15 +2,12 @@ package com.logisticscraft.logisticsexample;
 
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.api.BlockManager;
-import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
 import com.logisticscraft.logisticsloader.LogisticInstallException;
 import com.logisticscraft.logisticsloader.LogisticsLoader;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,9 +20,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class LogisticsExamplePlugin extends JavaPlugin implements Listener {
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         try {
-            if(LogisticsLoader.install()) {
+            if (LogisticsLoader.install()) {
                 getLogger().info("The required library has been downloaded correctly!");
             }
         } catch (LogisticInstallException e) {
@@ -34,27 +31,30 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
             setEnabled(false);
             return;
         }
-        /*
+
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
         blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new LogisticBlockFactory() {
-            
+
             @Override
             public LogisticBlock onPlace(Player player, ItemStack item, Location location) {
                 return new TestBlock();
             }
-            
+
             @Override
             public LogisticBlock onLoad(NBTCompound nbtData) {
                 return new TestBlock();
             }
         });
-        Bukkit.getPluginManager().registerEvents(this, this);
-         */
     }
-    
+
+    @Override
+    public void onEnable() {
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
     @EventHandler
-    public void onPlace(BlockPlaceEvent event){
-        if(event.getItemInHand().getType() == Material.WOOL){
+    public void onPlace(BlockPlaceEvent event) {
+        if (event.getItemInHand().getType() == Material.WOOL) {
             //LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
         }
     }

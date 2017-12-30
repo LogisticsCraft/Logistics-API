@@ -5,6 +5,7 @@ import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.event.LogisticBlockLoadEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
+import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.NonNull;
 import lombok.Synchronized;
@@ -30,24 +31,22 @@ public class LogisticBlockCache {
     private PluginManager pluginManager;
     private LogisticBlockTypeRegister typeRegister;
     private LogisticTickManager tickManager;
+    private PersistenceStorage perstistance;
 
     private Map<World, LogisticWorldStorage> worldStorage;
     private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks;
 
     @Inject
     LogisticBlockCache(PluginManager pluginManager, LogisticBlockTypeRegister typeRegister,
-                       LogisticTickManager tickManager, Server server) {
+                       LogisticTickManager tickManager, PersistenceStorage persistance, Server server) {
         this.pluginManager = pluginManager;
         this.typeRegister = typeRegister;
         this.tickManager = tickManager;
+        this.perstistance = persistance;
 
         worldStorage = new ConcurrentHashMap<>();
         logisticBlocks = new ConcurrentHashMap<>();
 
-        // Load already loaded worlds
-        for (World world : server.getWorlds()) {
-            registerWorld(world);
-        }
     }
 
     /**
@@ -162,6 +161,18 @@ public class LogisticBlockCache {
         if (!logisticBlocks.containsKey(chunk)) return new HashSet<>();
         return Collections.unmodifiableSet(logisticBlocks.get(chunk).entrySet());
     }
+    
+    @Synchronized
+    public void loadSavedBlocks(@NonNull Chunk chunk){
+        LogisticWorldStorage storage = worldStorage.get(chunk.getWorld());
+        if(storage == null)return;
+        Optional<Set<? extends LogisticBlock>> blocks = storage.getSavedLogisticBlocksInChunk(chunk);
+        if(blocks.isPresent()){
+            for(LogisticBlock block : blocks.get()){
+                loadLogisticBlock(block);
+            }
+        }
+    }
 
     @Synchronized
     public Set<Chunk> getChunksWithLogisticBlocksInWorld(@NonNull World world) {
@@ -175,7 +186,7 @@ public class LogisticBlockCache {
     @Synchronized
     public void registerWorld(@NonNull World world) {
         try {
-            worldStorage.put(world, new LogisticWorldStorage(world));
+            worldStorage.put(world, new LogisticWorldStorage(perstistance, typeRegister, world));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,13 +201,11 @@ public class LogisticBlockCache {
             }
             LogisticWorldStorage storage = worldStorage.get(world);
             try {
-                storage.getNbtFile().save();
+                storage.save();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             worldStorage.remove(world);
-        } else {
-            Tracer.warn("Attempt to unregister an unknown World: " + world.getName());
         }
     }
 

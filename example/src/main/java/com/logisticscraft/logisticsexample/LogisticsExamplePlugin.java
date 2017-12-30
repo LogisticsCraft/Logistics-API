@@ -1,15 +1,5 @@
 package com.logisticscraft.logisticsexample;
 
-import com.logisticscraft.logisticsapi.LogisticsApi;
-import com.logisticscraft.logisticsapi.api.BlockManager;
-import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
-import com.logisticscraft.logisticsapi.block.LogisticBlock;
-import com.logisticscraft.logisticsexample.blocks.TestBlock;
-import com.logisticscraft.logisticsloader.LogisticInstallException;
-import com.logisticscraft.logisticsloader.LogisticsLoader;
-
-import de.tr7zw.itemnbtapi.NBTCompound;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,19 +10,18 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.logisticscraft.logisticsapi.LogisticsApi;
+import com.logisticscraft.logisticsapi.api.BlockManager;
+import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
+import com.logisticscraft.logisticsexample.blocks.TestBlock;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
+
 public final class LogisticsExamplePlugin extends JavaPlugin implements Listener{
 
     @Override
-    public void onEnable() {
-        try {
-            if(LogisticsLoader.install()) {
-                getLogger().info("The required library has been downloaded correctly!");
-            }
-        } catch (LogisticInstallException e) {
-            e.printStackTrace();
-            getLogger().severe("Unable to download the required library, disabling...");
-            setEnabled(false);
-        }
+    public void onLoad() {
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
         blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new LogisticBlockFactory() {
             
@@ -46,6 +35,19 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
                 return new TestBlock();
             }
         });
+    }
+    
+    @Override
+    public void onEnable() {
+        /*try {
+            if(LogisticsLoader.install()) {
+                getLogger().info("The required library has been downloaded correctly!");
+            }
+        } catch (LogisticInstallException e) {
+            e.printStackTrace();
+            getLogger().severe("Unable to download the required library, disabling...");
+            setEnabled(false);
+        }*/
         Bukkit.getPluginManager().registerEvents(this, this);
     }
     

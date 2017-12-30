@@ -1,12 +1,5 @@
 package com.logisticscraft.logisticsapi.block;
 
-import com.logisticscraft.logisticsapi.LogisticsApi;
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
-import lombok.NonNull;
-import lombok.Synchronized;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import javax.inject.Inject;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,6 +8,14 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+
+import lombok.NonNull;
+import lombok.Synchronized;
 
 /**
  * Manages the @Ticking annotations into LogisticBlocks.
@@ -25,8 +26,7 @@ public class LogisticTickManager {
     private HashSet<LogisticBlock> trackedBlocks = new HashSet<>();
     private long tick = 0;
 
-    @Inject
-    LogisticTickManager(LogisticsApi plugin) {
+    public void initListener(@NonNull JavaPlugin plugin) {
         new BukkitRunnable() {
 
             @Override

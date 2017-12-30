@@ -15,8 +15,6 @@ import com.logisticscraft.logisticsapi.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -35,7 +33,7 @@ public final class LogisticsApi extends JavaPlugin {
 
     // Internal
     private Injector injector;
-    private SettingsManager settings;
+    private LogisticBlockCache blockCache;
 
     // API
     @Getter
@@ -59,14 +57,14 @@ public final class LogisticsApi extends JavaPlugin {
         injector.registerProvider(SettingsManager.class, SettingsProvider.class);
 
         // Load configuration
-        settings = injector.getSingleton(SettingsManager.class);
+        SettingsManager settings = injector.getSingleton(SettingsManager.class);
         Tracer.setDebug(settings.getProperty(DEBUG_ENABLE));
 
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
         injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
-        injector.getSingleton(LogisticBlockCache.class);
+        blockCache = injector.getSingleton(LogisticBlockCache.class);
 
         // Create API
         blockManager = injector.getSingleton(BlockManager.class);
@@ -82,19 +80,18 @@ public final class LogisticsApi extends JavaPlugin {
         Tracer.info("Server version: " + getServer().getVersion(),
                 "Bukkit version: " + getServer().getBukkitVersion());
 
+        // Load already loaded worlds
+        for (World world : getServer().getWorlds()) {
+            blockCache.registerWorld(world);
+            for (Chunk chunk : world.getLoadedChunks()) {
+                blockCache.loadSavedBlocks(chunk);
+            }
+        }
+
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(injector.getSingleton(ChunkListener.class), instance);
         pluginManager.registerEvents(injector.getSingleton(BlockListener.class), instance);
-        injector.getSingleton(LogisticTickManager.class).initListener(instance);
-        
-        // Load already loaded worlds
-        LogisticBlockCache blockCache = injector.getSingleton(LogisticBlockCache.class);
-        for (World world : Bukkit.getWorlds()) {
-            blockCache.registerWorld(world);
-            for(Chunk chunk : world.getLoadedChunks())
-                blockCache.loadSavedBlocks(chunk);
-        }
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }
@@ -103,8 +100,9 @@ public final class LogisticsApi extends JavaPlugin {
     public void onDisable() {
         Tracer.info("Disabling...");
 
-        for(World world : Bukkit.getWorlds())
+        for (World world : getServer().getWorlds()) {
             injector.getSingleton(LogisticBlockCache.class).unregisterWorld(world);
+        }
         instance = null;
 
         PluginDescriptionFile description = getDescription();

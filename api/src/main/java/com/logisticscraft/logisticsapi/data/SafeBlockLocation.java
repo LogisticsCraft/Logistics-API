@@ -22,7 +22,7 @@ public class SafeBlockLocation {
     private Integer y;
     @NonNull
     private Integer z;
-    
+
     public SafeBlockLocation(@NonNull Location location) {
         this(new SafeWorld(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }

@@ -11,7 +11,6 @@ import lombok.NonNull;
 import lombok.Synchronized;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 
@@ -31,18 +30,18 @@ public class LogisticBlockCache {
     private PluginManager pluginManager;
     private LogisticBlockTypeRegister typeRegister;
     private LogisticTickManager tickManager;
-    private PersistenceStorage perstistance;
+    private PersistenceStorage persistence;
 
     private Map<World, LogisticWorldStorage> worldStorage;
     private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks;
 
     @Inject
     LogisticBlockCache(PluginManager pluginManager, LogisticBlockTypeRegister typeRegister,
-                       LogisticTickManager tickManager, PersistenceStorage persistance, Server server) {
+                       LogisticTickManager tickManager, PersistenceStorage persistence) {
         this.pluginManager = pluginManager;
         this.typeRegister = typeRegister;
         this.tickManager = tickManager;
-        this.perstistance = persistance;
+        this.persistence = persistence;
 
         worldStorage = new ConcurrentHashMap<>();
         logisticBlocks = new ConcurrentHashMap<>();
@@ -161,14 +160,14 @@ public class LogisticBlockCache {
         if (!logisticBlocks.containsKey(chunk)) return new HashSet<>();
         return Collections.unmodifiableSet(logisticBlocks.get(chunk).entrySet());
     }
-    
+
     @Synchronized
-    public void loadSavedBlocks(@NonNull Chunk chunk){
+    public void loadSavedBlocks(@NonNull Chunk chunk) {
         LogisticWorldStorage storage = worldStorage.get(chunk.getWorld());
-        if(storage == null)return;
+        if (storage == null) return;
         Optional<Set<? extends LogisticBlock>> blocks = storage.getSavedLogisticBlocksInChunk(chunk);
-        if(blocks.isPresent()){
-            for(LogisticBlock block : blocks.get()){
+        if (blocks.isPresent()) {
+            for (LogisticBlock block : blocks.get()) {
                 loadLogisticBlock(block);
             }
         }
@@ -186,7 +185,7 @@ public class LogisticBlockCache {
     @Synchronized
     public void registerWorld(@NonNull World world) {
         try {
-            worldStorage.put(world, new LogisticWorldStorage(perstistance, typeRegister, world));
+            worldStorage.put(world, new LogisticWorldStorage(persistence, typeRegister, world));
         } catch (IOException e) {
             e.printStackTrace();
         }

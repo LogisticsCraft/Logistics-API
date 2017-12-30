@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @NoArgsConstructor
-public class StringDataAdapter implements DataAdapter<String> {
+public class StringAdapter implements DataAdapter<String> {
 
     @Override
     public void store(@NonNull final PersistenceStorage persistenceStorage, @NonNull final String value, @NonNull final NBTCompound nbtCompound) {

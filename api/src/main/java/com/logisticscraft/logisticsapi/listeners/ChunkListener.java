@@ -1,9 +1,9 @@
 package com.logisticscraft.logisticsapi.listeners;
 
-import java.util.Map.Entry;
-
-import javax.inject.Inject;
-
+import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,11 +13,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
-import com.logisticscraft.logisticsapi.block.LogisticBlock;
-import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import javax.inject.Inject;
+import java.util.Map.Entry;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class ChunkListener implements Listener {
@@ -27,7 +24,7 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChunkLoad(ChunkLoadEvent event) {
-       blockCache.loadSavedBlocks(event.getChunk());
+        blockCache.loadSavedBlocks(event.getChunk());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

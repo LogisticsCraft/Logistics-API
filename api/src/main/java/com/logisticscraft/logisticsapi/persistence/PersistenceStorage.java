@@ -1,20 +1,15 @@
 package com.logisticscraft.logisticsapi.persistence;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
-import com.logisticscraft.logisticsapi.persistence.adapters.DataAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.HashMapDataAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.LogisticKeyAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.SafeBlockAdapter;
-import com.logisticscraft.logisticsapi.persistence.adapters.StringDataAdapter;
+import com.logisticscraft.logisticsapi.persistence.adapters.*;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PersistenceStorage {
 
@@ -26,9 +21,9 @@ public class PersistenceStorage {
         converters = new HashMap<>();
 
         // Register default converters
-        registerDataConverter(String.class, new StringDataAdapter(), false);
-        registerDataConverter(HashMap.class, new HashMapDataAdapter(), false);
-        registerDataConverter(SafeBlockLocation.class, new SafeBlockAdapter(), false);
+        registerDataConverter(String.class, new StringAdapter(), false);
+        registerDataConverter(HashMap.class, new HashMapAdapter(), false);
+        registerDataConverter(SafeBlockLocation.class, new SafeBlockLocationAdapter(), false);
         registerDataConverter(LogisticKey.class, new LogisticKeyAdapter(), false);
     }
 

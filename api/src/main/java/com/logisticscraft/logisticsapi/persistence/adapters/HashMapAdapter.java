@@ -8,7 +8,7 @@ import lombok.NonNull;
 import java.util.HashMap;
 
 @NoArgsConstructor
-public class HashMapDataAdapter implements DataAdapter<HashMap<?, ?>> {
+public class HashMapAdapter implements DataAdapter<HashMap<?, ?>> {
 
     @Override
     public void store(@NonNull final PersistenceStorage persistenceStorage, @NonNull final HashMap<?, ?> value, @NonNull final NBTCompound nbtCompound) {

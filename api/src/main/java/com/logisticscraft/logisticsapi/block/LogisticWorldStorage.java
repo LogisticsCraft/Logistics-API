@@ -1,24 +1,22 @@
 package com.logisticscraft.logisticsapi.block;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import org.bukkit.Chunk;
-import org.bukkit.World;
-
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.utils.Tracer;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTFile;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Synchronized;
+import org.bukkit.Chunk;
+import org.bukkit.World;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class LogisticWorldStorage {
 
@@ -35,7 +33,7 @@ public class LogisticWorldStorage {
         this.register = register;
         this.world = world;
         nbtFile = new NBTFile(new File(world.getWorldFolder(), "logisticblocks.nbt"));
-        if(!nbtFile.hasKey("chunks"))
+        if (!nbtFile.hasKey("chunks"))
             nbtFile.addCompound("chunks");
     }
 
@@ -55,12 +53,12 @@ public class LogisticWorldStorage {
             NBTCompound blockData = chunkData.getCompound(key);
             LogisticKey logisticKey = new LogisticKey(blockData.getString("LogisticBlockID"));
             Optional<LogisticBlockFactory> factory = register.getFactory(logisticKey);
-            if(factory.isPresent()){
+            if (factory.isPresent()) {
                 LogisticBlock block = factory.get().onLoad(blockData);
                 //TODO: Block onload nbt method
                 persistence.loadFields(block, blockData);
                 blocks.add(block);
-            }else{
+            } else {
                 Tracer.warn("Unable to find Factory for key: " + logisticKey);
             }
         }
@@ -90,12 +88,12 @@ public class LogisticWorldStorage {
         NBTCompound chunks = nbtFile.getCompound("chunks");
 
         SafeBlockLocation location = logisticBlock.getLocation();
-        NBTCompound chunkData = null;
-        if(chunks.hasKey(location.getChunkX() + ";" + location.getChunkZ())){
+        NBTCompound chunkData;
+        if (chunks.hasKey(location.getChunkX() + ";" + location.getChunkZ())) {
             chunkData = chunks.getCompound(location.getChunkX() + ";" + location.getChunkZ());
-        }else{
+        } else {
             chunkData = chunks.addCompound(location.getChunkX() + ";" + location.getChunkZ());
-        } 
+        }
         NBTCompound blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
         persistence.saveFields(logisticBlock, blockData);
         // Has to be saved last

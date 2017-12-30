@@ -1,7 +1,7 @@
 package com.logisticscraft.logisticsapi.fluid;
 
-import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.data.LogisticPersistentDataHolder;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import lombok.NonNull;
 
@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Optional;
 
-public interface FluidStorage extends LogisticDataHolder {
+public interface FluidStorage extends LogisticPersistentDataHolder {
 
     LogisticKey STORED_FLUID_TYPE_META_KEY = new LogisticKey("LogisticsAPI", "storedFluidType");
     LogisticKey STORED_FLUID_AMOUNT_META_KEY = new LogisticKey("LogisticsAPI", "storedFluidAmount");

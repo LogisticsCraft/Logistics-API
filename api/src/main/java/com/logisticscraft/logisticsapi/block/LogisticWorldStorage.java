@@ -96,9 +96,6 @@ public class LogisticWorldStorage {
         }
         NBTCompound blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
         persistence.saveFields(logisticBlock, blockData);
-        // Has to be saved last
-        blockData.setString("LogisticBlockID", logisticBlock.getTypeId().toString());
-        //TODO: Save blocktype, energy levels, Blockdata etc.
     }
 
     //TODO: Loading blocks

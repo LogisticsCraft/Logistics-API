@@ -1,11 +1,11 @@
 package com.logisticscraft.logisticsapi.item;
 
 import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
-import com.logisticscraft.logisticsapi.data.LogisticDataHolder;
+import com.logisticscraft.logisticsapi.data.LogisticPersistentDataHolder;
 import lombok.NonNull;
 import org.bukkit.inventory.ItemStack;
 
-public interface ItemStorage extends LogisticDataHolder {
+public interface ItemStorage extends LogisticPersistentDataHolder {
 
     ItemStack extractItem(@NonNull LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate);
 

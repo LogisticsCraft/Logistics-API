@@ -37,6 +37,13 @@ public class BlockManager {
         typeRegister.registerLogisticBlock(plugin, name, block, factory);
     }
 
+    /**
+     * Places a logistic block at the given location.
+     * TODO: actually place the block? -sgdc3
+     *
+     * @param location the location
+     * @param logisticBlock the logistic block instance
+     */
     public void placeLogisticBlock(@NonNull Location location, @NonNull LogisticBlock logisticBlock) {
         Optional<LogisticBlock> block = blockCache.injectData(logisticBlock, location);
         if (!block.isPresent()) {

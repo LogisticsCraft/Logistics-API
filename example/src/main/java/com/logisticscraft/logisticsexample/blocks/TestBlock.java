@@ -1,20 +1,18 @@
 package com.logisticscraft.logisticsexample.blocks;
 
-import java.util.Random;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.energy.EnergyInput;
 import com.logisticscraft.logisticsapi.energy.EnergyOutput;
 import com.logisticscraft.logisticsapi.energy.EnergyStorage;
 import com.logisticscraft.logisticsapi.item.InventoryStorage;
+import org.bukkit.Material;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+
+import java.util.Random;
 
 @EnergyStorage.EnergyStorageData(capacity = 10000)
 @EnergyInput.EnergyInputData(maxReceive = 100)
@@ -22,12 +20,13 @@ import com.logisticscraft.logisticsapi.item.InventoryStorage;
 @InventoryStorage.InventoryData(rows = 1, name = "TestBlock")
 public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutput, InventoryStorage, InventoryHolder {
 
+    // Running every 10 ticks
     @LogisticTickManager.Ticking(ticks = 10)
     public void update() {
-        // Running every 10 ticks
-        Block block = getLocation().getBlock().get();
-        block.setType(Material.WOOL);
-        block.setData((byte) new Random().nextInt(15));
+        getBlock().ifPresent(block -> {
+            block.setType(Material.WOOL);
+            block.setData((byte) new Random().nextInt(15));
+        });
     }
 
     @Override
@@ -53,6 +52,6 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
     @Override
     public void onRightClick(PlayerInteractEvent event) {
         event.getPlayer().sendMessage("RightClick");
-    }  
+    }
 
 }

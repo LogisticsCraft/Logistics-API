@@ -7,7 +7,6 @@ import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
 import com.logisticscraft.logisticsloader.LogisticInstallException;
 import com.logisticscraft.logisticsloader.LogisticsLoader;
-import de.tr7zw.itemnbtapi.NBTCompound;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

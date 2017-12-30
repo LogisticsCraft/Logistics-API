@@ -42,10 +42,10 @@ public interface InventoryStorage extends ItemStorage {
     InventoryHolder getInventoryHolder();
 
     default Inventory getStoredInventory() {
-        Optional<Inventory> optionalInventory = getLogisticData(STORED_INVENTORY_META_KEY, Inventory.class);
+        Optional<Inventory> optionalInventory = getPersistentData().get(STORED_INVENTORY_META_KEY, Inventory.class);
         if (optionalInventory.isPresent()) return optionalInventory.get();
         Inventory inventory = Bukkit.createInventory(getInventoryHolder(), getRowAmount() * 9, getInventoryName());
-        setLogisticData(STORED_INVENTORY_META_KEY, inventory);
+        getPersistentData().set(STORED_INVENTORY_META_KEY, inventory);
         return inventory;
     }
 

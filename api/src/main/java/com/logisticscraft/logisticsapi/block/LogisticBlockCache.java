@@ -45,7 +45,6 @@ public class LogisticBlockCache {
 
         worldStorage = new ConcurrentHashMap<>();
         logisticBlocks = new ConcurrentHashMap<>();
-
     }
 
     /**
@@ -113,7 +112,7 @@ public class LogisticBlockCache {
      * @throws IllegalArgumentException if the given location isn't loaded
      */
     @Synchronized
-    public boolean isLoadedLogisticBlockAt(@NonNull final Location location) {
+    public boolean isLogisticBlockLoadedAt(@NonNull final Location location) {
         return getLoadedLogisticBlockAt(location) != null;
     }
 

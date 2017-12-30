@@ -1,22 +1,22 @@
 package com.logisticscraft.logisticsapi.block;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.data.PersistentLogisticDataHolder;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
-import com.logisticscraft.logisticsapi.data.VolatileLogisticDataHolder;
+import com.logisticscraft.logisticsapi.data.holder.DataHolder;
+import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
+import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
 import lombok.Getter;
-import lombok.NonNull;
+import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 /**
  * Represents a custom block handled by the API.
  */
-public abstract class LogisticBlock implements PersistentLogisticDataHolder, VolatileLogisticDataHolder {
+public abstract class LogisticBlock implements PersistentDataHolder, VolatileDataHolder {
 
     @Getter
     @Persistent
@@ -27,90 +27,51 @@ public abstract class LogisticBlock implements PersistentLogisticDataHolder, Vol
     private SafeBlockLocation location;
 
     @Persistent
-    private HashMap<LogisticKey, Object> persistentBlockData = new HashMap<>();
-    private HashMap<LogisticKey, Object> volatileBlockData = new HashMap<>();
+    private DataHolder persistentData = new DataHolder();
+    private DataHolder volatileData = new DataHolder();
 
     /**
-     * Set the persistent block property value with the given key.
+     * Returns the block object instance.
      *
-     * @param key   the property key
-     * @param value the value
-     * @param <T>   the value type
+     * @return the Block
      */
+    public Optional<Block> getBlock() {
+        return location.getBlock();
+    }
+
     @Override
-    public <T> void setPersistentLogisticData(@NonNull LogisticKey key, T value) {
-        persistentBlockData.put(key, value);
+    public DataHolder getPersistentData() {
+        return persistentData;
+    }
+
+    @Override
+    public DataHolder getVolatileData() {
+        return volatileData;
     }
 
     /**
-     * Removes the persistent block property with the given key.
+     * Overwrite this method intercept the BlockBreakEvent.
+     * If the event isn't cancelled the LogisticBlock will be removed.
      *
-     * @param key the property key
+     * @param event the BlockBreakEvent
      */
-    @Override
-    public void removePersistentLogisticData(@NonNull LogisticKey key) {
-        persistentBlockData.remove(key);
-    }
-
-    /**
-     * Get the persistent block property value with the given key.
-     *
-     * @param key  the property key
-     * @param type the expected value type
-     * @return the saved value
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> Optional<T> getPersistentLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
-        return Optional.ofNullable((T) persistentBlockData.get(key));
-    }
-
-
-    /**
-     * Set the volatile block property value with the given key.
-     *
-     * @param key   the property key
-     * @param value the value
-     * @param <T>   the value type
-     */
-    @Override
-    public <T> void setVolatileLogisticData(@NonNull LogisticKey key, T value) {
-        volatileBlockData.put(key, value);
-    }
-
-    /**
-     * Removes the volatile block property with the given key.
-     *
-     * @param key the property key
-     */
-    @Override
-    public void removeVolatileLogisticData(@NonNull LogisticKey key) {
-        volatileBlockData.remove(key);
-    }
-
-    /**
-     * Get the volatile block property value with the given key.
-     *
-     * @param key  the property key
-     * @param type the expected value type
-     * @return the saved value
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> Optional<T> getVolatileLogisticData(@NonNull LogisticKey key, @NonNull Class<T> type) {
-        return Optional.ofNullable((T) volatileBlockData.get(key));
-    }
-
     public void onPlayerBreak(BlockBreakEvent event) {
-        // Overwrite to cancel blockbreaking. Uncanceled Blockbreak will remove the LogisticsBlock
     }
 
+    /**
+     * Overwrite this method intercept the PlayerInteractEvent when the block is left-clicked.
+     *
+     * @param event the PlayerInteractEvent
+     */
     public void onLeftClick(PlayerInteractEvent event) {
-
     }
 
+    /**
+     * Overwrite this method intercept the PlayerInteractEvent when the block is right-clicked.
+     *
+     * @param event the PlayerInteractEvent
+     */
     public void onRightClick(PlayerInteractEvent event) {
-
     }
 
 }

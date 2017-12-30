@@ -1,7 +1,5 @@
 package com.logisticscraft.logisticsapi.excluded.item;
 
-import com.logisticscraft.logisticsapi.event.ItemContainerRegisterEvent;
-import com.logisticscraft.logisticsapi.event.ItemContainerUnregisterEvent;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.Getter;
@@ -45,14 +43,14 @@ public class ItemManager {
     public void registerItemContainer(@NonNull final Location location, @NonNull final ItemContainer itemContainer) {
         if (itemContainers.putIfAbsent(location, itemContainer) == null) {
             Tracer.info("ItemContainer registered at " + location.toString());
-            Bukkit.getPluginManager().callEvent(new ItemContainerRegisterEvent(location, itemContainer));
+            //Bukkit.getPluginManager().callEvent(new ItemContainerRegisterEvent(location, itemContainer));
         } else Tracer.warn("Trying to register ItemContainer at occupied location: " + location.toString());
     }
 
     public void unregisterItemContainer(@NonNull final Location location) {
         val container = itemContainers.get(location);
         if (container != null) {
-            Bukkit.getPluginManager().callEvent(new ItemContainerUnregisterEvent(location, container));
+            //Bukkit.getPluginManager().callEvent(new ItemContainerUnregisterEvent(location, container));
             itemContainers.remove(location);
         } else Tracer.warn("Attempt to unregister unknown ItemContainer");
     }

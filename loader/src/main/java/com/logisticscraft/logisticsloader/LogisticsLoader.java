@@ -20,20 +20,28 @@ public class LogisticsLoader {
 
     public static boolean install() throws LogisticInstallException {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        if (pluginManager.isPluginEnabled("LogisticsAPI")) {
+        if (pluginManager.isPluginEnabled("LogisticsApi")) {
             return false;
         }
 
         // Read the download url from the resource file
         URL downloadUrl;
+        File outputFile;
         try {
-            downloadUrl = getDownloadUrl();
+            Properties properties = new Properties();
+            properties.load(LogisticsLoader.class.getResourceAsStream("/logistics_download.properties"));
+            String groupId = properties.getProperty("groupId");
+            String artifactId = properties.getProperty("artifactId");
+            String version = properties.getProperty("version");
+            String url = properties.getProperty("url")
+                    .replace("%groupId%", groupId)
+                    .replace("%artifactId%", artifactId)
+                    .replace("%version%", version);
+            downloadUrl = new URL(url);
+            outputFile = new File("plugins/" + artifactId + "-" + version + ".jar");
         } catch (IOException e) {
             throw new LogisticInstallException(e);
         }
-
-        File pluginFolder = new File("plugins");
-        File outputFile = new File(pluginFolder, downloadUrl.getFile());
 
         if (outputFile.isFile()) {
             return false;
@@ -59,13 +67,4 @@ public class LogisticsLoader {
         return true;
     }
 
-    private static URL getDownloadUrl() throws IOException {
-        Properties properties = new Properties();
-        properties.load(LogisticsLoader.class.getResourceAsStream("/logistics_download.properties"));
-        String repo = properties.getProperty("repository");
-        String group = properties.getProperty("groupId").replaceAll("\\.", "/");
-        String artifact = properties.getProperty("artifactId").replaceAll("\\.", "/");
-        String version = properties.getProperty("version");
-        return new URL(repo + group + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar");
-    }
 }

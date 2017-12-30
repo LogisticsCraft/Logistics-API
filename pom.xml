@@ -9,6 +9,10 @@
     <version>0.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>LogisticsAPI</name>
+    <description>An advanced Api for developers to make their own Logistic Systems using energy, custom items, fluids and what not...</description>
+    <inceptionYear>2017</inceptionYear>
+
     <modules>
         <module>api</module>
         <module>loader</module>

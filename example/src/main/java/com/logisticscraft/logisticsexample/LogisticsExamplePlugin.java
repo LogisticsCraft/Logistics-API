@@ -20,7 +20,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class LogisticsExamplePlugin extends JavaPlugin implements Listener{
+public final class LogisticsExamplePlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
@@ -32,7 +32,9 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
             e.printStackTrace();
             getLogger().severe("Unable to download the required library, disabling...");
             setEnabled(false);
+            return;
         }
+        /*
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
         blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new LogisticBlockFactory() {
             
@@ -47,12 +49,13 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
             }
         });
         Bukkit.getPluginManager().registerEvents(this, this);
+         */
     }
     
     @EventHandler
     public void onPlace(BlockPlaceEvent event){
         if(event.getItemInHand().getType() == Material.WOOL){
-            LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
+            //LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
         }
     }
 

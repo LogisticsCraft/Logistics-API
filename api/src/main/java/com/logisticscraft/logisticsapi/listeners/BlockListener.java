@@ -26,7 +26,7 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
-        LogisticBlock block = blockCache.getLoadedLogisticBlockAt(event.getBlock().getLocation());
+        LogisticBlock block = blockCache.getCachedLogisticBlockAt(event.getBlock().getLocation());
         if (block != null) {
             block.onPlayerBreak(event);
             if (!event.isCancelled()) {
@@ -38,7 +38,7 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            LogisticBlock block = blockCache.getLoadedLogisticBlockAt(event.getClickedBlock().getLocation());
+            LogisticBlock block = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());
             if (block != null) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     if (doubleRightClickcooldown.contains(event.getPlayer().getUniqueId())) return;

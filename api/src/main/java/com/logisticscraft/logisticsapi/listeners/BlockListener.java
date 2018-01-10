@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import javax.inject.Inject;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
@@ -22,35 +23,35 @@ public class BlockListener implements Listener {
 
     @Inject
     private LogisticBlockCache blockCache;
-    private HashSet<UUID> doubleRightClickcooldown = new HashSet<>();
+    private HashSet<UUID> doubleRightClickCooldown = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
-        LogisticBlock block = blockCache.getCachedLogisticBlockAt(event.getBlock().getLocation());
-        if (block != null) {
-            block.onPlayerBreak(event);
+        Optional<LogisticBlock> block = blockCache.getCachedLogisticBlockAt(event.getBlock().getLocation());
+        block.ifPresent(b -> {
+            b.onPlayerBreak(event);
             if (!event.isCancelled()) {
                 blockCache.unloadLogisticBlock(event.getBlock().getLocation(), false);
             }
-        }
+        });
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            LogisticBlock block = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());
-            if (block != null) {
+            Optional<LogisticBlock> oblock = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());
+            oblock.ifPresent(block -> {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                    if (doubleRightClickcooldown.contains(event.getPlayer().getUniqueId())) return;
+                    if (doubleRightClickCooldown.contains(event.getPlayer().getUniqueId())) return;
                     block.onRightClick(event);
-                    doubleRightClickcooldown.add(event.getPlayer().getUniqueId());
+                    doubleRightClickCooldown.add(event.getPlayer().getUniqueId());
                     Bukkit.getScheduler().runTaskLater(LogisticsApi.getInstance(), () -> {
-                        doubleRightClickcooldown.remove(event.getPlayer().getUniqueId());
+                        doubleRightClickCooldown.remove(event.getPlayer().getUniqueId());
                     }, 1);
                 } else {
                     block.onLeftClick(event);
                 }
-            }
+            });
         }
     }
 

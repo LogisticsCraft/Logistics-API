@@ -29,7 +29,7 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        for (Entry<Location, LogisticBlock> data : blockCache.getCachedLogisticBlocksInChunk(event.getChunk()))
+        for (Entry<Location, LogisticBlock> data : blockCache.getCachedLogisticBlocksInChunk(event.getChunk()).entrySet())
             blockCache.unloadLogisticBlock(data.getKey(), true);
     }
 

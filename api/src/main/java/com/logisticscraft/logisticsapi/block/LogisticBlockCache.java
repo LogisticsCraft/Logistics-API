@@ -168,7 +168,7 @@ public class LogisticBlockCache {
     public void unregisterWorld(@NonNull World world) {
         if (worldStorage.containsKey(world)) {
             for (Chunk chunk : getChunksWithLogisticBlocksInWorld(world)) {
-                for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk))
+                for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk).entrySet())
                     unloadLogisticBlock(data.getKey(), true);
             }
             LogisticWorldStorage storage = worldStorage.get(world);

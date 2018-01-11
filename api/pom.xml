@@ -44,11 +44,15 @@
                         </relocation>
                         <relocation>
                             <pattern>ch.jalu.injector</pattern>
-                            <shadedPattern>com.logisticscraft.logisticsapi.libs.injection</shadedPattern>
+                            <shadedPattern>com.logisticscraft.logisticsapi.libs.injector</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>ch.jalu.configme</pattern>
-                            <shadedPattern>com.logisticscraft.logisticsapi.libs.config</shadedPattern>
+                            <shadedPattern>com.logisticscraft.logisticsapi.libs.configme</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.tr7zw.itemnbtapi</pattern>
+                            <shadedPattern>com.logisticscraft.logisticsapi.libs.itemnbt</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

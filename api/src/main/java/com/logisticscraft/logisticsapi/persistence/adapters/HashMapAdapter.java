@@ -18,23 +18,21 @@ public class HashMapAdapter implements DataAdapter<HashMap<?, ?>> {
             NBTCompound container = nbtCompound.addCompound("" + entryKey.hashCode());
             NBTCompound keyData = container.addCompound("key");
             NBTCompound data = container.addCompound("data");
-            nbtCompound.setString("keyclass", entryKey.getClass().getName());
-            nbtCompound.setString("dataclass", entryValue.getClass().getName());
-            persistenceStorage.saveObject(entryKey, keyData);
-            persistenceStorage.saveObject(entryValue, data);
+            container.setString("keyclass", persistenceStorage.saveObject(entryKey, keyData).getName());
+            container.setString("dataclass", persistenceStorage.saveObject(entryValue, data).getName());
         }
     }
 
     @Override
-    public HashMap<Object, Object> parse(PersistenceStorage persistenceStorage, NBTCompound nbtCompound) {
+    public HashMap<Object, Object> parse(PersistenceStorage persistenceStorage, Object parentObject, NBTCompound nbtCompound) {
         HashMap<Object, Object> map = new HashMap<>();
         for (String key : nbtCompound.getKeys()) {
             NBTCompound container = nbtCompound.getCompound(key);
             NBTCompound keyData = container.getCompound("key");
             NBTCompound data = container.getCompound("data");
             try {
-                map.put(persistenceStorage.loadObject(Class.forName(container.getString("keyclass")), keyData),
-                        persistenceStorage.loadObject(Class.forName(container.getString("dataclass")), data));
+                map.put(persistenceStorage.loadObject(parentObject, Class.forName(container.getString("keyclass")), keyData),
+                        persistenceStorage.loadObject(parentObject, Class.forName(container.getString("dataclass")), data));
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
             }

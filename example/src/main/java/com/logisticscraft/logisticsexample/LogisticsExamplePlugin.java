@@ -20,7 +20,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
 
     @Override
     public void onLoad() {
-        try {
+        /*try {
             if (LogisticsLoader.install()) {
                 getLogger().info("The required library has been downloaded correctly!");
             }
@@ -29,7 +29,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
             getLogger().severe("Unable to download the required library, disabling...");
             setEnabled(false);
             return;
-        }
+        }*/
 
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
         blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new LogisticBlockFactory() {
@@ -54,7 +54,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
         if (event.getItemInHand().getType() == Material.WOOL) {
-            //LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
+            LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
         }
     }
 

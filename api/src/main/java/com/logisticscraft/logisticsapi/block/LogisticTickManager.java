@@ -25,14 +25,14 @@ public class LogisticTickManager {
     private HashSet<LogisticBlock> trackedBlocks;
     private long tick;
 
-    @Inject
-    LogisticTickManager(LogisticsApi plugin) {
+    LogisticTickManager(){
         classCache = new HashMap<>();
         trackedBlocks = new HashSet<>();
         tick = 0;
-
+    }
+    
+    public void initRunnable(@NonNull LogisticsApi plugin) {
         new BukkitRunnable() {
-
             @Override
             public void run() {
                 onTick();

@@ -12,7 +12,7 @@ public class LogisticKeyAdapter implements DataAdapter<LogisticKey> {
     }
 
     @Override
-    public LogisticKey parse(PersistenceStorage persistenceStorage, NBTCompound nbtCompound) {
+    public LogisticKey parse(PersistenceStorage persistenceStorage, Object parentObject, NBTCompound nbtCompound) {
         return new LogisticKey(nbtCompound.getString("key"));
     }
 

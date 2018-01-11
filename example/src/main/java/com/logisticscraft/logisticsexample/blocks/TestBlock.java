@@ -51,7 +51,9 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
 
     @Override
     public void onRightClick(PlayerInteractEvent event) {
-        event.getPlayer().sendMessage("RightClick");
+        if(!event.getPlayer().isSneaking()){
+            event.getPlayer().openInventory(getInventory());
+        }
     }
 
 }

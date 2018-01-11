@@ -51,7 +51,7 @@ public class LogisticWorldStorage {
         Set<LogisticBlock> blocks = new HashSet<>();
         for (String key : chunkData.getKeys()) {
             NBTCompound blockData = chunkData.getCompound(key);
-            LogisticKey logisticKey = new LogisticKey(blockData.getString("LogisticBlockID"));
+            LogisticKey logisticKey = new LogisticKey(blockData.getCompound("typeId").getString("key"));
             Optional<LogisticBlockFactory> factory = register.getFactory(logisticKey);
             if (factory.isPresent()) {
                 LogisticBlock block = factory.get().onLoadUnsafe(blockData);

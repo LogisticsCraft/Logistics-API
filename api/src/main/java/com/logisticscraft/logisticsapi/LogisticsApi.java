@@ -34,6 +34,7 @@ public final class LogisticsApi extends JavaPlugin {
     // Internal
     private Injector injector;
     private LogisticBlockCache blockCache;
+    private LogisticTickManager tickManager;
 
     // API
     @Getter
@@ -62,7 +63,7 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Enable internal services
         injector.getSingleton(PersistenceStorage.class);
-        injector.getSingleton(LogisticTickManager.class);
+        tickManager = injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
         blockCache = injector.getSingleton(LogisticBlockCache.class);
 
@@ -92,6 +93,7 @@ public final class LogisticsApi extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(injector.getSingleton(ChunkListener.class), instance);
         pluginManager.registerEvents(injector.getSingleton(BlockListener.class), instance);
+        tickManager.initRunnable(instance);
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }

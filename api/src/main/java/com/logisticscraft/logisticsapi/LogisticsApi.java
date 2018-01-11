@@ -93,7 +93,9 @@ public final class LogisticsApi extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(injector.getSingleton(ChunkListener.class), instance);
         pluginManager.registerEvents(injector.getSingleton(BlockListener.class), instance);
-        tickManager.initRunnable(instance);
+
+        // Start the tick manager task
+        tickManager.runTaskTimer(this, 20, 1);
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }

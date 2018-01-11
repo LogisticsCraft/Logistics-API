@@ -1,12 +1,12 @@
 package com.logisticscraft.logisticsapi.block;
 
-import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Synchronized;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.inject.Inject;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,31 +19,18 @@ import java.util.HashSet;
 /**
  * Manages the @Ticking annotations into LogisticBlocks.
  */
-public class LogisticTickManager {
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class LogisticTickManager extends BukkitRunnable {
 
-    private HashMap<Class<? extends LogisticBlock>, HashMap<Method, Integer>> classCache;
-    private HashSet<LogisticBlock> trackedBlocks;
-    private long tick;
-
-    LogisticTickManager(){
-        classCache = new HashMap<>();
-        trackedBlocks = new HashSet<>();
-        tick = 0;
-    }
-    
-    public void initRunnable(@NonNull LogisticsApi plugin) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                onTick();
-            }
-        }.runTaskTimer(plugin, 1, 1);
-    }
+    private HashMap<Class<? extends LogisticBlock>, HashMap<Method, Integer>> classCache = new HashMap<>();
+    private HashSet<LogisticBlock> trackedBlocks = new HashSet<>();
+    private long tick = 0;
 
     /**
      * Called every game tick by the server scheduler
      */
-    private void onTick() {
+    @Override
+    public void run() {
         tick++;
         for (LogisticBlock logisticBlock : trackedBlocks) {
             HashMap<Method, Integer> tickMap = classCache.get(logisticBlock.getClass());

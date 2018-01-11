@@ -16,7 +16,8 @@ public class ReflectionUtils {
         Class<?> clazz = object.getClass();
         T result = clazz.getAnnotation(annotation);
         if (result == null) {
-            throw new IllegalStateException("The class '" + clazz.getName() + "' does not have the @" + annotation.getSimpleName() + " Annotation!");
+            throw new IllegalStateException("The class '" + clazz.getName() + "' does not have the @"
+                    + annotation.getSimpleName() + " Annotation!");
         }
         return result;
     }

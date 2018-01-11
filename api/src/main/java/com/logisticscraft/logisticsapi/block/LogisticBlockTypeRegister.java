@@ -27,7 +27,8 @@ public class LogisticBlockTypeRegister {
     private Map<LogisticKey, LogisticBlockFactory> factories = new HashMap<>();
 
     @Synchronized
-    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name, @NonNull Class<? extends LogisticBlock> block, @NonNull LogisticBlockFactory factory) {
+    public void registerLogisticBlock(@NonNull Plugin plugin, @NonNull String name,
+            @NonNull Class<? extends LogisticBlock> block, @NonNull LogisticBlockFactory factory) {
         if (blockTypes.putIfAbsent(new LogisticKey(plugin, name), block) == null) {
             factories.put(new LogisticKey(plugin, name), factory);
             tickManager.registerLogisticBlockClass(block);
@@ -44,8 +45,13 @@ public class LogisticBlockTypeRegister {
 
     @Synchronized
     public Optional<LogisticKey> getKey(@NonNull LogisticBlock block) {
+        return getKey(block.getClass());
+    }
+
+    @Synchronized
+    public Optional<LogisticKey> getKey(@NonNull Class<? extends LogisticBlock> block) {
         for (Entry<LogisticKey, Class<? extends LogisticBlock>> entry : blockTypes.entrySet()) {
-            if (entry.getValue() == block.getClass())
+            if (entry.getValue() == block)
                 return Optional.of(entry.getKey());
         }
         return Optional.empty();

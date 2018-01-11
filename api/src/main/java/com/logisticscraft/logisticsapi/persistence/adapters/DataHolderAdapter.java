@@ -5,7 +5,7 @@ import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 
-public class DataHolderAdapter implements DataAdapter<DataHolder>{
+public class DataHolderAdapter implements DataAdapter<DataHolder> {
 
     @Override
     public void store(PersistenceStorage persistenceStorage, DataHolder value, NBTCompound nbtCompound) {

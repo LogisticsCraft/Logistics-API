@@ -5,6 +5,7 @@ import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
+import com.logisticscraft.logisticsapi.item.LogisticBlockItem;
 import com.logisticscraft.logisticsapi.item.LogisticItem;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
 import com.logisticscraft.logisticsloader.LogisticInstallException;
@@ -53,20 +54,12 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("TestBlock");
         item.setItemMeta(meta);
-        LogisticItem logisticItem = new LogisticItem(this, "TestBlock", item);
-        itemManager.registerLogisticItem(logisticItem);
+        itemManager.registerLogisticItem(new LogisticBlockItem(TestBlock.class, item));
     }
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
-    }
-
-    @EventHandler
-    public void onPlace(BlockPlaceEvent event) {
-        if (event.getItemInHand().getType() == Material.WOOL) {
-            LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(event.getBlock().getLocation(), new TestBlock());
-        }
     }
 
 }

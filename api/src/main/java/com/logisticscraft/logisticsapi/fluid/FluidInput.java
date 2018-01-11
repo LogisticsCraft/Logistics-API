@@ -11,10 +11,14 @@ import java.lang.annotation.Target;
 
 public interface FluidInput extends FluidStorage {
 
-    default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available, final boolean simulate) {
-        if (!allowFluidInput(blockFace, fluid)) return 0;
-        if (getStoredFluidType().isPresent() && !getStoredFluidType().get().equals(fluid)) return 0;
-        long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(), Math.min(getMaxFluidReceive(), available));
+    default long receiveFluid(@NonNull LogisticBlockFace blockFace, @NonNull LogisticFluid fluid, final long available,
+            final boolean simulate) {
+        if (!allowFluidInput(blockFace, fluid))
+            return 0;
+        if (getStoredFluidType().isPresent() && !getStoredFluidType().get().equals(fluid))
+            return 0;
+        long amountReceived = Math.min(getMaxFluidStored() - getStoredFluidAmount(),
+                Math.min(getMaxFluidReceive(), available));
         if (!simulate) {
             setStoredFluid(fluid, getStoredFluidAmount() + amountReceived);
         }

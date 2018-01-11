@@ -18,8 +18,8 @@ public class InventoryAdapter implements DataAdapter<Inventory> {
         nbtCompound.setString("name", inventory.getTitle());
         nbtCompound.setInteger("size", inventory.getSize());
         int slot = 0;
-        for(ItemStack item : inventory.getContents()){
-            if(item != null)
+        for (ItemStack item : inventory.getContents()) {
+            if (item != null)
                 persistenceStorage.saveObject(item, nbtCompound.addCompound("item" + slot));
             slot++;
         }
@@ -27,18 +27,21 @@ public class InventoryAdapter implements DataAdapter<Inventory> {
 
     @Override
     public Inventory parse(PersistenceStorage persistenceStorage, Object parentObject, NBTCompound nbtCompound) {
-        if(parentObject instanceof InventoryStorage){
+        if (parentObject instanceof InventoryStorage) {
             Inventory inv = null;
             InventoryType type = InventoryType.valueOf(nbtCompound.getString("type"));
-            if(type == InventoryType.CHEST){
-                inv = Bukkit.createInventory(((InventoryStorage) parentObject).getInventoryHolder(), nbtCompound.getInteger("size"), nbtCompound.getString("name"));
-            }else{
-                inv = Bukkit.createInventory(((InventoryStorage) parentObject).getInventoryHolder(), type, nbtCompound.getString("name"));
+            if (type == InventoryType.CHEST) {
+                inv = Bukkit.createInventory(((InventoryStorage) parentObject).getInventoryHolder(),
+                        nbtCompound.getInteger("size"), nbtCompound.getString("name"));
+            } else {
+                inv = Bukkit.createInventory(((InventoryStorage) parentObject).getInventoryHolder(), type,
+                        nbtCompound.getString("name"));
             }
             int slot = 0;
-            while(slot < nbtCompound.getInteger("size")){
-                if(nbtCompound.hasKey("item" + slot)){
-                    inv.setItem(slot, persistenceStorage.loadObject(parentObject, ItemStack.class, nbtCompound.getCompound("item" + slot)));
+            while (slot < nbtCompound.getInteger("size")) {
+                if (nbtCompound.hasKey("item" + slot)) {
+                    inv.setItem(slot, persistenceStorage.loadObject(parentObject, ItemStack.class,
+                            nbtCompound.getCompound("item" + slot)));
                 }
                 slot++;
             }

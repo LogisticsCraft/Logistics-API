@@ -42,7 +42,8 @@ public class BlockListener implements Listener {
             Optional<LogisticBlock> oblock = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());
             oblock.ifPresent(block -> {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                    if (doubleRightClickCooldown.contains(event.getPlayer().getUniqueId())) return;
+                    if (doubleRightClickCooldown.contains(event.getPlayer().getUniqueId()))
+                        return;
                     block.onRightClick(event);
                     doubleRightClickCooldown.add(event.getPlayer().getUniqueId());
                     Bukkit.getScheduler().runTaskLater(LogisticsApi.getInstance(), () -> {

@@ -43,7 +43,8 @@ public interface InventoryStorage extends ItemStorage {
 
     default Inventory getStoredInventory() {
         Optional<Inventory> optionalInventory = getPersistentData().get(STORED_INVENTORY_META_KEY, Inventory.class);
-        if (optionalInventory.isPresent()) return optionalInventory.get();
+        if (optionalInventory.isPresent())
+            return optionalInventory.get();
         Inventory inventory = Bukkit.createInventory(getInventoryHolder(), getRowAmount() * 9, getInventoryName());
         getPersistentData().set(STORED_INVENTORY_META_KEY, inventory);
         return inventory;
@@ -74,13 +75,16 @@ public interface InventoryStorage extends ItemStorage {
     default ItemStack insertItem(LogisticBlockFace insertSide, ItemStack insertedItem, boolean simulate) {
         if (simulate) {
             int space = howMuchSpaceForItemAsync(insertSide, insertedItem);
-            if (space == 0) return insertedItem;
-            if (space >= insertedItem.getAmount()) return null;
+            if (space == 0)
+                return insertedItem;
+            if (space >= insertedItem.getAmount())
+                return null;
             ItemStack cloneItem = insertedItem.clone();
             cloneItem.setAmount(cloneItem.getAmount() - space);
             return cloneItem;
         }
-        if (!allowItemInsertion(insertSide, insertedItem)) return insertedItem;
+        if (!allowItemInsertion(insertSide, insertedItem))
+            return insertedItem;
         Inventory cachedInv = getStoredInventory();
         Collection<ItemStack> overflow = cachedInv.addItem(insertedItem).values();
         if (overflow.isEmpty()) {
@@ -92,7 +96,8 @@ public interface InventoryStorage extends ItemStorage {
 
     @Override
     default int howMuchSpaceForItemAsync(@NonNull LogisticBlockFace insertDirection, @NonNull ItemStack insertion) {
-        if (!allowItemInsertion(insertDirection, insertion)) return 0;
+        if (!allowItemInsertion(insertDirection, insertion))
+            return 0;
         Inventory cachedInv = getStoredInventory();
         int freeSpace = 0;
         for (int i = 0; i < cachedInv.getSize(); i++) {

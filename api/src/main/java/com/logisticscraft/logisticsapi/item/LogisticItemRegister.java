@@ -39,11 +39,12 @@ public class LogisticItemRegister {
 
     public Optional<LogisticItem> getLogisticItem(ItemStack item) {
         NBTItem nbtItem = new NBTItem(item);
-        if (!nbtItem.hasKey("itemid")) return Optional.empty();
+        if (!nbtItem.hasKey("itemid"))
+            return Optional.empty();
         return Optional.ofNullable(itemTypes.get(new LogisticKey(nbtItem.getString("itemid"))));
     }
-    
-    public Map<LogisticKey, LogisticItem> getRegisteredItems(){
+
+    public Map<LogisticKey, LogisticItem> getRegisteredItems() {
         return Collections.unmodifiableMap(itemTypes);
     }
 

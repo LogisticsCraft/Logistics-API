@@ -23,9 +23,12 @@ public interface EnergyStorage extends PersistentDataHolder {
 
     default void setStoredEnergy(final long energy) {
         final long newEnergy;
-        if (energy > getMaxEnergyStored()) newEnergy = getMaxEnergyStored();
-        else if (energy < 0) newEnergy = 0;
-        else newEnergy = energy;
+        if (energy > getMaxEnergyStored())
+            newEnergy = getMaxEnergyStored();
+        else if (energy < 0)
+            newEnergy = 0;
+        else
+            newEnergy = energy;
 
         if (newEnergy == 0) {
             getPersistentData().remove(STORED_ENERGY_META_KEY);

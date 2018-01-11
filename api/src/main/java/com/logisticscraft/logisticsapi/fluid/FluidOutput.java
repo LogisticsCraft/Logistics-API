@@ -14,8 +14,10 @@ import java.util.Optional;
 
 public interface FluidOutput extends FluidStorage {
 
-    default Optional<Entry<LogisticFluid, Long>> extractFluid(@NonNull LogisticBlockFace blockFace, final long limit, final boolean simulate) {
-        if (!getStoredFluidType().isPresent()) return Optional.empty();
+    default Optional<Entry<LogisticFluid, Long>> extractFluid(@NonNull LogisticBlockFace blockFace, final long limit,
+            final boolean simulate) {
+        if (!getStoredFluidType().isPresent())
+            return Optional.empty();
         long amountExtracted = Math.min(getStoredFluidAmount(), Math.min(getMaxFluidExtract(), limit));
         if (!simulate) {
             setStoredFluidAmount(getStoredFluidAmount() - amountExtracted);

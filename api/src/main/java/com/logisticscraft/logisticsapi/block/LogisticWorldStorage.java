@@ -28,7 +28,8 @@ public class LogisticWorldStorage {
     @Getter
     private NBTFile nbtFile;
 
-    public LogisticWorldStorage(@NonNull PersistenceStorage persistance, @NonNull LogisticBlockTypeRegister register, @NonNull final World world) throws IOException {
+    public LogisticWorldStorage(@NonNull PersistenceStorage persistance, @NonNull LogisticBlockTypeRegister register,
+            @NonNull final World world) throws IOException {
         this.persistence = persistance;
         this.register = register;
         this.world = world;
@@ -46,7 +47,8 @@ public class LogisticWorldStorage {
         NBTCompound chunks = nbtFile.getCompound("chunks");
 
         NBTCompound chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
-        if (chunkData == null || chunkData.getKeys().size() == 0) return Optional.empty();
+        if (chunkData == null || chunkData.getKeys().size() == 0)
+            return Optional.empty();
 
         Set<LogisticBlock> blocks = new HashSet<>();
         for (String key : chunkData.getKeys()) {
@@ -55,7 +57,7 @@ public class LogisticWorldStorage {
             Optional<LogisticBlockFactory> factory = register.getFactory(logisticKey);
             if (factory.isPresent()) {
                 LogisticBlock block = factory.get().onLoadUnsafe(blockData);
-                //TODO: Block onload nbt method
+                // TODO: Block onload nbt method
                 persistence.loadFields(block, blockData);
                 blocks.add(block);
             } else {
@@ -63,7 +65,8 @@ public class LogisticWorldStorage {
             }
         }
 
-        if (blocks.isEmpty()) return Optional.empty(); // Just in case
+        if (blocks.isEmpty())
+            return Optional.empty(); // Just in case
         return Optional.of(blocks);
     }
 
@@ -73,7 +76,8 @@ public class LogisticWorldStorage {
 
         SafeBlockLocation location = logisticBlock.getLocation();
         NBTCompound chunkData = chunks.getCompound(location.getChunkX() + ";" + location.getChunkZ());
-        if (chunkData == null) return;
+        if (chunkData == null)
+            return;
 
         if (chunkData.hasKey(location.getX() + ";" + location.getY() + ";" + location.getZ())) {
             chunkData.removeKey(location.getX() + ";" + location.getY() + ";" + location.getZ());
@@ -98,6 +102,6 @@ public class LogisticWorldStorage {
         persistence.saveFields(logisticBlock, blockData);
     }
 
-    //TODO: Loading blocks
+    // TODO: Loading blocks
 
 }

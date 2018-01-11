@@ -19,12 +19,12 @@ public class DebugCommands extends BaseCommand implements InventoryHolder {
 
     @Inject
     private LogisticItemRegister itemRegister;
-    
+
     @Subcommand("cheat|creative")
     public void onCheat(Player player) { // Just testing really
-        Inventory inv = Bukkit.createInventory(this, 6*9);
+        Inventory inv = Bukkit.createInventory(this, 6 * 9);
         int i = 0;
-        for(LogisticItem item : itemRegister.getRegisteredItems().values()){
+        for (LogisticItem item : itemRegister.getRegisteredItems().values()) {
             inv.setItem(i++, item.getItemStack(1));
         }
         player.openInventory(inv);

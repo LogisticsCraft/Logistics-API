@@ -13,6 +13,7 @@ import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.command.DebugCommands;
 import com.logisticscraft.logisticsapi.listeners.BlockListener;
 import com.logisticscraft.logisticsapi.listeners.ChunkListener;
+import com.logisticscraft.logisticsapi.listeners.ItemListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
@@ -99,10 +100,11 @@ public final class LogisticsApi extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(injector.getSingleton(ChunkListener.class), instance);
         pluginManager.registerEvents(injector.getSingleton(BlockListener.class), instance);
+        pluginManager.registerEvents(injector.getSingleton(ItemListener.class), instance);
 
         // Start the tick manager task
         tickManager.runTaskTimer(this, 20, 1);
-        
+
         // Register Commands
         BukkitCommandManager commmandManager = new BukkitCommandManager(this);
         commmandManager.registerCommand(injector.getSingleton(DebugCommands.class));

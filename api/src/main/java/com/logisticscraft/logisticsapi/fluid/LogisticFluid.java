@@ -23,7 +23,8 @@ public class LogisticFluid {
     private int temperature;
 
     public LogisticFluid(@NonNull Plugin plugin, @NonNull String internalName, @NonNull String displayName,
-                         @NonNull String fluidDictionary, @NonNull ItemStack representingItem, float density, boolean gaseous, int temperature) {
+            @NonNull String fluidDictionary, @NonNull ItemStack representingItem, float density, boolean gaseous,
+            int temperature) {
         this.id = new LogisticKey(plugin, internalName);
         this.displayName = displayName;
         this.parentPlugin = plugin;
@@ -36,10 +37,13 @@ public class LogisticFluid {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof LogisticFluid)) return false;
+        if (!(object instanceof LogisticFluid))
+            return false;
         LogisticFluid fluid = (LogisticFluid) object;
-        if (getId().equals(fluid.getId())) return true;
-        if (getFluidDictionary().equals(fluid.getFluidDictionary())) return true;
+        if (getId().equals(fluid.getId()))
+            return true;
+        if (getFluidDictionary().equals(fluid.getFluidDictionary()))
+            return true;
         return false;
     }
 

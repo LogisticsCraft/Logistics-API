@@ -3,10 +3,14 @@ package com.logisticscraft.logisticsapi;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
+import co.aikar.commands.BukkitCommandManager;
+
 import com.logisticscraft.logisticsapi.api.BlockManager;
+import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
+import com.logisticscraft.logisticsapi.command.DebugCommands;
 import com.logisticscraft.logisticsapi.listeners.BlockListener;
 import com.logisticscraft.logisticsapi.listeners.ChunkListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
@@ -39,6 +43,8 @@ public final class LogisticsApi extends JavaPlugin {
     // API
     @Getter
     private BlockManager blockManager;
+    @Getter
+    private ItemManager itemManager;
 
     @Override
     public void onLoad() {
@@ -69,6 +75,7 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Create API
         blockManager = injector.getSingleton(BlockManager.class);
+        itemManager = injector.getSingleton(ItemManager.class);
     }
 
     @Override
@@ -78,8 +85,7 @@ public final class LogisticsApi extends JavaPlugin {
         Tracer.info(Constants.ASCII_LOGO);
         String authors = description.getAuthors().toString();
         Tracer.info("by: " + authors.substring(1, authors.length() - 1));
-        Tracer.info("Server version: " + getServer().getVersion(),
-                "Bukkit version: " + getServer().getBukkitVersion());
+        Tracer.info("Server version: " + getServer().getVersion(), "Bukkit version: " + getServer().getBukkitVersion());
 
         // Load already loaded worlds
         for (World world : getServer().getWorlds()) {
@@ -96,6 +102,10 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Start the tick manager task
         tickManager.runTaskTimer(this, 20, 1);
+        
+        // Register Commands
+        BukkitCommandManager commmandManager = new BukkitCommandManager(this);
+        commmandManager.registerCommand(injector.getSingleton(DebugCommands.class));
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }

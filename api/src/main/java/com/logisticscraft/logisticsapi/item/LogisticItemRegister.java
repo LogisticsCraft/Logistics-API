@@ -1,17 +1,20 @@
 package com.logisticscraft.logisticsapi.item;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.utils.Tracer;
+
 import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LogisticItemRegister {
@@ -38,6 +41,10 @@ public class LogisticItemRegister {
         NBTItem nbtItem = new NBTItem(item);
         if (!nbtItem.hasKey("itemid")) return Optional.empty();
         return Optional.ofNullable(itemTypes.get(new LogisticKey(nbtItem.getString("itemid"))));
+    }
+    
+    public Map<LogisticKey, LogisticItem> getRegisteredItems(){
+        return Collections.unmodifiableMap(itemTypes);
     }
 
 }

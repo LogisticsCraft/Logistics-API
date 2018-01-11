@@ -2,8 +2,10 @@ package com.logisticscraft.logisticsexample;
 
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.api.BlockManager;
+import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
+import com.logisticscraft.logisticsapi.item.LogisticItem;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
 import com.logisticscraft.logisticsloader.LogisticInstallException;
 import com.logisticscraft.logisticsloader.LogisticsLoader;
@@ -14,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LogisticsExamplePlugin extends JavaPlugin implements Listener {
@@ -44,6 +47,14 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
                 return new TestBlock();
             }
         });
+        
+        ItemManager itemManager = LogisticsApi.getInstance().getItemManager();
+        ItemStack item = new ItemStack(Material.WOOL);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("TestBlock");
+        item.setItemMeta(meta);
+        LogisticItem logisticItem = new LogisticItem(this, "TestBlock", item);
+        itemManager.registerLogisticItem(logisticItem);
     }
 
     @Override

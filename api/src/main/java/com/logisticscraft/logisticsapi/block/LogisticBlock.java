@@ -6,6 +6,8 @@ import com.logisticscraft.logisticsapi.data.holder.DataHolder;
 import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
 import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.Getter;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -72,6 +74,17 @@ public abstract class LogisticBlock implements PersistentDataHolder, VolatileDat
      * @param event the PlayerInteractEvent
      */
     public void onRightClick(PlayerInteractEvent event) {
+    }
+    
+    /**
+     * Called when a placed block is saved (when the chunk is unloaded/block broken).
+     * WARNING: This method allows custom NBT handling, consider using
+     * PersistentLogisticBlockData to store custom data instead!
+     *
+     * @param nbtData the stored block data
+     * @deprecated as unsafe to use, for advanced use only
+     */
+    public void onNBTSave(NBTCompound nbtData){
     }
 
 }

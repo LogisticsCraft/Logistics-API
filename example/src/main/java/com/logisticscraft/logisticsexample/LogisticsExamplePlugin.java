@@ -1,24 +1,17 @@
 package com.logisticscraft.logisticsexample;
 
-import com.logisticscraft.logisticsapi.LogisticsApi;
-import com.logisticscraft.logisticsapi.api.BlockManager;
-import com.logisticscraft.logisticsapi.api.ItemManager;
-import com.logisticscraft.logisticsapi.block.LogisticBlock;
-import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
-import com.logisticscraft.logisticsapi.item.LogisticBlockItem;
-import com.logisticscraft.logisticsapi.item.LogisticItem;
-import com.logisticscraft.logisticsexample.blocks.TestBlock;
-import com.logisticscraft.logisticsloader.LogisticInstallException;
-import com.logisticscraft.logisticsloader.LogisticsLoader;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.logisticscraft.logisticsapi.LogisticsApi;
+import com.logisticscraft.logisticsapi.api.BlockManager;
+import com.logisticscraft.logisticsapi.api.ItemManager;
+import com.logisticscraft.logisticsapi.block.BasicBlockFactory;
+import com.logisticscraft.logisticsapi.item.LogisticBlockItem;
+import com.logisticscraft.logisticsexample.blocks.TestBlock;
 
 public final class LogisticsExamplePlugin extends JavaPlugin implements Listener {
 
@@ -36,18 +29,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
         }*/
 
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
-        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new LogisticBlockFactory() {
-
-            @Override
-            public LogisticBlock onPlace(Player player, ItemStack item, Location location) {
-                return new TestBlock();
-            }
-
-            @Override
-            public LogisticBlock onLoad() {
-                return new TestBlock();
-            }
-        });
+        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new BasicBlockFactory(TestBlock.class));
         
         ItemManager itemManager = LogisticsApi.getInstance().getItemManager();
         ItemStack item = new ItemStack(Material.WOOL);

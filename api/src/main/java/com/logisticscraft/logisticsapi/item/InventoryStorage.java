@@ -51,11 +51,11 @@ public interface InventoryStorage extends ItemStorage {
     }
 
     @Override
-    default ItemStack extractItem(LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate) {
+    default ItemStack extractItem(LogisticBlockFace extractionSide, int maxExtractAmount, ItemFilter filter, boolean simulate) {
         Inventory cachedInv = getStoredInventory();
         ItemStack takenIs = null;
         for (int i = 0; i < cachedInv.getSize(); i++) {
-            if (cachedInv.getItem(i) != null) {
+            if (cachedInv.getItem(i) != null && filter.matchesFilter(cachedInv.getItem(i))) {
                 int amountBefore = takenIs != null ? takenIs.getAmount() : 0;
                 if (takenIs == null && allowItemExtraction(extractionSide, cachedInv.getItem(i))) {
                     takenIs = cachedInv.getItem(i).clone();

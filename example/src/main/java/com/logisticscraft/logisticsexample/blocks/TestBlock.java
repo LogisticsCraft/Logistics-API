@@ -60,6 +60,7 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
     public void onRightClick(PlayerInteractEvent event) {
         if(!event.getPlayer().isSneaking()){
             event.getPlayer().openInventory(getInventory());
+            event.setCancelled(true);
         }
     }
 

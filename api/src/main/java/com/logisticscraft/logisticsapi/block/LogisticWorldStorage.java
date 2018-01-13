@@ -100,6 +100,7 @@ public class LogisticWorldStorage {
         }
         NBTCompound blockData = chunkData.addCompound(location.getX() + ";" + location.getY() + ";" + location.getZ());
         persistence.saveFields(logisticBlock, blockData);
+        logisticBlock.onNBTSave(blockData);
     }
 
     // TODO: Loading blocks

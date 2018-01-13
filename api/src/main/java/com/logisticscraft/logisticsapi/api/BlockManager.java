@@ -9,12 +9,16 @@ import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import javax.inject.Inject;
+
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -69,6 +73,10 @@ public class BlockManager {
             return;
         }
         blockCache.loadLogisticBlock(block.get());
+    }
+    
+    public Map<Chunk, Map<Location, LogisticBlock>> getPlacedBlocks(){
+        return blockCache.getAllLogisticBlocks();
     }
     
     public Optional<LogisticKey> getKey(LogisticBlock block){

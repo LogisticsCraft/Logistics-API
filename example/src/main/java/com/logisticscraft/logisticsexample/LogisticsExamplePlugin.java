@@ -12,6 +12,8 @@ import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.BasicBlockFactory;
 import com.logisticscraft.logisticsapi.item.LogisticBlockItem;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
+import com.logisticscraft.logisticsexample.blocks.TestEnergyConsumer;
+import com.logisticscraft.logisticsexample.blocks.TestEnergyProducer;
 
 public final class LogisticsExamplePlugin extends JavaPlugin implements Listener {
 
@@ -30,13 +32,27 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
 
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
         blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new BasicBlockFactory(TestBlock.class));
-        
+        blockManager.registerLogisticBlock(this, "testEnergyConsumer", TestEnergyConsumer.class, new BasicBlockFactory(TestEnergyConsumer.class));
+        blockManager.registerLogisticBlock(this, "testEnergyProducer", TestEnergyProducer.class, new BasicBlockFactory(TestEnergyProducer.class));
+
         ItemManager itemManager = LogisticsApi.getInstance().getItemManager();
         ItemStack item = new ItemStack(Material.WOOL);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("TestBlock");
         item.setItemMeta(meta);
         itemManager.registerLogisticItem(new LogisticBlockItem(TestBlock.class, item));
+        
+        item = new ItemStack(Material.STAINED_CLAY);
+        meta = item.getItemMeta();
+        meta.setDisplayName("TestEnergyProducer");
+        item.setItemMeta(meta);
+        itemManager.registerLogisticItem(new LogisticBlockItem(TestEnergyProducer.class, item));
+        
+        item = new ItemStack(Material.STAINED_GLASS);
+        meta = item.getItemMeta();
+        meta.setDisplayName("TestEnergyConsumer");
+        item.setItemMeta(meta);
+        itemManager.registerLogisticItem(new LogisticBlockItem(TestEnergyConsumer.class, item));
     }
 
     @Override

@@ -1,19 +1,22 @@
 package com.logisticscraft.logisticsapi.block;
 
+import java.util.Optional;
+
+import org.bukkit.block.Block;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.data.holder.DataHolder;
 import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
 import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
+import com.logisticscraft.logisticsapi.item.LogisticItem;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.Getter;
-import org.bukkit.block.Block;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-
-import java.util.Optional;
 
 /**
  * Represents a custom block handled by the API.
@@ -85,6 +88,10 @@ public abstract class LogisticBlock implements PersistentDataHolder, VolatileDat
      * @deprecated as unsafe to use, for advanced use only
      */
     public void onNBTSave(NBTCompound nbtData){
+    }
+    
+    public Optional<LogisticItem> getLogisticItem(){
+        return LogisticsApi.getInstance().getItemManager().getLogisticItem(typeId);
     }
 
 }

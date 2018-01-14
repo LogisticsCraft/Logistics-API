@@ -48,6 +48,10 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
                     block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.5, 0.5), item);
             }
             getInventory().setContents(new ItemStack[getInventory().getSize()]);
+            event.setDropItems(false);
+            getLogisticItem().ifPresent(item -> {
+                block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.5, 0.5), item.getItemStack(1));
+            });
         });
     }
 

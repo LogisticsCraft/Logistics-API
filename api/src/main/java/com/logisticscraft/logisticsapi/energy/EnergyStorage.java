@@ -30,24 +30,28 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
     }
 
     default long getStoredEnergy() {
-        return getPersistentData().get(STORED_ENERGY_META_KEY, Long.class).orElse(0L);
+        synchronized (this) {
+            return getPersistentData().get(STORED_ENERGY_META_KEY, Long.class).orElse(0L); 
+        }
     }
 
     default void setStoredEnergy(final long energy) {
-        final long newEnergy;
-        if (energy > getMaxEnergyStored())
-            newEnergy = getMaxEnergyStored();
-        else if (energy < 0)
-            newEnergy = 0;
-        else
-            newEnergy = energy;
+        synchronized (this) {
+            final long newEnergy;
+            if (energy > getMaxEnergyStored())
+                newEnergy = getMaxEnergyStored();
+            else if (energy < 0)
+                newEnergy = 0;
+            else
+                newEnergy = energy;
 
-        if (newEnergy == 0) {
-            getPersistentData().remove(STORED_ENERGY_META_KEY);
-            return;
+            if (newEnergy == 0) {
+                getPersistentData().remove(STORED_ENERGY_META_KEY);
+                return;
+            }
+
+            getPersistentData().set(STORED_ENERGY_META_KEY, newEnergy);
         }
-
-        getPersistentData().set(STORED_ENERGY_META_KEY, newEnergy);
     }
 
     @Target(ElementType.TYPE)
@@ -57,7 +61,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
         int capacity();
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     // Energy Bar
     ///////////////////////////////////////////////////////////////////////////
@@ -106,12 +110,12 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
      */
     default BarColor getEnergyBarColor() {
         switch ((int) (getEnergyBarProgress() * 2)) {
-            case 0:
-                return BarColor.RED;
-            case 1:
-                return BarColor.YELLOW;
-            case 2:
-                return BarColor.GREEN;
+        case 0:
+            return BarColor.RED;
+        case 1:
+            return BarColor.YELLOW;
+        case 2:
+            return BarColor.GREEN;
         }
         return BarColor.WHITE;
     }
@@ -171,7 +175,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
     default Optional<BossBar> setupEnergyBar() {
         setEnergyBar(BossBarManager.create(
                 getEnergyBarId(), getEnergyBarTitle(), getEnergyBarColor(), getEnergyBarStyle(), getEnergyBarFlags())
-        );
+                );
         return getEnergyBar();
     }
 

@@ -12,13 +12,15 @@ import java.lang.annotation.Target;
 public interface EnergyOutput extends EnergyStorage {
 
     default long extractEnergy(@NonNull LogisticBlockFace blockFace, final long available, final boolean simulate) {
-        if (!allowEnergyOutput(blockFace))
-            return 0;
-        long energyExtracted = Math.min(getStoredEnergy(), Math.min(getMaxEnergyExtract(), available));
-        if (!simulate) {
-            setStoredEnergy(getStoredEnergy() - energyExtracted);
+        synchronized (this) {
+            if (!allowEnergyOutput(blockFace))
+                return 0;
+            long energyExtracted = Math.min(getStoredEnergy(), Math.min(getMaxEnergyExtract(), available));
+            if (!simulate) {
+                setStoredEnergy(getStoredEnergy() - energyExtracted);
+            }
+            return energyExtracted;
         }
-        return energyExtracted;
     }
 
     default long getMaxEnergyExtract() {

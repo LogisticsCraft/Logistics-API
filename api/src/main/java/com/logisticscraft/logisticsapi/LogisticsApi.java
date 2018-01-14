@@ -12,6 +12,7 @@ import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.command.DebugCommands;
 import com.logisticscraft.logisticsapi.energy.EnergyDisplay;
+import com.logisticscraft.logisticsapi.item.CraftingManager;
 import com.logisticscraft.logisticsapi.listeners.BlockListener;
 import com.logisticscraft.logisticsapi.listeners.ChunkListener;
 import com.logisticscraft.logisticsapi.listeners.ItemListener;
@@ -75,6 +76,7 @@ public final class LogisticsApi extends JavaPlugin {
         tickManager = injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
         blockCache = injector.getSingleton(LogisticBlockCache.class);
+        injector.getSingleton(CraftingManager.class);
 
         // Create API
         blockManager = injector.getSingleton(BlockManager.class);

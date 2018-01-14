@@ -11,6 +11,7 @@ import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.command.DebugCommands;
+import com.logisticscraft.logisticsapi.energy.EnergyDisplay;
 import com.logisticscraft.logisticsapi.listeners.BlockListener;
 import com.logisticscraft.logisticsapi.listeners.ChunkListener;
 import com.logisticscraft.logisticsapi.listeners.ItemListener;
@@ -40,6 +41,7 @@ public final class LogisticsApi extends JavaPlugin {
     private Injector injector;
     private LogisticBlockCache blockCache;
     private LogisticTickManager tickManager;
+    private EnergyDisplay energyDisplay;
 
     // API
     @Getter
@@ -102,8 +104,9 @@ public final class LogisticsApi extends JavaPlugin {
         pluginManager.registerEvents(injector.getSingleton(BlockListener.class), instance);
         pluginManager.registerEvents(injector.getSingleton(ItemListener.class), instance);
 
-        // Start the tick manager task
+        // Start tasks
         tickManager.runTaskTimer(this, 20, 1);
+        energyDisplay = injector.getSingleton(EnergyDisplay.class);
 
         // Register Commands
         BukkitCommandManager commmandManager = new BukkitCommandManager(this);
@@ -116,6 +119,9 @@ public final class LogisticsApi extends JavaPlugin {
     public void onDisable() {
         Tracer.info("Disabling...");
 
+        energyDisplay.getShowEnergyBarTask().cancel();
+        energyDisplay.undisplayEnergyBarAll();
+        
         for (World world : getServer().getWorlds()) {
             injector.getSingleton(LogisticBlockCache.class).unregisterWorld(world);
         }

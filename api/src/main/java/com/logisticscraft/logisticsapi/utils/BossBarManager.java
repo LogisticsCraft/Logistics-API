@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.excluded.visual;
+package com.logisticscraft.logisticsapi.utils;
 
 import lombok.NonNull;
 import org.bukkit.Bukkit;

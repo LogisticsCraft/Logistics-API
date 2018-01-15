@@ -1,11 +1,10 @@
 package com.logisticscraft.logisticsapi.listeners;
 
-import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
+import com.logisticscraft.logisticsapi.service.PluginService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,8 +21,12 @@ import java.util.UUID;
 public class BlockListener implements Listener {
 
     @Inject
+    private PluginService pluginService;
+
+    @Inject
     private LogisticBlockCache blockCache;
-    private HashSet<UUID> doubleRightClickCooldown = new HashSet<>();
+
+    private HashSet<UUID> doubleRightClickCoolDown = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
@@ -39,15 +42,15 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Optional<LogisticBlock> oblock = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());
-            oblock.ifPresent(block -> {
+            Optional<LogisticBlock> oBlock = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());
+            oBlock.ifPresent(block -> {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                    if (doubleRightClickCooldown.contains(event.getPlayer().getUniqueId()))
+                    if (doubleRightClickCoolDown.contains(event.getPlayer().getUniqueId()))
                         return;
                     block.onRightClick(event);
-                    doubleRightClickCooldown.add(event.getPlayer().getUniqueId());
-                    Bukkit.getScheduler().runTaskLater(LogisticsApi.getInstance(), () -> {
-                        doubleRightClickCooldown.remove(event.getPlayer().getUniqueId());
+                    doubleRightClickCoolDown.add(event.getPlayer().getUniqueId());
+                    pluginService.runTaskLater(() -> {
+                        doubleRightClickCoolDown.remove(event.getPlayer().getUniqueId());
                     }, 1);
                 } else {
                     block.onLeftClick(event);

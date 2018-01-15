@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.inject.Inject;
@@ -45,6 +46,10 @@ public class PluginService {
 
     public Collection<? extends Player> getOnlinePlayers() {
         return server.getOnlinePlayers();
+    }
+
+    public void registerListener(Listener listener) {
+        server.getPluginManager().registerEvents(listener, plugin);
     }
 
 }

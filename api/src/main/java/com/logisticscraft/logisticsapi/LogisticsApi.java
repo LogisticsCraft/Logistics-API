@@ -58,18 +58,15 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Set the logger instance
         Tracer.setLogger(getLogger());
-        Tracer.setDebug(false); // Disabled by default TODO: load from config
 
         // Prepare the injector
         injector = new InjectorBuilder().addDefaultHandlers("com.logisticscraft.logisticsapi").create();
         injector.register(LogisticsApi.class, instance);
         injector.register(Server.class, getServer());
-        injector.register(PluginManager.class, getServer().getPluginManager());
-        injector.register(BukkitScheduler.class, getServer().getScheduler());
-        injector.provide(DataFolder.class, getDataFolder());
-        injector.registerProvider(SettingsManager.class, SettingsProvider.class);
 
         // Load configuration
+        injector.provide(DataFolder.class, getDataFolder());
+        injector.registerProvider(SettingsManager.class, SettingsProvider.class);
         SettingsManager settings = injector.getSingleton(SettingsManager.class);
         Tracer.setDebug(settings.getProperty(DEBUG_ENABLE));
 

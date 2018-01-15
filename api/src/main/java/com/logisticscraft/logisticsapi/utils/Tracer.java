@@ -1,5 +1,6 @@
 package com.logisticscraft.logisticsapi.utils;
 
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
@@ -11,7 +12,8 @@ import java.util.logging.Logger;
 public final class Tracer {
 
     @Setter
-    private boolean debug;
+    @Getter
+    private boolean debug = false;
     @Setter
     private Logger logger;
 

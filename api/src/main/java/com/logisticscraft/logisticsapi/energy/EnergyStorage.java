@@ -173,9 +173,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
      * @return Created EnergyBar
      */
     default Optional<BossBar> setupEnergyBar() {
-        setEnergyBar(BossBarManager.create(
-                getEnergyBarId(), getEnergyBarTitle(), getEnergyBarColor(), getEnergyBarStyle(), getEnergyBarFlags())
-                );
+        setEnergyBar(BossBarManager.create(getEnergyBarTitle(), getEnergyBarColor(), getEnergyBarStyle(), getEnergyBarFlags()));
         return getEnergyBar();
     }
 
@@ -184,7 +182,8 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
      * Automatically checks whether ID is null though it's not recommended to have unnecessary calls
      */
     default void deleteEnergyBar() {
-        if (getEnergyBarId() != null) BossBarManager.remove(getEnergyBarId());
+        // TODO: wtf is that?
+        //if (getEnergyBarId() != null) BossBarManager.remove(getEnergyBarId());
     }
 
     /**

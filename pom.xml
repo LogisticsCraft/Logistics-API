@@ -64,7 +64,7 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
         </repository>
         <repository>
-			<id>logisticscraft-remote</id>
+			<id>logisticscraft-repo</id>
 			<url>http://repo.frontfight.net/repository/maven-public/</url>
 		</repository>
         <repository>

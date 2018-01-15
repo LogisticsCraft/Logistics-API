@@ -12,14 +12,16 @@ import java.lang.annotation.Target;
 public interface EnergyInput extends EnergyStorage {
 
     default long receiveEnergy(@NonNull LogisticBlockFace blockFace, final long available, final boolean simulate) {
-        if (!allowEnergyInput(blockFace))
-            return 0;
-        long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(),
-                Math.min(getMaxEnergyReceive(), available));
-        if (!simulate) {
-            setStoredEnergy(getStoredEnergy() + energyReceived);
+        synchronized (this) {
+            if (!allowEnergyInput(blockFace))
+                return 0;
+            long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(),
+                    Math.min(getMaxEnergyReceive(), available));
+            if (!simulate) {
+                setStoredEnergy(getStoredEnergy() + energyReceived);
+            }
+            return energyReceived;
         }
-        return energyReceived;
     }
 
     default long getMaxEnergyReceive() {

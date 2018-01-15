@@ -60,19 +60,20 @@ public class BlockManager {
         blockCache.loadLogisticBlock(block.get());
     }
     
-    public void placeLogisticBlock(Player player, @NonNull ItemStack item, @NonNull Location location, @NonNull LogisticKey logisticKey) {
+    public Optional<LogisticBlock> placeLogisticBlock(Player player, @NonNull ItemStack item, @NonNull Location location, @NonNull LogisticKey logisticKey) {
         Optional<LogisticBlockFactory> factory = typeRegister.getFactory(logisticKey);
         if(!factory.isPresent()){
             Tracer.warn("Unable to find factory: " + logisticKey);
-            return; 
+            return Optional.empty(); 
         }
         LogisticBlock logisticBlock = factory.get().onPlace(player, item, location);
         Optional<LogisticBlock> block = blockCache.injectData(logisticBlock, location);
         if (!block.isPresent()) {
             Tracer.warn("Unable to place LogisticBlock: " + logisticBlock.getClass().getName());
-            return;
+            return Optional.empty(); 
         }
         blockCache.loadLogisticBlock(block.get());
+        return block;
     }
     
     public Map<Chunk, Map<Location, LogisticBlock>> getPlacedBlocks(){

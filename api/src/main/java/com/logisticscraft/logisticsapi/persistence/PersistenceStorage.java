@@ -30,6 +30,8 @@ public class PersistenceStorage {
 
         // Register default converters
         registerDataConverter(String.class, new StringAdapter(), false);
+        registerDataConverter(Integer.class, new IntegerAdapter(), false);
+        registerDataConverter(Long.class, new LongAdapter(), false);
         registerDataConverter(HashMap.class, new HashMapAdapter(), false);
         registerDataConverter(SafeBlockLocation.class, new SafeBlockLocationAdapter(), false);
         registerDataConverter(LogisticKey.class, new LogisticKeyAdapter(), false);

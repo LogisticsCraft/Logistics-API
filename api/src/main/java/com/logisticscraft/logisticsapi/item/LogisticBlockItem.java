@@ -1,5 +1,8 @@
 package com.logisticscraft.logisticsapi.item;
 
+import java.util.Optional;
+
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,9 +35,14 @@ public class LogisticBlockItem extends LogisticItem {
                 baseStack);
     }
 
-    public void onPlace(Player player, @NonNull ItemStack item, @NonNull Block block) {
-        LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(player, item, block.getLocation(),
+    public boolean onPlace(Player player, @NonNull ItemStack item, @NonNull Block block) {
+        Optional<LogisticBlock> logisticBlock = LogisticsApi.getInstance().getBlockManager().placeLogisticBlock(player, item, block.getLocation(),
                 representingBlockKey);
+        if(!logisticBlock.isPresent())return false;
+        if(player.getGameMode() != GameMode.CREATIVE)
+            item.setAmount(item.getAmount() -1);
+        logisticBlock.get().placeBlock(player, item, block);
+        return true;
     }
 
 }

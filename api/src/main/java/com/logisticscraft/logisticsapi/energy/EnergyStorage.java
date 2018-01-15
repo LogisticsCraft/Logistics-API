@@ -32,6 +32,10 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
     default long getStoredEnergy() {
         return getPersistentData().get(STORED_ENERGY_META_KEY, Long.class).orElse(0L);
     }
+    
+    default long getFreeSpace() {
+    	return getMaxEnergyStored() - getStoredEnergy();
+    }
 
     default void setStoredEnergy(final long energy) {
         final long newEnergy;

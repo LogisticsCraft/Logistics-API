@@ -4,19 +4,20 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.injector.Injector;
 import ch.jalu.injector.InjectorBuilder;
 import co.aikar.commands.BukkitCommandManager;
-
 import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.command.DebugCommands;
-import com.logisticscraft.logisticsapi.energy.EnergyDisplay;
+import com.logisticscraft.logisticsapi.energy.EnergyDisplayManager;
 import com.logisticscraft.logisticsapi.item.CraftingManager;
 import com.logisticscraft.logisticsapi.listeners.BlockListener;
 import com.logisticscraft.logisticsapi.listeners.ChunkListener;
 import com.logisticscraft.logisticsapi.listeners.ItemListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
+import com.logisticscraft.logisticsapi.service.PluginService;
+import com.logisticscraft.logisticsapi.service.shutdown.ShutdownHandlerService;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.utils.Tracer;
@@ -40,9 +41,10 @@ public final class LogisticsApi extends JavaPlugin {
 
     // Internal
     private Injector injector;
+    private ShutdownHandlerService shutdownHandlerService;
     private LogisticBlockCache blockCache;
     private LogisticTickManager tickManager;
-    private EnergyDisplay energyDisplay;
+    private EnergyDisplayManager energyDisplayManager;
 
     // API
     @Getter
@@ -72,11 +74,14 @@ public final class LogisticsApi extends JavaPlugin {
         Tracer.setDebug(settings.getProperty(DEBUG_ENABLE));
 
         // Enable internal services
+        injector.getSingleton(PluginService.class);
+        shutdownHandlerService = injector.getSingleton(ShutdownHandlerService.class);
         injector.getSingleton(PersistenceStorage.class);
         tickManager = injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
         blockCache = injector.getSingleton(LogisticBlockCache.class);
         injector.getSingleton(CraftingManager.class);
+        energyDisplayManager = injector.getSingleton(EnergyDisplayManager.class);
 
         // Create API
         blockManager = injector.getSingleton(BlockManager.class);
@@ -107,12 +112,13 @@ public final class LogisticsApi extends JavaPlugin {
         pluginManager.registerEvents(injector.getSingleton(ItemListener.class), instance);
 
         // Start tasks
-        tickManager.runTaskTimer(this, 20, 1);
-        energyDisplay = injector.getSingleton(EnergyDisplay.class);
+        tickManager.runTaskTimer(this, 20L, 1L);
+        energyDisplayManager.runTaskTimer(this, 30L, 30L);
 
         // Register Commands
-        BukkitCommandManager commmandManager = new BukkitCommandManager(this);
-        commmandManager.registerCommand(injector.getSingleton(DebugCommands.class));
+        BukkitCommandManager commandManager = new BukkitCommandManager(this);
+        injector.register(BukkitCommandManager.class, commandManager);
+        commandManager.registerCommand(injector.getSingleton(DebugCommands.class));
 
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been enabled.");
     }
@@ -121,13 +127,16 @@ public final class LogisticsApi extends JavaPlugin {
     public void onDisable() {
         Tracer.info("Disabling...");
 
-        energyDisplay.getShowEnergyBarTask().cancel();
-        energyDisplay.undisplayEnergyBarAll();
-        
-        for (World world : getServer().getWorlds()) {
-            injector.getSingleton(LogisticBlockCache.class).unregisterWorld(world);
-        }
+        // Invalidate the instance
         instance = null;
+
+        // Shutdown components
+        shutdownHandlerService.shutdownComponents();
+
+        // Unload the worlds in the end, to prevent shutdownComponents order issues
+        for (World world : getServer().getWorlds()) {
+            blockCache.unregisterWorld(world);
+        }
 
         PluginDescriptionFile description = getDescription();
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been disabled.");

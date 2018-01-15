@@ -145,7 +145,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
 
     /**
      * Gets the instance of {@link BossBar} representing Block's EnergyBar,
-     * Used by {@link EnergyDisplay} to dynamically display it if Player is looking at this Block.
+     * Used by {@link EnergyDisplayManager} to dynamically display it if Player is looking at this Block.
      * It's highly recommended to use it just getValue a regular {@link Getter}
      * together with .setEnergyBar() and .updateEnergyBar().
      *
@@ -157,7 +157,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
 
     /**
      * Sets the instance of {@link BossBar} representing Block's EnergyBar,
-     * Used by {@link EnergyDisplay} to dynamically display it if Player is looking at this Block.
+     * Used by {@link EnergyDisplayManager} to dynamically display it if Player is looking at this Block.
      * It's highly recommended to use it just getValue a regular {@link Setter}
      * together with .getEnergyBar() and .updateEnergyBar().
      *

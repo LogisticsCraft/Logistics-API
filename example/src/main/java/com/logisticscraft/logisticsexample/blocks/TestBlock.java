@@ -7,6 +7,8 @@ import com.logisticscraft.logisticsapi.energy.EnergyOutput;
 import com.logisticscraft.logisticsapi.energy.EnergyStorage;
 import com.logisticscraft.logisticsapi.item.InventoryStorage;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -66,6 +68,11 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
             event.getPlayer().openInventory(getInventory());
             event.setCancelled(true);
         }
+    }
+
+    @Override
+    public void placeBlock(Player player, ItemStack item, Block block) {
+        block.setType(Material.WOOL);
     }
 
 }

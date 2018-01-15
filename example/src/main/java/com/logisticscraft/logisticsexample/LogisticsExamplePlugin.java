@@ -39,7 +39,7 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
         blockManager.registerLogisticBlock(this, "testEnergyProducer", TestEnergyProducer.class, new BasicBlockFactory(TestEnergyProducer.class));
 
         ItemManager itemManager = LogisticsApi.getInstance().getItemManager();
-        ItemStack item = new ItemStack(Material.WOOL);
+        ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("TestBlock");
         item.setItemMeta(meta);

@@ -2,9 +2,12 @@ package com.logisticscraft.logisticsapi.block;
 
 import java.util.Optional;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
@@ -54,6 +57,16 @@ public abstract class LogisticBlock implements PersistentDataHolder, VolatileDat
         return volatileData;
     }
 
+    public void placeBlock(Player player, ItemStack item, Block block){
+        // Fallback for blocks. Please consider overwriting it!
+        if(item == null)block.setType(Material.COBBLESTONE);
+        if(item.getType().isBlock()){
+            block.setType(item.getType());
+        }else{
+            block.setType(Material.COBBLESTONE);
+        }
+    }
+    
     /**
      * Overwrite this method intercept the BlockBreakEvent.
      * If the event isn't cancelled the LogisticBlock will be removed.

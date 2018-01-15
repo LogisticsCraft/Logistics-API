@@ -140,7 +140,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
      * @return BarFlags to be used for EnergyBar
      */
     default BarFlag[] getEnergyBarFlags() {
-        return null;
+        return new BarFlag[0];
     }
 
     /**

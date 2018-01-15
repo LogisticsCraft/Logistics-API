@@ -1,9 +1,14 @@
 package com.logisticscraft.logisticsapi;
 
-import ch.jalu.configme.SettingsManager;
-import ch.jalu.injector.Injector;
-import ch.jalu.injector.InjectorBuilder;
-import co.aikar.commands.BukkitCommandManager;
+import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
+
+import org.bukkit.Chunk;
+import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
@@ -21,17 +26,13 @@ import com.logisticscraft.logisticsapi.service.shutdown.ShutdownHandlerService;
 import com.logisticscraft.logisticsapi.settings.DataFolder;
 import com.logisticscraft.logisticsapi.settings.SettingsProvider;
 import com.logisticscraft.logisticsapi.utils.Tracer;
+
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.injector.Injector;
+import ch.jalu.injector.InjectorBuilder;
+import co.aikar.commands.BukkitCommandManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bukkit.Chunk;
-import org.bukkit.Server;
-import org.bukkit.World;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
-
-import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
 
 @NoArgsConstructor
 public final class LogisticsApi extends JavaPlugin {
@@ -63,6 +64,7 @@ public final class LogisticsApi extends JavaPlugin {
         injector = new InjectorBuilder().addDefaultHandlers("com.logisticscraft.logisticsapi").create();
         injector.register(LogisticsApi.class, instance);
         injector.register(Server.class, getServer());
+        injector.register(PluginManager.class, getServer().getPluginManager());
 
         // Load configuration
         injector.provide(DataFolder.class, getDataFolder());

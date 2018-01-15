@@ -38,6 +38,7 @@ public class LogisticItemRegister {
     }
 
     public Optional<LogisticItem> getLogisticItem(ItemStack item) {
+        if(item == null || !item.hasItemMeta())return Optional.empty();
         NBTItem nbtItem = new NBTItem(item);
         if (!nbtItem.hasKey("itemid"))
             return Optional.empty();

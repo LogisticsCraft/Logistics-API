@@ -87,5 +87,9 @@ public class BlockManager {
     public Optional<LogisticKey> getKey(Class<? extends LogisticBlock> block){
         return typeRegister.getKey(block);
     }
+    
+    public Optional<LogisticBlock> getLoadedBlockat(@NonNull Location location){
+        return blockCache.getCachedLogisticBlockAt(location);
+    }
 
 }

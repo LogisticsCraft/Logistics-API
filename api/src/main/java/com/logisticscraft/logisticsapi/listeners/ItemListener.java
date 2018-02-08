@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -28,7 +29,7 @@ public class ItemListener implements Listener {
     @Inject
     private LogisticItemRegister itemRegister;
 
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
     public void onPlacer(BlockPlaceEvent event) {
         if(!event.canBuild())return;
         Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getItemInHand());
@@ -39,7 +40,7 @@ public class ItemListener implements Listener {
         });
     }
 
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
     public void onPlace(PlayerInteractEvent event){
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
             Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getItem());
@@ -50,7 +51,7 @@ public class ItemListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent event){
         Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getItem());
         logisticItem.ifPresent(item -> {
@@ -62,7 +63,7 @@ public class ItemListener implements Listener {
         });
     }
     
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
     public void onAttack(EntityDamageByEntityEvent event){
         if(event.getCause() == DamageCause.ENTITY_ATTACK && event.getDamager() instanceof Player){
             Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(((Player)event.getDamager()).getInventory().getItemInMainHand());

@@ -4,6 +4,9 @@ import com.logisticscraft.logisticsapi.data.LogisticKey;
 import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.Getter;
 import lombok.NonNull;
+
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -38,6 +41,18 @@ public class LogisticItem {
 
     public boolean hasItemDictionary() {
         return getItemDictionary() != null;
+    }
+    
+    public void onRightClick(PlayerInteractEvent event){
+        
+    }
+    
+    public void onLeftClick(PlayerInteractEvent event){
+        
+    }
+    
+    public void onAttack(EntityDamageByEntityEvent event){
+        
     }
 
 }

@@ -127,13 +127,17 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         //Spigot changes the chars beginning from a
         HashMap<Character, ItemStack> spigotMapping = new HashMap<>();
         int tc = 'a';
-        for(Entry<Character, Material> s : vanillaIngredients.entrySet()){
-            spigotMapping.put((char)tc, new ItemStack(s.getValue()));
-            tc++;
-        }
-        for(Entry<Character, ItemStack> s : ingredients.entrySet()){
-            spigotMapping.put((char)tc, s.getValue());
-            tc++;
+        String pattern = "";
+        for(String s : recipe)pattern += s;
+        char[] charPattern = pattern.toCharArray();
+        for(char p : charPattern){
+            if(vanillaIngredients.containsKey(p)){
+                spigotMapping.put((char)tc, new ItemStack(vanillaIngredients.get(p)));
+                tc++;
+            }else if(ingredients.containsKey(p)){
+                spigotMapping.put((char)tc, ingredients.get(p));
+                tc++;
+            }
         }
         if(spigotMapping.containsKey(c)){
             return spigotMapping.get(c);

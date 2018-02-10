@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.event.ItemRegisterEvent;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -24,6 +26,7 @@ public class LogisticItemRegister {
     public void registerLogisticItem(@NotNull LogisticItem item) {
         if (itemTypes.putIfAbsent(item.getKey(), item) == null) {
             Tracer.debug("Item register: " + item.getKey());
+            Bukkit.getPluginManager().callEvent(new ItemRegisterEvent(item));
         } else {
             Tracer.warn("Trying to reregister kown Item: " + item.getKey());
         }

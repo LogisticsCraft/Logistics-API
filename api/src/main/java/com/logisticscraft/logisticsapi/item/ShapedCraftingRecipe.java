@@ -16,6 +16,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 
 import com.logisticscraft.logisticsapi.LogisticsApi;
+import com.logisticscraft.logisticsapi.event.RecipeRegisterEvent;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
     private Plugin plugin;
     @Getter
     private String key;
+    @Getter
     private ItemStack result;
     private Map<Character, Material> vanillaIngredients;
     private Map<Character, ItemStack> ingredients;
@@ -73,6 +75,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         for(Entry<Character, ItemStack> s : ingredients.entrySet())
             recipe.setIngredient(s.getKey(), s.getValue().getData());
         Bukkit.addRecipe(recipe);
+        Bukkit.getPluginManager().callEvent(new RecipeRegisterEvent(this, recipe));
     }
 
     @EventHandler
@@ -118,6 +121,16 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
                 e.getInventory().setResult(null);
             }
         }
+    }
+    
+    public ItemStack getIngredient(char c){
+        if(ingredients.containsKey(c)){
+            return ingredients.get(c);
+        }
+        if(vanillaIngredients.containsKey(c)){
+            return new ItemStack(vanillaIngredients.get(c));
+        }
+        return null;
     }
 
 }

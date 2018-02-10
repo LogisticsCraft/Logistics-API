@@ -1,11 +1,14 @@
 package com.logisticscraft.logisticsapi.block;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.event.BlockRegisterEvent;
 import com.logisticscraft.logisticsapi.utils.Tracer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Synchronized;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import javax.inject.Inject;
@@ -33,6 +36,7 @@ public class LogisticBlockTypeRegister {
             factories.put(new LogisticKey(plugin, name), factory);
             tickManager.registerLogisticBlockClass(block);
             Tracer.debug("LogisticBlock Registert: " + block.getName());
+            Bukkit.getPluginManager().callEvent(new BlockRegisterEvent(new LogisticKey(plugin, name), block));
         } else {
             Tracer.warn("Trying to reregister known key: " + new LogisticKey(plugin, name).getName());
         }

@@ -28,7 +28,7 @@ public class BlockListener implements Listener {
 
     private HashSet<UUID> doubleRightClickCoolDown = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled=true, priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
         Optional<LogisticBlock> block = blockCache.getCachedLogisticBlockAt(event.getBlock().getLocation());
         block.ifPresent(b -> {
@@ -39,7 +39,7 @@ public class BlockListener implements Listener {
         });
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled=true)
     public void onInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Optional<LogisticBlock> oBlock = blockCache.getCachedLogisticBlockAt(event.getClickedBlock().getLocation());

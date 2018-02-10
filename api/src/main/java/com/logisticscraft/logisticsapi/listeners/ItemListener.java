@@ -1,11 +1,14 @@
 package com.logisticscraft.logisticsapi.listeners;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -46,7 +49,14 @@ public class ItemListener implements Listener {
             Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getItem());
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
             if(logisticItem.isPresent() && block.getType() == Material.AIR && logisticItem.get() instanceof LogisticBlockItem){
-                ((LogisticBlockItem) logisticItem.get()).onPlace(event.getPlayer(), event.getItem(), block);
+                Collection<Entity> entities = block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5);
+                for(Entity ent : entities){
+                    if(ent instanceof LivingEntity){
+                        return;
+                    }
+                }
+                if(((LogisticBlockItem) logisticItem.get()).onPlace(event.getPlayer(), event.getItem(), block))
+                    event.setCancelled(true);
             }
         }
     }
@@ -62,7 +72,7 @@ public class ItemListener implements Listener {
             }
         });
     }
-    
+
     @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
     public void onAttack(EntityDamageByEntityEvent event){
         if(event.getCause() == DamageCause.ENTITY_ATTACK && event.getDamager() instanceof Player){

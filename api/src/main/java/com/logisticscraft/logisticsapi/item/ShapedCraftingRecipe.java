@@ -124,11 +124,19 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
     }
     
     public ItemStack getIngredient(char c){
-        if(ingredients.containsKey(c)){
-            return ingredients.get(c);
+        //Spigot changes the chars beginning from a
+        HashMap<Character, ItemStack> spigotMapping = new HashMap<>();
+        int tc = 'a';
+        for(Entry<Character, Material> s : vanillaIngredients.entrySet()){
+            spigotMapping.put((char)tc, new ItemStack(s.getValue()));
+            tc++;
         }
-        if(vanillaIngredients.containsKey(c)){
-            return new ItemStack(vanillaIngredients.get(c));
+        for(Entry<Character, ItemStack> s : ingredients.entrySet()){
+            spigotMapping.put((char)tc, s.getValue());
+            tc++;
+        }
+        if(spigotMapping.containsKey(c)){
+            return spigotMapping.get(c);
         }
         return null;
     }

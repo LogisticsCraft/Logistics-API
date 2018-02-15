@@ -7,11 +7,14 @@ import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.utils.Tracer;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
 import lombok.Synchronized;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import javax.inject.Inject;
@@ -37,7 +40,7 @@ public class LogisticBlockCache {
 
     @Inject
     LogisticBlockCache(PluginManager pluginManager, LogisticBlockTypeRegister typeRegister,
-                       LogisticTickManager tickManager, PersistenceStorage persistence) {
+            LogisticTickManager tickManager, PersistenceStorage persistence) {
         this.pluginManager = pluginManager;
         this.typeRegister = typeRegister;
         this.tickManager = tickManager;
@@ -159,6 +162,9 @@ public class LogisticBlockCache {
     public void registerWorld(@NonNull World world) {
         try {
             worldStorage.put(world, new LogisticWorldStorage(persistence, typeRegister, world));
+            for(Chunk chunk : world.getLoadedChunks()){
+                loadSavedBlocks(chunk);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -179,6 +185,32 @@ public class LogisticBlockCache {
             }
             worldStorage.remove(world);
         }
+    }
+
+    @Synchronized
+    public void saveWorldData(@NonNull World world){
+        if (worldStorage.containsKey(world)) {
+            LogisticWorldStorage storage = worldStorage.get(world);
+            for (Chunk chunk : getChunksWithLogisticBlocksInWorld(world)) {
+                for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk).entrySet()){
+                    pluginManager.callEvent(new LogisticBlockSaveEvent(data.getKey(), data.getValue()));
+                    storage.saveLogisticBlock(data.getValue());
+                }
+            }
+            try {
+                storage.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    @Synchronized
+    public NBTCompound getPluginContainer(@NonNull World world, @NonNull Plugin plugin){
+        if (worldStorage.containsKey(world)) {
+            return worldStorage.get(world).getPluginContainer(plugin);
+        }
+        return null;
     }
 
     @Synchronized

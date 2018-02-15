@@ -11,6 +11,7 @@ import lombok.NonNull;
 import lombok.Synchronized;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,6 +104,16 @@ public class LogisticWorldStorage {
         logisticBlock.onNBTSave(blockData);
     }
 
+    @Synchronized
+    public NBTCompound getPluginContainer(@NonNull Plugin plugin){
+        if (!nbtFile.hasKey("pluginData"))
+            nbtFile.addCompound("pluginData");
+        NBTCompound comp = nbtFile.getCompound("pluginData");
+        if (!comp.hasKey(plugin.getName()))
+            comp.addCompound(plugin.getName());
+        return comp.getCompound(plugin.getName());
+    }
+    
     // TODO: Loading blocks
 
 }

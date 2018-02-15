@@ -6,12 +6,15 @@ import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.utils.Tracer;
+
+import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -92,4 +95,12 @@ public class BlockManager {
         return blockCache.getCachedLogisticBlockAt(location);
     }
 
+    public void saveWorld(@NonNull World world){
+        blockCache.saveWorldData(world);
+    }
+    
+    public NBTCompound getPluginContainer(@NonNull World world, @NonNull Plugin plugin){
+        return blockCache.getPluginContainer(world, plugin);
+    }
+    
 }

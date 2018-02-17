@@ -61,7 +61,7 @@ public class ItemListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent event){
         Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getItem());
         logisticItem.ifPresent(item -> {

@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -81,6 +82,14 @@ public class ItemListener implements Listener {
                 item.onAttack(event);
             });
         }
+    }
+    
+    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
+    public void onBreak(BlockBreakEvent event){
+        Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getPlayer().getInventory().getItemInMainHand());
+        logisticItem.ifPresent(item -> {
+            item.onBreak(event);
+        });
     }
 
 }

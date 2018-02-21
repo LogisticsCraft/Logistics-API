@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.bukkit.inventory.ItemStack;
+
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.item.CraftingManager;
 import com.logisticscraft.logisticsapi.item.LogisticItem;
@@ -33,6 +35,10 @@ public class ItemManager {
     public void registerRecipe(@NonNull Recipe recipe){
         recipe.register();
         craftingManager.addRecipe(recipe);
+    }
+    
+    public Optional<LogisticItem> getLogisticItem(@NonNull ItemStack item) {
+        return itemRegister.getLogisticItem(item);
     }
 
 }

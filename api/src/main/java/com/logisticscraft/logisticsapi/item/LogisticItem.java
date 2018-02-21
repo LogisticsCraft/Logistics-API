@@ -5,6 +5,7 @@ import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.Getter;
 import lombok.NonNull;
 
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -52,6 +53,10 @@ public class LogisticItem {
     }
     
     public void onAttack(EntityDamageByEntityEvent event){
+        
+    }
+    
+    public void onBreak(BlockBreakEvent event){
         
     }
 

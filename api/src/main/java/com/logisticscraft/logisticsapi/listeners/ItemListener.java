@@ -33,7 +33,7 @@ public class ItemListener implements Listener {
     @Inject
     private LogisticItemRegister itemRegister;
 
-    @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlacer(BlockPlaceEvent event) {
         if(!event.canBuild())return;
         Optional<LogisticItem> logisticItem = itemRegister.getLogisticItem(event.getItemInHand());

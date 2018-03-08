@@ -72,6 +72,15 @@ public class LogisticWorldStorage {
     }
 
     @Synchronized
+    public void removeChunk(@NonNull final Chunk chunk) {
+        NBTCompound chunks = nbtFile.addCompound("chunks");
+
+        NBTCompound chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
+        if (chunkData != null)
+            chunks.removeKey(chunk.getX() + ";" + chunk.getZ());
+    }
+    
+    @Synchronized
     public void removeLogisticBlock(@NonNull final LogisticBlock logisticBlock) {
         NBTCompound chunks = nbtFile.addCompound("chunks");
 

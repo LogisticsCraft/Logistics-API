@@ -192,6 +192,7 @@ public class LogisticBlockCache {
         if (worldStorage.containsKey(world)) {
             LogisticWorldStorage storage = worldStorage.get(world);
             for (Chunk chunk : getChunksWithLogisticBlocksInWorld(world)) {
+                storage.removeChunk(chunk);
                 for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk).entrySet()){
                     pluginManager.callEvent(new LogisticBlockSaveEvent(data.getKey(), data.getValue()));
                     storage.saveLogisticBlock(data.getValue());

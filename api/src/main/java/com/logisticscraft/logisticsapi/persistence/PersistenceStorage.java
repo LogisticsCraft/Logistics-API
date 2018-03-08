@@ -62,15 +62,16 @@ public class PersistenceStorage {
 
     public void saveFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
         ReflectionUtils.getFieldsRecursively(object.getClass(), Object.class).stream()
-                .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
-                    field.setAccessible(true);
-                    try {
-                        saveObject(field.get(object), nbtCompound.addCompound(field.getName()));
-                    } catch (IllegalAccessException e) {
-                        throw new IllegalStateException(
-                                "Unable to save field " + object.getClass().getSimpleName() + "." + field.getName(), e);
-                    }
-                });
+        .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
+            field.setAccessible(true);
+            try {
+                if(field.get(object) != null)
+                    saveObject(field.get(object), nbtCompound.addCompound(field.getName()));
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException(
+                        "Unable to save field " + object.getClass().getSimpleName() + "." + field.getName(), e);
+            }
+        });
     }
 
     public void loadFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
@@ -79,19 +80,20 @@ public class PersistenceStorage {
 
     public void loadFieldsDataObject(@NonNull Object parent, @NonNull Object object, @NonNull NBTCompound nbtCompound) {
         ReflectionUtils.getFieldsRecursively(object.getClass(), Object.class).stream()
-                .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
-                    field.setAccessible(true);
-                    if (nbtCompound.hasKey(field.getName())) {
-                        try {
-                            field.set(object,
-                                    loadObject(parent, field.getType(), nbtCompound.getCompound(field.getName())));
-                        } catch (IllegalAccessException e) {
-                            throw new IllegalStateException(
-                                    "Unable to load field " + object.getClass().getSimpleName() + "." + field.getName(),
-                                    e);
-                        }
-                    }
-                });
+        .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
+            field.setAccessible(true);
+            if (nbtCompound.hasKey(field.getName())) {
+                try {
+                    Object obj = loadObject(parent, field.getType(), nbtCompound.getCompound(field.getName()));
+                    if(obj != null || !(field.getType() == int.class || field.getType() == float.class || field.getType() == double.class))
+                        field.set(object, obj);
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException(
+                            "Unable to load field " + object.getClass().getSimpleName() + "." + field.getName(),
+                            e);
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

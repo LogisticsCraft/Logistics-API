@@ -137,6 +137,9 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
             }else if(ingredients.containsKey(p)){
                 spigotMapping.put((char)tc, ingredients.get(p));
                 tc++;
+            }else{
+                spigotMapping.put((char)tc, null);
+                tc++;
             }
         }
         if(spigotMapping.containsKey(c)){

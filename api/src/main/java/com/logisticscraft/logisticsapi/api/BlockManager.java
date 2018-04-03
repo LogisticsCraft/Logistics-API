@@ -103,4 +103,8 @@ public class BlockManager {
         return blockCache.getPluginContainer(world, plugin);
     }
     
+    public void removeBlock(@NonNull Location location){
+        blockCache.unloadLogisticBlock(location, false);
+    }
+    
 }

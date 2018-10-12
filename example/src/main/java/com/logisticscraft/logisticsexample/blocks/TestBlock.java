@@ -6,6 +6,8 @@ import com.logisticscraft.logisticsapi.energy.EnergyInput;
 import com.logisticscraft.logisticsapi.energy.EnergyOutput;
 import com.logisticscraft.logisticsapi.energy.EnergyStorage;
 import com.logisticscraft.logisticsapi.item.InventoryStorage;
+
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -14,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 
 import java.util.Random;
 
@@ -27,8 +30,9 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
     @LogisticTickManager.Ticking(ticks = 10)
     public void update() {
         getBlock().ifPresent(block -> {
-            block.setType(Material.WOOL);
-            block.setData((byte) new Random().nextInt(15));
+            block.setType(Material.WHITE_WOOL);
+            Wool wool = (Wool) block.getState();
+            wool.setColor(DyeColor.values()[new Random().nextInt(DyeColor.values().length-1)]);
         });
     }
 
@@ -72,7 +76,7 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
 
     @Override
     public void placeBlock(Player player, ItemStack item, Block block) {
-        block.setType(Material.WOOL);
+        block.setType(Material.WHITE_WOOL);
     }
 
 }

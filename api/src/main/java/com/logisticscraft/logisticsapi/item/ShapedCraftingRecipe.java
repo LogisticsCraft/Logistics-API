@@ -1,6 +1,7 @@
 package com.logisticscraft.logisticsapi.item;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice.MaterialChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 
@@ -34,6 +36,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
     @Getter
     private ItemStack result;
     private Map<Character, Material> vanillaIngredients;
+    private Map<Character, List<Material>> vanillaGroups;
     private Map<Character, ItemStack> ingredients;
     private String[] recipe;
     private String permission;
@@ -42,7 +45,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
 
     @Builder
     public ShapedCraftingRecipe(@NonNull Plugin plugin, @NonNull String key, @NonNull ItemStack crafts, 
-            @Singular("addVanillaIngredient") Map<Character, Material> vanillaIngredients,
+            @Singular("addVanillaIngredient") Map<Character, Material> vanillaIngredients, @Singular("addVanillaIngredient") Map<Character, List<Material>> vanillaGroups,
             @Singular("addIngredient") Map<Character, ItemStack> ingredients, @NonNull String[] recipe , String permission) {
         super();
         this.namespacedKey = new NamespacedKey(plugin, key);
@@ -52,6 +55,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         if(ingredients == null)ingredients = new HashMap<>();
         this.result = crafts;
         this.vanillaIngredients = vanillaIngredients;
+        this.vanillaGroups = vanillaGroups;
         this.ingredients = ingredients;
         this.recipe = recipe;
         this.permission = permission;
@@ -62,6 +66,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         return namespacedKey;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void register() {
         if(registered)return;
@@ -74,6 +79,8 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
             recipe.setIngredient(s.getKey(), s.getValue());
         for(Entry<Character, ItemStack> s : ingredients.entrySet())
             recipe.setIngredient(s.getKey(), s.getValue().getData());
+        for(Entry<Character, List<Material>> s : vanillaGroups.entrySet())
+            recipe.setIngredient(s.getKey(), new MaterialChoice(s.getValue()));
         Bukkit.addRecipe(recipe);
         Bukkit.getPluginManager().callEvent(new RecipeRegisterEvent(this, recipe));
     }
@@ -105,6 +112,8 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
                     ItemStack is = e.getInventory().getItem(min);
                     if (is != null && vanillaIngredients.containsKey(charPattern[i]) && is.getType() == vanillaIngredients.get(charPattern[i])) {
                         break;//Ok
+                    }else if (is != null && vanillaGroups.containsKey(charPattern[i]) && vanillaGroups.get(charPattern[i]).contains(is.getType())) {
+                        break;//Ok
                     }else if(is != null && ingredients.containsKey(charPattern[i]) && is.isSimilar(ingredients.get(charPattern[i]))) {
                         break;//Ok
                     }else if(charPattern[i] == ' '){
@@ -134,6 +143,9 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
             if(vanillaIngredients.containsKey(p)){
                 spigotMapping.put((char)tc, new ItemStack(vanillaIngredients.get(p)));
                 tc++;
+            }else if(vanillaGroups.containsKey(p)){
+                spigotMapping.put((char)tc, new ItemStack(vanillaGroups.get(p).get(0)));
+                tc++;
             }else if(ingredients.containsKey(p)){
                 spigotMapping.put((char)tc, ingredients.get(p));
                 tc++;
@@ -147,5 +159,5 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         }
         return null;
     }
-
+    
 }

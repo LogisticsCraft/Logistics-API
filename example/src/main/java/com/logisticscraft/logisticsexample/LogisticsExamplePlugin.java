@@ -46,13 +46,13 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
         testBlockItem = new LogisticBlockItem(TestBlock.class, item);
         itemManager.registerLogisticItem(testBlockItem);
         
-        item = new ItemStack(Material.STAINED_CLAY);
+        item = new ItemStack(Material.BROWN_TERRACOTTA);
         meta = item.getItemMeta();
         meta.setDisplayName("TestEnergyProducer");
         item.setItemMeta(meta);
         itemManager.registerLogisticItem(new LogisticBlockItem(TestEnergyProducer.class, item));
         
-        item = new ItemStack(Material.STAINED_GLASS);
+        item = new ItemStack(Material.WHITE_STAINED_GLASS);
         meta = item.getItemMeta();
         meta.setDisplayName("TestEnergyConsumer");
         item.setItemMeta(meta);

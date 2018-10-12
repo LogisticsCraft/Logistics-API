@@ -17,8 +17,8 @@ public class TestEnergyConsumer extends LogisticBlock implements EnergyInput {
 	public void update() {
 		getBlock().ifPresent(block -> {
 			if (getStoredEnergy() == 0l) {
-				block.setType(Material.STAINED_GLASS);
-				block.setData((byte) new Random().nextInt(15));
+				block.setType(Material.WHITE_STAINED_GLASS);
+				//block.setData((byte) new Random().nextInt(15));
 			} else if (getStoredEnergy() > 0l) {
 				block.setType(Material.GOLD_BLOCK);
 			}

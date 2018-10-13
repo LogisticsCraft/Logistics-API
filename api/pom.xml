@@ -114,7 +114,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>1.7-SNAPSHOT</version>
+            <version>1.8.2-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>
         <dependency>

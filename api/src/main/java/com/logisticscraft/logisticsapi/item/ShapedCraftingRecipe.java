@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 
 import com.logisticscraft.logisticsapi.LogisticsApi;
+import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.event.RecipeRegisterEvent;
 
 import lombok.Builder;
@@ -40,8 +42,9 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
     private Map<Character, ItemStack> ingredients;
     private String[] recipe;
     private String permission;
-    
+
     private boolean registered = false;
+    private final ItemManager manager = LogisticsApi.getInstance().getItemManager();
 
     @Builder
     public ShapedCraftingRecipe(@NonNull Plugin plugin, @NonNull String key, @NonNull ItemStack crafts, 
@@ -60,13 +63,12 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         this.recipe = recipe;
         this.permission = permission;
     }
-    
+
     @Override
     public NamespacedKey getNamespacedKey() {
         return namespacedKey;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void register() {
         if(registered)return;
@@ -85,6 +87,17 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         Bukkit.getPluginManager().callEvent(new RecipeRegisterEvent(this, recipe));
     }
 
+    @EventHandler(priority=EventPriority.LOW)
+    public void preOnPrepareCraft(PrepareItemCraftEvent e) {
+        org.bukkit.inventory.Recipe r = e.getInventory().getRecipe();
+        if (r == null || e.getViewers().size() != 1) {
+            return;
+        }
+        if(r instanceof ShapedRecipe && ((ShapedRecipe)r).getKey().equals(namespacedKey)){
+            e.getInventory().setResult(null);
+        }
+    }
+
     @EventHandler
     public void onPrepareCraft(PrepareItemCraftEvent e) {
         org.bukkit.inventory.Recipe r = e.getInventory().getRecipe();
@@ -92,46 +105,45 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
             return;
         }
 
-        Player viewer = (Player) e.getViewers().get(0);
-        if (r instanceof ShapedRecipe && ((ShapedRecipe)r).getKey().equals(namespacedKey)) {
-            if (permission != null) {
-                if (!viewer.hasPermission(permission)) {
-                    e.getInventory().setResult(null);
-                    return;
-                }
-            }
-
+        if (r instanceof ShapedRecipe) {
+            if(e.getInventory().getResult() != null && !e.getInventory().getResult().getType().equals(Material.AIR))return;
             String pattern = "";
             for(String s : recipe)pattern += s;
             char[] charPattern = pattern.toCharArray();
-
-            int min = 1;
-            boolean prevent = false;
+            int min = 0;
             for (int i = 0; i < charPattern.length; i++) {
                 while(min < 10){
+                    min++;
                     ItemStack is = e.getInventory().getItem(min);
-                    if (is != null && vanillaIngredients.containsKey(charPattern[i]) && is.getType() == vanillaIngredients.get(charPattern[i])) {
+                    if (is != null && vanillaIngredients.containsKey(charPattern[i]) && is.getType().equals(vanillaIngredients.get(charPattern[i]))) {
                         break;//Ok
                     }else if (is != null && vanillaGroups.containsKey(charPattern[i]) && vanillaGroups.get(charPattern[i]).contains(is.getType())) {
                         break;//Ok
-                    }else if(is != null && ingredients.containsKey(charPattern[i]) && is.isSimilar(ingredients.get(charPattern[i]))) {
-                        break;//Ok
+                    }else if(is != null && ingredients.containsKey(charPattern[i])) {
+                        if(is.isSimilar(ingredients.get(charPattern[i])))break;
+                        Optional<LogisticItem> source = manager.getLogisticItem(is);
+                        Optional<LogisticItem> target = manager.getLogisticItem(ingredients.get(charPattern[i]));
+                        if(source.isPresent() && target.isPresent() && source.get().getKey().equals(target.get().getKey()))
+                            break;//Ok
                     }else if(charPattern[i] == ' '){
                         break;//Ok
                     }
-                    min++;
                 }
                 if(min == 10){
-                    prevent = true;
-                    break;
+                    return;
                 }
             }
-            if (prevent) {
-                e.getInventory().setResult(null);
+            min++;
+            for(int i = charPattern.length; i < 9; i++){ //Recipe matches so far, check the rest
+                ItemStack is = e.getInventory().getItem(min);
+                if(is != null && is.getType() != Material.AIR){
+                    return;
+                }
             }
+            e.getInventory().setResult(result);
         }
     }
-    
+
     public ItemStack getIngredient(char c){
         //Spigot changes the chars beginning from a
         HashMap<Character, ItemStack> spigotMapping = new HashMap<>();
@@ -159,5 +171,5 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         }
         return null;
     }
-    
+
 }

@@ -60,8 +60,8 @@
 
     <repositories>
         <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+            <id>destroystokyo-repo</id>
+            <url>https://repo.destroystokyo.com/content/repositories/snapshots/</url>
         </repository>
         <repository>
 			<id>logisticscraft-repo</id>
@@ -76,8 +76,8 @@
     <!-- Global dependencies -->
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.13.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

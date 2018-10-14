@@ -14,29 +14,11 @@
     <packaging>jar</packaging>
 
     <build>
-        <defaultGoal>clean install javadoc:aggregate</defaultGoal>
-
-        <resources>
-            <resource>
-                <filtering>false</filtering>
-                <directory>.</directory>
-                <includes>
-                    <include>LICENSE</include>
-                </includes>
-            </resource>
-            <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
                 <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
@@ -66,35 +48,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0-M1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludePackageNames>*.excluded.*</excludePackageNames>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -108,7 +61,7 @@
         <dependency>
             <groupId>ch.jalu</groupId>
             <artifactId>configme</artifactId>
-            <version>0.4.1</version>
+            <version>1.0.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -124,5 +77,4 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-
 </project>

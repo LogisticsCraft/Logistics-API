@@ -14,29 +14,11 @@
     <packaging>jar</packaging>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
-
-        <resources>
-            <resource>
-                <filtering>false</filtering>
-                <directory>.</directory>
-                <includes>
-                    <include>LICENSE</include>
-                </includes>
-            </resource>
-            <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
                 <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
                             <pattern>com.logisticscraft.logisticsloader</pattern>
@@ -68,8 +50,6 @@
             <groupId>com.logisticscraft</groupId>
             <artifactId>logistics-loader</artifactId>
             <version>0.0.5-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
-
 </project>

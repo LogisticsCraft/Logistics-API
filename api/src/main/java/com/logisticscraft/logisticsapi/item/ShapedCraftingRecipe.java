@@ -37,6 +37,8 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
     private String key;
     @Getter
     private ItemStack result;
+    @Getter
+    private String group;
     private Map<Character, Material> vanillaIngredients;
     private Map<Character, List<Material>> vanillaGroups;
     private Map<Character, ItemStack> ingredients;
@@ -44,16 +46,18 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
     private String permission;
 
     private boolean registered = false;
+    private ShapedRecipe bukkitRecipe;
     private final ItemManager manager = LogisticsApi.getInstance().getItemManager();
 
     @Builder
-    public ShapedCraftingRecipe(@NonNull Plugin plugin, @NonNull String key, @NonNull ItemStack crafts, 
+    public ShapedCraftingRecipe(@NonNull Plugin plugin, @NonNull String key, @NonNull ItemStack crafts, String group,
             @Singular("addVanillaIngredient") Map<Character, Material> vanillaIngredients, @Singular("addVanillaIngredient") Map<Character, List<Material>> vanillaGroups,
             @Singular("addIngredient") Map<Character, ItemStack> ingredients, @NonNull String[] recipe , String permission) {
         super();
         this.namespacedKey = new NamespacedKey(plugin, key);
         this.plugin = plugin;
         this.key = key;
+        this.group = group;
         if(vanillaIngredients == null)vanillaIngredients = new HashMap<>();
         if(ingredients == null)ingredients = new HashMap<>();
         this.result = crafts;
@@ -77,6 +81,8 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         Bukkit.getPluginManager().registerEvents(this, LogisticsApi.getInstance());
         ShapedRecipe recipe = new ShapedRecipe(namespacedKey, result);
         recipe.shape(this.recipe);
+        if(group != null)
+            recipe.setGroup(group);
         for(Entry<Character, Material> s : vanillaIngredients.entrySet())
             recipe.setIngredient(s.getKey(), s.getValue());
         for(Entry<Character, ItemStack> s : ingredients.entrySet())
@@ -84,6 +90,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
         for(Entry<Character, List<Material>> s : vanillaGroups.entrySet())
             recipe.setIngredient(s.getKey(), new MaterialChoice(s.getValue()));
         Bukkit.addRecipe(recipe);
+        bukkitRecipe = recipe;
         Bukkit.getPluginManager().callEvent(new RecipeRegisterEvent(this, recipe));
     }
 
@@ -141,6 +148,7 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
                 }
             }
             e.getInventory().setResult(result);
+            e.getViewers().get(0).discoverRecipe(this.namespacedKey);
         }
     }
 
@@ -170,6 +178,11 @@ public class ShapedCraftingRecipe implements Recipe, Listener {
             return spigotMapping.get(c);
         }
         return null;
+    }
+
+    @Override
+    public org.bukkit.inventory.Recipe getBukkitRecipe() {
+        return bukkitRecipe;
     }
 
 }

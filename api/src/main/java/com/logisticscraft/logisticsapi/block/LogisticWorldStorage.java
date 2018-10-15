@@ -3,7 +3,7 @@ package com.logisticscraft.logisticsapi.block;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTFile;
 import lombok.Getter;

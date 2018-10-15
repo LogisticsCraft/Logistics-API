@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.item;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.event.ItemRegisterEvent;
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import de.tr7zw.itemnbtapi.NBTItem;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

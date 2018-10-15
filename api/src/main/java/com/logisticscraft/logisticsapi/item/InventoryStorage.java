@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.item;
 
 import com.logisticscraft.logisticsapi.data.LogisticBlockFace;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+import com.logisticscraft.logisticsapi.util.ReflectionUtils;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.Optional;
 
-import static com.logisticscraft.logisticsapi.utils.ItemUtils.changeItemAmount;
+import static com.logisticscraft.logisticsapi.util.ItemUtils.changeItemAmount;
 
 public interface InventoryStorage extends ItemStorage {
 

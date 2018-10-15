@@ -6,7 +6,7 @@ import com.logisticscraft.logisticsapi.event.LogisticBlockLoadEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
 import lombok.Synchronized;

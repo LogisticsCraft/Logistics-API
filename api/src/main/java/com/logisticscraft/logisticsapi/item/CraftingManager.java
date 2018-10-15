@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.item;
 
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import org.bukkit.NamespacedKey;
 
 import java.util.HashMap;

@@ -5,7 +5,7 @@ import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

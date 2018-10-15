@@ -20,7 +20,7 @@ import com.logisticscraft.logisticsapi.service.PluginService;
 import com.logisticscraft.logisticsapi.service.shutdown.ShutdownListenerService;
 import com.logisticscraft.logisticsapi.setting.DataFolder;
 import com.logisticscraft.logisticsapi.setting.SettingsProvider;
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bukkit.Chunk;

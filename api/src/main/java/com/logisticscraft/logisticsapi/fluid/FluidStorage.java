@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.fluid;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+import com.logisticscraft.logisticsapi.util.ReflectionUtils;
 import lombok.NonNull;
 
 import java.lang.annotation.ElementType;

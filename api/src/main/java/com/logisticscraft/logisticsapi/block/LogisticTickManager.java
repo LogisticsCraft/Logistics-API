@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.block;
 
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+import com.logisticscraft.logisticsapi.util.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

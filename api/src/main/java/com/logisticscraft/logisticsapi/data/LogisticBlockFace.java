@@ -1,6 +1,6 @@
 package com.logisticscraft.logisticsapi.data;
 
-import com.logisticscraft.logisticsapi.utils.Tracer;
+import com.logisticscraft.logisticsapi.util.Tracer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;

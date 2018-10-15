@@ -1,7 +1,6 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NoArgsConstructor;
 
@@ -20,5 +19,4 @@ public class StringAdapter implements DataAdapter<String> {
         }
         return nbtCompound.getString("data");
     }
-
 }

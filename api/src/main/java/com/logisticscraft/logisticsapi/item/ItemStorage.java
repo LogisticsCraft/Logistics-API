@@ -7,10 +7,10 @@ import org.bukkit.inventory.ItemStack;
 
 public interface ItemStorage extends PersistentDataHolder {
 
-    default ItemStack extractItem(@NonNull LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate){
+    default ItemStack extractItem(@NonNull LogisticBlockFace extractionSide, int maxExtractAmount, boolean simulate) {
         return extractItem(extractionSide, maxExtractAmount, new DefaultItemFilter(), simulate);
     }
-    
+
     ItemStack extractItem(@NonNull LogisticBlockFace extractionSide, int maxExtractAmount, @NonNull ItemFilter filter, boolean simulate);
 
     ItemStack insertItem(@NonNull LogisticBlockFace insertSide, @NonNull ItemStack insertedItem, boolean simulate);
@@ -24,5 +24,4 @@ public interface ItemStorage extends PersistentDataHolder {
     default boolean allowItemExtraction(@NonNull LogisticBlockFace blockFace, @NonNull ItemStack item) {
         return true;
     }
-
 }

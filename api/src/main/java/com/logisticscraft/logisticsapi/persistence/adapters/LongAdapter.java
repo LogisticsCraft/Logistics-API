@@ -1,10 +1,9 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 
-public class LongAdapter implements DataAdapter<Long>{
+public class LongAdapter implements DataAdapter<Long> {
 
     @Override
     public void store(PersistenceStorage persistenceStorage, Long value, NBTCompound nbtCompound) {
@@ -18,5 +17,4 @@ public class LongAdapter implements DataAdapter<Long>{
         }
         return nbtCompound.getLong("long");
     }
-
 }

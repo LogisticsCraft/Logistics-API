@@ -45,5 +45,4 @@ public class DataHolder {
     public <T> Optional<T> get(@NonNull LogisticKey key, Class<T> type) {
         return Optional.ofNullable(type.cast(data.get(key)));
     }
-
 }

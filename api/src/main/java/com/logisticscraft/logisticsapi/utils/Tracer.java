@@ -17,30 +17,29 @@ public final class Tracer {
     @Setter
     private Logger logger;
 
-    public void info(@NonNull String... messages) {
+    public static void info(@NonNull String... messages) {
         for (String message : messages) {
             logger.info(message);
         }
     }
 
-    public void warn(@NonNull String... messages) {
+    public static void warn(@NonNull String... messages) {
         for (String message : messages) {
             logger.warning(message);
         }
     }
 
-    public void err(@NonNull String... messages) {
+    public static void error(@NonNull String... messages) {
         for (String message : messages) {
             logger.severe(ChatColor.DARK_RED + message);
         }
     }
 
-    public void debug(@NonNull String... messages) {
+    public static void debug(@NonNull String... messages) {
         if (debug) {
             for (String message : messages) {
                 logger.info(ChatColor.YELLOW + "Debug: " + ChatColor.ITALIC + message);
             }
         }
     }
-
 }

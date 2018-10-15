@@ -16,14 +16,13 @@ public class TestEnergyConsumer extends LogisticBlock implements EnergyInput {
 	@LogisticTickManager.Ticking(ticks = 10)
 	public void update() {
 		getBlock().ifPresent(block -> {
-			if (getStoredEnergy() == 0l) {
+			if (getStoredEnergy() == 0L) {
 				block.setType(Material.WHITE_STAINED_GLASS);
 				//block.setData((byte) new Random().nextInt(15));
-			} else if (getStoredEnergy() > 0l) {
+			} else if (getStoredEnergy() > 0L) {
 				block.setType(Material.GOLD_BLOCK);
 			}
 		});
-		setStoredEnergy(Math.max(0l, getStoredEnergy() - 5l));
+		setStoredEnergy(Math.max(0L, getStoredEnergy() - 5L));
 	}
-
 }

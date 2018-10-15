@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 import javax.inject.Inject;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ShutdownHandlerService {
+public class ShutdownListenerService {
 
     @Inject
-    private SingletonStore<ShutdownHandler> shutdownHandlers;
+    private SingletonStore<ShutdownListener> shutdownListeners;
 
     public void shutdownComponents() {
-        shutdownHandlers.retrieveAllOfType().forEach(ShutdownHandler::handleShutdown);
+        shutdownListeners.retrieveAllOfType().forEach(ShutdownListener::onShutdown);
     }
-
 }

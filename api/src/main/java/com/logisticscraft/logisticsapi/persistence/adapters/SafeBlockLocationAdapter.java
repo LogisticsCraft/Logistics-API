@@ -11,23 +11,24 @@ public class SafeBlockLocationAdapter implements DataAdapter<SafeBlockLocation> 
 
     @Override
     public void store(PersistenceStorage persistenceStorage, SafeBlockLocation value, NBTCompound nbtCompound) {
-        if (value.getLocation().isPresent()) {
-            Location location = value.getLocation().get();
-            nbtCompound.setString("world", location.getWorld().getName());
-            nbtCompound.setInteger("x", location.getBlockX());
-            nbtCompound.setInteger("y", location.getBlockY());
-            nbtCompound.setInteger("z", location.getBlockZ());
+        if (!value.getLocation().isPresent()) {
+            return;
         }
+        Location location = value.getLocation().get();
+        nbtCompound.setString("world", location.getWorld().getName());
+        nbtCompound.setInteger("x", location.getBlockX());
+        nbtCompound.setInteger("y", location.getBlockY());
+        nbtCompound.setInteger("z", location.getBlockZ());
     }
 
     @Override
     public SafeBlockLocation parse(PersistenceStorage persistenceStorage, Object parentObject,
-            NBTCompound nbtCompound) {
+                                   NBTCompound nbtCompound) {
         World world = Bukkit.getWorld(nbtCompound.getString("world"));
-        if (world == null)
+        if (world == null) {
             return null;
+        }
         return new SafeBlockLocation(new Location(world, nbtCompound.getInteger("x"), nbtCompound.getInteger("y"),
                 nbtCompound.getInteger("z")));
     }
-
 }

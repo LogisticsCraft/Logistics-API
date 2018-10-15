@@ -1,18 +1,16 @@
 package com.logisticscraft.logisticsapi.command;
 
-import javax.inject.Inject;
-
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Subcommand;
+import com.logisticscraft.logisticsapi.item.LogisticItem;
+import com.logisticscraft.logisticsapi.item.LogisticItemRegister;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import com.logisticscraft.logisticsapi.item.LogisticItem;
-import com.logisticscraft.logisticsapi.item.LogisticItemRegister;
-
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Subcommand;
+import javax.inject.Inject;
 
 @CommandAlias("lapi")
 public class DebugCommands extends BaseCommand implements InventoryHolder {
@@ -34,5 +32,4 @@ public class DebugCommands extends BaseCommand implements InventoryHolder {
     public Inventory getInventory() {
         return null;
     }
-
 }

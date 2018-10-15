@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+// TODO: Loading blocks
 public class LogisticWorldStorage {
 
     private final PersistenceStorage persistence;
@@ -30,13 +31,14 @@ public class LogisticWorldStorage {
     private NBTFile nbtFile;
 
     public LogisticWorldStorage(@NonNull PersistenceStorage persistance, @NonNull LogisticBlockTypeRegister register,
-            @NonNull final World world) throws IOException {
+                                @NonNull final World world) throws IOException {
         this.persistence = persistance;
         this.register = register;
         this.world = world;
         nbtFile = new NBTFile(new File(world.getWorldFolder(), "logisticblocks.nbt"));
-        if (!nbtFile.hasKey("chunks"))
+        if (!nbtFile.hasKey("chunks")) {
             nbtFile.addCompound("chunks");
+        }
     }
 
     public void save() throws IOException {
@@ -48,26 +50,27 @@ public class LogisticWorldStorage {
         NBTCompound chunks = nbtFile.getCompound("chunks");
 
         NBTCompound chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
-        if (chunkData == null || chunkData.getKeys().size() == 0)
+        if (chunkData == null || chunkData.getKeys().size() == 0) {
             return Optional.empty();
+        }
 
         Set<LogisticBlock> blocks = new HashSet<>();
-        for (String key : chunkData.getKeys()) {
-            NBTCompound blockData = chunkData.getCompound(key);
+        chunkData.getKeys().stream().map(chunkData::getCompound).forEach(blockData -> {
             LogisticKey logisticKey = new LogisticKey(blockData.getCompound("typeId").getString("key"));
             Optional<LogisticBlockFactory> factory = register.getFactory(logisticKey);
             if (factory.isPresent()) {
                 LogisticBlock block = factory.get().onLoadUnsafe(blockData);
-                // TODO: Block onload nbt method
+                // TODO: Block onLoad nbt method
                 persistence.loadFields(block, blockData);
                 blocks.add(block);
             } else {
                 Tracer.warn("Unable to find Factory for key: " + logisticKey);
             }
-        }
+        });
 
-        if (blocks.isEmpty())
+        if (blocks.isEmpty()) {
             return Optional.empty(); // Just in case
+        }
         return Optional.of(blocks);
     }
 
@@ -76,10 +79,11 @@ public class LogisticWorldStorage {
         NBTCompound chunks = nbtFile.addCompound("chunks");
 
         NBTCompound chunkData = chunks.getCompound(chunk.getX() + ";" + chunk.getZ());
-        if (chunkData != null)
+        if (chunkData != null) {
             chunks.removeKey(chunk.getX() + ";" + chunk.getZ());
+        }
     }
-    
+
     @Synchronized
     public void removeLogisticBlock(@NonNull final LogisticBlock logisticBlock) {
         NBTCompound chunks = nbtFile.addCompound("chunks");
@@ -114,15 +118,14 @@ public class LogisticWorldStorage {
     }
 
     @Synchronized
-    public NBTCompound getPluginContainer(@NonNull Plugin plugin){
-        if (!nbtFile.hasKey("pluginData"))
+    public NBTCompound getPluginContainer(@NonNull Plugin plugin) {
+        if (!nbtFile.hasKey("pluginData")) {
             nbtFile.addCompound("pluginData");
+        }
         NBTCompound comp = nbtFile.getCompound("pluginData");
-        if (!comp.hasKey(plugin.getName()))
+        if (!comp.hasKey(plugin.getName())) {
             comp.addCompound(plugin.getName());
+        }
         return comp.getCompound(plugin.getName());
     }
-    
-    // TODO: Loading blocks
-
 }

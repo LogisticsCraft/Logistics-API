@@ -1,14 +1,5 @@
 package com.logisticscraft.logisticsapi.block;
 
-import java.util.Optional;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
@@ -17,9 +8,16 @@ import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
 import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
 import com.logisticscraft.logisticsapi.item.LogisticItem;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.Getter;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
 
 /**
  * Represents a custom block handled by the API.
@@ -57,16 +55,18 @@ public abstract class LogisticBlock implements PersistentDataHolder, VolatileDat
         return volatileData;
     }
 
-    public void placeBlock(Player player, ItemStack item, Block block){
+    public void placeBlock(Player player, ItemStack item, Block block) {
         // Fallback for blocks. Please consider overwriting it!
-        if(item == null)block.setType(Material.COBBLESTONE);
-        if(item.getType().isBlock()){
+        if (item == null) {
+            block.setType(Material.COBBLESTONE);
+        }
+        if (item.getType().isBlock()) {
             block.setType(item.getType());
-        }else{
+        } else {
             block.setType(Material.COBBLESTONE);
         }
     }
-    
+
     /**
      * Overwrite this method intercept the BlockBreakEvent.
      * If the event isn't cancelled the LogisticBlock will be removed.
@@ -91,7 +91,7 @@ public abstract class LogisticBlock implements PersistentDataHolder, VolatileDat
      */
     public void onRightClick(PlayerInteractEvent event) {
     }
-    
+
     /**
      * Called when a placed block is saved (when the chunk is unloaded/block broken).
      * WARNING: This method allows custom NBT handling, consider using
@@ -100,11 +100,10 @@ public abstract class LogisticBlock implements PersistentDataHolder, VolatileDat
      * @param nbtData the stored block data
      * @deprecated as unsafe to use, for advanced use only
      */
-    public void onNBTSave(NBTCompound nbtData){
-    }
-    
-    public Optional<LogisticItem> getLogisticItem(){
-        return LogisticsApi.getInstance().getItemManager().getLogisticItem(typeId);
+    public void onNBTSave(NBTCompound nbtData) {
     }
 
+    public Optional<LogisticItem> getLogisticItem() {
+        return LogisticsApi.getInstance().getItemManager().getLogisticItem(typeId);
+    }
 }

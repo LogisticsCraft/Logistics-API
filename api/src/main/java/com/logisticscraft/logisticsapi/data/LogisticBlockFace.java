@@ -31,5 +31,4 @@ public enum LogisticBlockFace {
         Tracer.warn("Trying to get unknown LogisticBlockFace: " + blockFace);
         return LogisticBlockFace.SELF;
     }
-
 }

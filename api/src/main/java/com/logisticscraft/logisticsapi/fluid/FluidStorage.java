@@ -76,7 +76,5 @@ public interface FluidStorage extends PersistentDataHolder {
     @interface EnergyStorageData {
 
         int capacity();
-
     }
-
 }

@@ -13,8 +13,9 @@ public interface EnergyInput extends EnergyStorage {
 
     default long receiveEnergy(@NonNull LogisticBlockFace blockFace, final long available, final boolean simulate) {
         synchronized (this) {
-            if (!allowEnergyInput(blockFace))
+            if (!allowEnergyInput(blockFace)) {
                 return 0;
+            }
             long energyReceived = Math.min(getMaxEnergyStored() - getStoredEnergy(),
                     Math.min(getMaxEnergyReceive(), available));
             if (!simulate) {
@@ -37,7 +38,5 @@ public interface EnergyInput extends EnergyStorage {
     @interface EnergyInputData {
 
         int maxReceive();
-
     }
-
 }

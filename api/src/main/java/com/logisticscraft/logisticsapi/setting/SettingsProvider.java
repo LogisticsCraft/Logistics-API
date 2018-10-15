@@ -1,10 +1,8 @@
-package com.logisticscraft.logisticsapi.settings;
+package com.logisticscraft.logisticsapi.setting;
 
 import ch.jalu.configme.SettingsManager;
+import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.migration.PlainMigrationService;
-import ch.jalu.configme.resource.PropertyResource;
-import ch.jalu.configme.resource.YamlFileResource;
-import com.logisticscraft.logisticsapi.utils.FileUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -30,11 +28,9 @@ public class SettingsProvider implements Provider<SettingsManager> {
     @Override
     public SettingsManager get() {
         File configFile = new File(dataFolder, "config.yml");
-        if (!configFile.exists()) {
-            FileUtils.create(configFile);
-        }
-        PropertyResource resource = new YamlFileResource(configFile);
-        return new SettingsManager(resource, new PlainMigrationService(), SettingsProperties.class);
+        return SettingsManagerBuilder.withYamlFile(configFile)
+                .migrationService(new PlainMigrationService())
+                .configurationData(SettingsProperties.class)
+                .create();
     }
-
 }

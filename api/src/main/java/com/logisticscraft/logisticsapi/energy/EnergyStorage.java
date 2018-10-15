@@ -1,24 +1,22 @@
 package com.logisticscraft.logisticsapi.energy;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.Optional;
-
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
+import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
+import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
-import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
-import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
-import com.logisticscraft.logisticsapi.utils.BossBarManager;
-import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.Optional;
 
 public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder {
 
@@ -31,12 +29,12 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
 
     default long getStoredEnergy() {
         synchronized (this) {
-            return getPersistentData().get(STORED_ENERGY_META_KEY, Long.class).orElse(0L); 
+            return getPersistentData().get(STORED_ENERGY_META_KEY, Long.class).orElse(0L);
         }
     }
-    
+
     default long getFreeSpace() {
-    	return getMaxEnergyStored() - getStoredEnergy();
+        return getMaxEnergyStored() - getStoredEnergy();
     }
 
     default void setStoredEnergy(final long energy) {
@@ -63,12 +61,7 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
     @interface EnergyStorageData {
 
         int capacity();
-
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Energy Bar
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Gets the identification of EnergyBar.
@@ -114,12 +107,12 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
      */
     default BarColor getEnergyBarColor() {
         switch ((int) (getEnergyBarProgress() * 2)) {
-        case 0:
-            return BarColor.RED;
-        case 1:
-            return BarColor.YELLOW;
-        case 2:
-            return BarColor.GREEN;
+            case 0:
+                return BarColor.RED;
+            case 1:
+                return BarColor.YELLOW;
+            case 2:
+                return BarColor.GREEN;
         }
         return BarColor.WHITE;
     }
@@ -174,20 +167,12 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
     /**
      * Generates rewrite's BossBar according to it's getters
      * No checks on ID being null are performed so created BossBar may be anonymous
+     *
      * @return Created EnergyBar
      */
     default Optional<BossBar> setupEnergyBar() {
-        setEnergyBar(BossBarManager.create(getEnergyBarTitle(), getEnergyBarColor(), getEnergyBarStyle(), getEnergyBarFlags()));
+        setEnergyBar(Bukkit.createBossBar(getEnergyBarTitle(), getEnergyBarColor(), getEnergyBarStyle(), getEnergyBarFlags()));
         return getEnergyBar();
-    }
-
-    /**
-     * Removes BossBar if it was registered by ID
-     * Automatically checks whether ID is null though it's not recommended to have unnecessary calls
-     */
-    default void deleteEnergyBar() {
-        // TODO: wtf is that?
-        //if (getEnergyBarId() != null) BossBarManager.remove(getEnergyBarId());
     }
 
     /**
@@ -197,19 +182,26 @@ public interface EnergyStorage extends PersistentDataHolder, VolatileDataHolder 
      */
     default void updateEnergyBar() {
         Optional<BossBar> bossBar = getEnergyBar();
-        if (!bossBar.isPresent()){
+        if (!bossBar.isPresent()) {
             bossBar = setupEnergyBar();
         }
         bossBar.ifPresent(energyBar -> {
-            //Title
-            if (!energyBar.getTitle().equals(getEnergyBarTitle())) energyBar.setTitle(getEnergyBarTitle());
-            //Progress
-            if (energyBar.getProgress() != getEnergyBarProgress()) energyBar.setProgress(getEnergyBarProgress());
-            //Color
-            if (!energyBar.getColor().equals(getEnergyBarColor())) energyBar.setColor(getEnergyBarColor());
-            //Style
-            if (!energyBar.getStyle().equals(getEnergyBarStyle())) energyBar.setStyle(getEnergyBarStyle());
+            // Title
+            if (!energyBar.getTitle().equals(getEnergyBarTitle())) {
+                energyBar.setTitle(getEnergyBarTitle());
+            }
+            // Progress
+            if (energyBar.getProgress() != getEnergyBarProgress()) {
+                energyBar.setProgress(getEnergyBarProgress());
+            }
+            // Color
+            if (!energyBar.getColor().equals(getEnergyBarColor())) {
+                energyBar.setColor(getEnergyBarColor());
+            }
+            // Style
+            if (!energyBar.getStyle().equals(getEnergyBarStyle())) {
+                energyBar.setStyle(getEnergyBarStyle());
+            }
         });
     }
-
 }

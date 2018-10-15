@@ -2,7 +2,7 @@ package com.logisticscraft.logisticsapi.energy;
 
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.service.PluginService;
-import com.logisticscraft.logisticsapi.service.shutdown.ShutdownHandler;
+import com.logisticscraft.logisticsapi.service.shutdown.ShutdownListener;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class EnergyDisplayManager extends BukkitRunnable implements ShutdownHandler {
+public class EnergyDisplayManager extends BukkitRunnable implements ShutdownListener {
 
     @Inject
     private PluginService pluginService;
@@ -34,7 +34,7 @@ public class EnergyDisplayManager extends BukkitRunnable implements ShutdownHand
     }
 
     @Override
-    public void handleShutdown() {
+    public void onShutdown() {
         cancel();
         unDisplayEnergyBars();
     }
@@ -64,5 +64,4 @@ public class EnergyDisplayManager extends BukkitRunnable implements ShutdownHand
             });
         });
     }
-
 }

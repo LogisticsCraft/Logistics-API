@@ -23,5 +23,4 @@ public class SafeWorld implements Serializable {
     public Optional<World> getWorld() {
         return Optional.ofNullable(Bukkit.getWorld(name));
     }
-
 }

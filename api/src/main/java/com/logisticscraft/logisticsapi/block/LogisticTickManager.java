@@ -34,15 +34,15 @@ public class LogisticTickManager extends BukkitRunnable {
         tick++;
         for (LogisticBlock logisticBlock : trackedBlocks) {
             HashMap<Method, Integer> tickMap = classCache.get(logisticBlock.getClass());
-            for (Method method : tickMap.keySet()) {
-                if (tick % tickMap.get(method) == 0) {
+            tickMap.forEach((method, current) -> {
+                if (tick % current == 0) {
                     try {
                         method.invoke(logisticBlock);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
-            }
+            });
         }
     }
 
@@ -63,12 +63,12 @@ public class LogisticTickManager extends BukkitRunnable {
         if (!classCache.containsKey(clazz)) {
             Collection<Method> methods = ReflectionUtils.getMethodsRecursively(clazz, LogisticBlock.class);
             HashMap<Method, Integer> tickingMethods = new HashMap<>();
-            for (Method method : methods) {
+            methods.forEach(method -> {
                 Ticking ticking = method.getAnnotation(Ticking.class);
                 if (ticking != null && method.getParameterCount() == 0) {
                     tickingMethods.put(method, ticking.ticks());
                 }
-            }
+            });
             if (tickingMethods.size() > 0) {
                 classCache.put(clazz, tickingMethods);
             }
@@ -78,7 +78,7 @@ public class LogisticTickManager extends BukkitRunnable {
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Ticking {
+
         int ticks();
     }
-
 }

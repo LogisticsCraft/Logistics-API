@@ -1,12 +1,10 @@
 package com.logisticscraft.logisticsapi.event;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
 import com.logisticscraft.logisticsapi.item.Recipe;
-
 import lombok.Getter;
 import lombok.NonNull;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 public class RecipeRegisterEvent extends Event {
 

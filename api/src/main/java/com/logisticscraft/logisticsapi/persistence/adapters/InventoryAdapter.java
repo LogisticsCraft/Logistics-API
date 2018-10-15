@@ -1,14 +1,12 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
+import com.logisticscraft.logisticsapi.item.InventoryStorage;
+import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
+import de.tr7zw.itemnbtapi.NBTCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import com.logisticscraft.logisticsapi.item.InventoryStorage;
-import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-
-import de.tr7zw.itemnbtapi.NBTCompound;
 
 public class InventoryAdapter implements DataAdapter<Inventory> {
 
@@ -49,5 +47,4 @@ public class InventoryAdapter implements DataAdapter<Inventory> {
         }
         return null;
     }
-
 }

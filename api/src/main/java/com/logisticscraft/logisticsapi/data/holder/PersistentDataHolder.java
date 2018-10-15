@@ -8,5 +8,4 @@ public interface PersistentDataHolder {
      * @return the DataHolder
      */
     DataHolder getPersistentData();
-
 }

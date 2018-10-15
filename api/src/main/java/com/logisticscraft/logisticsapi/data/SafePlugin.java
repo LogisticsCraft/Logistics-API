@@ -23,5 +23,4 @@ public class SafePlugin implements Serializable {
     public Optional<Plugin> getPlugin() {
         return Optional.ofNullable(Bukkit.getServer().getPluginManager().getPlugin(name));
     }
-
 }

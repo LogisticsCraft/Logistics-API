@@ -6,7 +6,6 @@ import com.logisticscraft.logisticsapi.energy.EnergyInput;
 import com.logisticscraft.logisticsapi.energy.EnergyOutput;
 import com.logisticscraft.logisticsapi.energy.EnergyStorage;
 import com.logisticscraft.logisticsapi.item.InventoryStorage;
-
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,7 +31,7 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
         getBlock().ifPresent(block -> {
             block.setType(Material.WHITE_WOOL);
             Wool wool = (Wool) block.getState();
-            wool.setColor(DyeColor.values()[new Random().nextInt(DyeColor.values().length-1)]);
+            wool.setColor(DyeColor.values()[new Random().nextInt(DyeColor.values().length - 1)]);
         });
     }
 
@@ -49,9 +48,10 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
     @Override
     public void onPlayerBreak(BlockBreakEvent event) {
         getBlock().ifPresent(block -> {
-            for(ItemStack item : getInventory().getContents()){
-                if(item != null && item.getType() != Material.AIR)
+            for (ItemStack item : getInventory().getContents()) {
+                if (item != null && item.getType() != Material.AIR) {
                     block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.5, 0.5), item);
+                }
             }
             getInventory().setContents(new ItemStack[getInventory().getSize()]);
             event.setDropItems(false);
@@ -68,15 +68,15 @@ public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutpu
 
     @Override
     public void onRightClick(PlayerInteractEvent event) {
-        if(!event.getPlayer().isSneaking()){
-            event.getPlayer().openInventory(getInventory());
-            event.setCancelled(true);
+        if (event.getPlayer().isSneaking()) {
+            return;
         }
+        event.getPlayer().openInventory(getInventory());
+        event.setCancelled(true);
     }
 
     @Override
     public void placeBlock(Player player, ItemStack item, Block block) {
         block.setType(Material.WHITE_WOOL);
     }
-
 }

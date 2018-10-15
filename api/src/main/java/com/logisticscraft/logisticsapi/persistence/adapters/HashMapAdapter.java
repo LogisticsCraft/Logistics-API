@@ -12,15 +12,13 @@ public class HashMapAdapter implements DataAdapter<HashMap<?, ?>> {
 
     @Override
     public void store(@NonNull final PersistenceStorage persistenceStorage, @NonNull final HashMap<?, ?> value, @NonNull final NBTCompound nbtCompound) {
-        for (HashMap.Entry<?, ?> entry : value.entrySet()) {
-            Object entryKey = entry.getKey();
-            Object entryValue = entry.getValue();
+        value.forEach((entryKey, entryValue) -> {
             NBTCompound container = nbtCompound.addCompound("" + entryKey.hashCode());
             NBTCompound keyData = container.addCompound("key");
             NBTCompound data = container.addCompound("data");
             container.setString("keyclass", persistenceStorage.saveObject(entryKey, keyData).getName());
             container.setString("dataclass", persistenceStorage.saveObject(entryValue, data).getName());
-        }
+        });
     }
 
     @Override
@@ -39,5 +37,4 @@ public class HashMapAdapter implements DataAdapter<HashMap<?, ?>> {
         }
         return map;
     }
-
 }

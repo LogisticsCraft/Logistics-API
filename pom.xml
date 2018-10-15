@@ -148,9 +148,6 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
-                    <excludes>
-                        <exclude>**/excluded/**/*.java</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
             <!-- Unit testing -->
@@ -194,9 +191,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.1</version>
-                <configuration>
-                    <excludePackageNames>*.excluded.*</excludePackageNames>
-                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadoc</id>

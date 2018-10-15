@@ -50,5 +50,4 @@ public class SafeBlockLocation {
     public Integer getChunkZ() {
         return (int) Math.ceil(z / 16);
     }
-
 }

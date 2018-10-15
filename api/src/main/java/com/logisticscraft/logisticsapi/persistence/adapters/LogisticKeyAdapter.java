@@ -15,5 +15,4 @@ public class LogisticKeyAdapter implements DataAdapter<LogisticKey> {
     public LogisticKey parse(PersistenceStorage persistenceStorage, Object parentObject, NBTCompound nbtCompound) {
         return new LogisticKey(nbtCompound.getString("key"));
     }
-
 }

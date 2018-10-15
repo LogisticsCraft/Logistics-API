@@ -20,5 +20,4 @@ public class TestEnergyProducer extends LogisticBlock implements EnergyOutput{
         });
         setStoredEnergy(getMaxEnergyStored());
     }
-
 }

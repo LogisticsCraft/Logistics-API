@@ -17,19 +17,11 @@ import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.Optional;
 
+import static com.logisticscraft.logisticsapi.utils.ItemUtils.changeItemAmount;
+
 public interface InventoryStorage extends ItemStorage {
 
     LogisticKey STORED_INVENTORY_META_KEY = new LogisticKey("LogisticsAPI", "storedInventory");
-
-    static ItemStack changeAmount(ItemStack item, int amountDelta) {
-        ItemStack copy = item.clone();
-        if (item.getAmount() + amountDelta > 0) {
-            copy.setAmount(Math.min(item.getMaxStackSize(), item.getAmount() + amountDelta));
-        } else {
-            copy = null;
-        }
-        return copy;
-    }
 
     default int getRowAmount() {
         return ReflectionUtils.getClassAnnotation(this, InventoryData.class).rows();
@@ -43,8 +35,9 @@ public interface InventoryStorage extends ItemStorage {
 
     default Inventory getStoredInventory() {
         Optional<Inventory> optionalInventory = getPersistentData().get(STORED_INVENTORY_META_KEY, Inventory.class);
-        if (optionalInventory.isPresent())
+        if (optionalInventory.isPresent()) {
             return optionalInventory.get();
+        }
         Inventory inventory = Bukkit.createInventory(getInventoryHolder(), getRowAmount() * 9, getInventoryName());
         getPersistentData().set(STORED_INVENTORY_META_KEY, inventory);
         return inventory;
@@ -52,39 +45,43 @@ public interface InventoryStorage extends ItemStorage {
 
     @Override
     default ItemStack extractItem(LogisticBlockFace extractionSide, int maxExtractAmount, ItemFilter filter, boolean simulate) {
-        Inventory cachedInv = getStoredInventory();
-        ItemStack takenIs = null;
-        for (int i = 0; i < cachedInv.getSize(); i++) {
-            if (cachedInv.getItem(i) != null && filter.matchesFilter(cachedInv.getItem(i))) {
-                int amountBefore = takenIs != null ? takenIs.getAmount() : 0;
-                if (takenIs == null && allowItemExtraction(extractionSide, cachedInv.getItem(i))) {
-                    takenIs = cachedInv.getItem(i).clone();
-                    takenIs.setAmount(Math.min(maxExtractAmount, takenIs.getAmount()));
-                } else if (takenIs.isSimilar(cachedInv.getItem(i))) {
-                    takenIs.setAmount(Math.min(maxExtractAmount, amountBefore + cachedInv.getItem(i).getAmount()));
+        Inventory cachedInventory = getStoredInventory();
+        ItemStack takenItem = null;
+        for (int i = 0; i < cachedInventory.getSize(); i++) {
+            if (cachedInventory.getItem(i) != null && filter.matchesFilter(cachedInventory.getItem(i))) {
+                int amountBefore = takenItem != null ? takenItem.getAmount() : 0;
+                if (takenItem == null && allowItemExtraction(extractionSide, cachedInventory.getItem(i))) {
+                    takenItem = cachedInventory.getItem(i).clone();
+                    takenItem.setAmount(Math.min(maxExtractAmount, takenItem.getAmount()));
+                } else if (takenItem.isSimilar(cachedInventory.getItem(i))) {
+                    takenItem.setAmount(Math.min(maxExtractAmount, amountBefore + cachedInventory.getItem(i).getAmount()));
                 }
-                ItemStack invItem = cachedInv.getItem(i);
-                if (!simulate)
-                    cachedInv.setItem(i, changeAmount(invItem, -(takenIs.getAmount() - amountBefore)));
+                ItemStack item = cachedInventory.getItem(i);
+                if (!simulate) {
+                    cachedInventory.setItem(i, changeItemAmount(item, -(takenItem.getAmount() - amountBefore)));
+                }
             }
         }
-        return takenIs;
+        return takenItem;
     }
 
     @Override
     default ItemStack insertItem(LogisticBlockFace insertSide, ItemStack insertedItem, boolean simulate) {
         if (simulate) {
             int space = howMuchSpaceForItemAsync(insertSide, insertedItem);
-            if (space == 0)
+            if (space == 0) {
                 return insertedItem;
-            if (space >= insertedItem.getAmount())
+            }
+            if (space >= insertedItem.getAmount()) {
                 return null;
+            }
             ItemStack cloneItem = insertedItem.clone();
             cloneItem.setAmount(cloneItem.getAmount() - space);
             return cloneItem;
         }
-        if (!allowItemInsertion(insertSide, insertedItem))
+        if (!allowItemInsertion(insertSide, insertedItem)) {
             return insertedItem;
+        }
         Inventory cachedInv = getStoredInventory();
         Collection<ItemStack> overflow = cachedInv.addItem(insertedItem).values();
         if (overflow.isEmpty()) {
@@ -96,8 +93,9 @@ public interface InventoryStorage extends ItemStorage {
 
     @Override
     default int howMuchSpaceForItemAsync(@NonNull LogisticBlockFace insertDirection, @NonNull ItemStack insertion) {
-        if (!allowItemInsertion(insertDirection, insertion))
+        if (!allowItemInsertion(insertDirection, insertion)) {
             return 0;
+        }
         Inventory cachedInv = getStoredInventory();
         int freeSpace = 0;
         for (int i = 0; i < cachedInv.getSize(); i++) {
@@ -118,5 +116,4 @@ public interface InventoryStorage extends ItemStorage {
 
         String name();
     }
-
 }

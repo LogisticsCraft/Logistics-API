@@ -1,11 +1,5 @@
 package com.logisticscraft.logisticsexample;
 
-import org.bukkit.Material;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.api.ItemManager;
@@ -15,6 +9,11 @@ import com.logisticscraft.logisticsapi.item.ShapedCraftingRecipe;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
 import com.logisticscraft.logisticsexample.blocks.TestEnergyConsumer;
 import com.logisticscraft.logisticsexample.blocks.TestEnergyProducer;
+import org.bukkit.Material;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LogisticsExamplePlugin extends JavaPlugin implements Listener {
 
@@ -67,5 +66,4 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
         ShapedCraftingRecipe.builder().plugin(this).key("uncraftTestBlock").addIngredient('x', testBlockItem.getItemStack(1)).recipe(new String[]{" x ", "x x", " x "})
         .crafts(new ItemStack(Material.DIRT, 4)).build().register();
     }
-
 }

@@ -38,5 +38,4 @@ public class LogisticKey implements Serializable {
     public String toString() {
         return namespace + ":" + name;
     }
-
 }

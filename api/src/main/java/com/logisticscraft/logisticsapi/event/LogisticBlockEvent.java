@@ -15,5 +15,4 @@ public abstract class LogisticBlockEvent extends Event {
     private final Location location;
     @NonNull
     private final LogisticBlock logisticBlock;
-
 }

@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.settings;
+package com.logisticscraft.logisticsapi.setting;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
@@ -12,5 +12,4 @@ public class SettingsProperties implements SettingsHolder {
 
     @Comment("Enables the console debug message logging.")
     public static final Property<Boolean> DEBUG_ENABLE = newProperty("debug.enable", false);
-
 }

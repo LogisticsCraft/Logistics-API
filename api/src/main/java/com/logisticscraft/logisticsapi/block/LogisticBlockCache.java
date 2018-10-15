@@ -7,7 +7,6 @@ import com.logisticscraft.logisticsapi.event.LogisticBlockSaveEvent;
 import com.logisticscraft.logisticsapi.event.LogisticBlockUnloadEvent;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.utils.Tracer;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
 import lombok.Synchronized;
@@ -23,11 +22,13 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Manages all the loaded LogisticBlock s in the server.
  * This is an internal class, not to be confused with the public API.
  */
+// TODO: Missing: World getter, Point where loading/events/listener are located
 public class LogisticBlockCache {
 
     private PluginManager pluginManager;
@@ -40,7 +41,7 @@ public class LogisticBlockCache {
 
     @Inject
     LogisticBlockCache(PluginManager pluginManager, LogisticBlockTypeRegister typeRegister,
-            LogisticTickManager tickManager, PersistenceStorage persistence) {
+                       LogisticTickManager tickManager, PersistenceStorage persistence) {
         this.pluginManager = pluginManager;
         this.typeRegister = typeRegister;
         this.tickManager = tickManager;
@@ -85,7 +86,9 @@ public class LogisticBlockCache {
     @Synchronized
     public void unloadLogisticBlock(@NonNull final Location location, boolean save) {
         Chunk chunk = location.getChunk();
-        if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided location must be loaded!");
+        if (!chunk.isLoaded()) {
+            throw new IllegalArgumentException("The provided location must be loaded!");
+        }
         Map<Location, LogisticBlock> loadedBlocksInChunk = logisticBlocks.get(chunk);
         if (loadedBlocksInChunk == null) {
             Tracer.warn("Attempt to unregister an unloaded LogisticBlock: " + location.toString());
@@ -117,9 +120,13 @@ public class LogisticBlockCache {
     @Synchronized
     public Optional<LogisticBlock> getCachedLogisticBlockAt(@NonNull final Location location) {
         Chunk chunk = location.getChunk();
-        if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided location must be loaded!");
+        if (!chunk.isLoaded()) {
+            throw new IllegalArgumentException("The provided location must be loaded!");
+        }
         Map<Location, LogisticBlock> loadedBlockInChunk = getCachedLogisticBlocksInChunk(chunk);
-        if (loadedBlockInChunk == null) return Optional.empty();
+        if (loadedBlockInChunk == null) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(loadedBlockInChunk.get(location));
     }
 
@@ -132,29 +139,29 @@ public class LogisticBlockCache {
      */
     @Synchronized
     public Map<Location, LogisticBlock> getCachedLogisticBlocksInChunk(@NonNull final Chunk chunk) {
-        if (!chunk.isLoaded()) throw new IllegalArgumentException("The provided chunk must be loaded!");
-        if (!logisticBlocks.containsKey(chunk)) return Collections.emptyMap();
+        if (!chunk.isLoaded()) {
+            throw new IllegalArgumentException("The provided chunk must be loaded!");
+        }
+        if (!logisticBlocks.containsKey(chunk)) {
+            return Collections.emptyMap();
+        }
         return Collections.unmodifiableMap(logisticBlocks.get(chunk));
     }
 
     @Synchronized
     public void loadSavedBlocks(@NonNull Chunk chunk) {
         LogisticWorldStorage storage = worldStorage.get(chunk.getWorld());
-        if (storage == null) return;
-        Optional<Set<? extends LogisticBlock>> blocks = storage.getSavedLogisticBlocksInChunk(chunk);
-        if (blocks.isPresent()) {
-            for (LogisticBlock block : blocks.get()) {
-                loadLogisticBlock(block);
-            }
+        if (storage == null) {
+            return;
         }
+        storage.getSavedLogisticBlocksInChunk(chunk)
+                .ifPresent(blocks -> blocks.forEach(this::loadLogisticBlock));
     }
 
     @Synchronized
     public Set<Chunk> getChunksWithLogisticBlocksInWorld(@NonNull World world) {
-        HashSet<Chunk> chunks = new HashSet<>();
-        for (Chunk chunk : logisticBlocks.keySet()) {
-            if (chunk.getWorld().equals(world)) chunks.add(chunk);
-        }
+        HashSet<Chunk> chunks = logisticBlocks.keySet().stream().filter(chunk -> chunk.getWorld().equals(world))
+                .collect(Collectors.toCollection(HashSet::new));
         return Collections.unmodifiableSet(chunks);
     }
 
@@ -162,7 +169,7 @@ public class LogisticBlockCache {
     public void registerWorld(@NonNull World world) {
         try {
             worldStorage.put(world, new LogisticWorldStorage(persistence, typeRegister, world));
-            for(Chunk chunk : world.getLoadedChunks()){
+            for (Chunk chunk : world.getLoadedChunks()) {
                 loadSavedBlocks(chunk);
             }
         } catch (IOException e) {
@@ -173,10 +180,8 @@ public class LogisticBlockCache {
     @Synchronized
     public void unregisterWorld(@NonNull World world) {
         if (worldStorage.containsKey(world)) {
-            for (Chunk chunk : getChunksWithLogisticBlocksInWorld(world)) {
-                for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk).entrySet())
-                    unloadLogisticBlock(data.getKey(), true);
-            }
+            getChunksWithLogisticBlocksInWorld(world).forEach(chunk ->
+                    getCachedLogisticBlocksInChunk(chunk).forEach((key, value) -> unloadLogisticBlock(key, true)));
             LogisticWorldStorage storage = worldStorage.get(world);
             try {
                 storage.save();
@@ -188,12 +193,12 @@ public class LogisticBlockCache {
     }
 
     @Synchronized
-    public void saveWorldData(@NonNull World world){
+    public void saveWorldData(@NonNull World world) {
         if (worldStorage.containsKey(world)) {
             LogisticWorldStorage storage = worldStorage.get(world);
             for (Chunk chunk : getChunksWithLogisticBlocksInWorld(world)) {
                 storage.removeChunk(chunk);
-                for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk).entrySet()){
+                for (Entry<Location, LogisticBlock> data : getCachedLogisticBlocksInChunk(chunk).entrySet()) {
                     pluginManager.callEvent(new LogisticBlockSaveEvent(data.getKey(), data.getValue()));
                     storage.saveLogisticBlock(data.getValue());
                 }
@@ -205,9 +210,9 @@ public class LogisticBlockCache {
             }
         }
     }
-    
+
     @Synchronized
-    public NBTCompound getPluginContainer(@NonNull World world, @NonNull Plugin plugin){
+    public NBTCompound getPluginContainer(@NonNull World world, @NonNull Plugin plugin) {
         if (worldStorage.containsKey(world)) {
             return worldStorage.get(world).getPluginContainer(plugin);
         }
@@ -241,6 +246,4 @@ public class LogisticBlockCache {
         }
         return Optional.of(logisticBlock);
     }
-
-    // TODO: Missing: World getter, Point where loading/events/listener are located
 }

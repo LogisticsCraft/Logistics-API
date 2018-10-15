@@ -1,14 +1,9 @@
 package com.logisticscraft.logisticsapi;
 
-import static com.logisticscraft.logisticsapi.settings.SettingsProperties.DEBUG_ENABLE;
-
-import org.bukkit.Chunk;
-import org.bukkit.Server;
-import org.bukkit.World;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.injector.Injector;
+import ch.jalu.injector.InjectorBuilder;
+import co.aikar.commands.BukkitCommandManager;
 import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
@@ -17,22 +12,24 @@ import com.logisticscraft.logisticsapi.block.LogisticTickManager;
 import com.logisticscraft.logisticsapi.command.DebugCommands;
 import com.logisticscraft.logisticsapi.energy.EnergyDisplayManager;
 import com.logisticscraft.logisticsapi.item.CraftingManager;
-import com.logisticscraft.logisticsapi.listeners.BlockListener;
-import com.logisticscraft.logisticsapi.listeners.ChunkListener;
-import com.logisticscraft.logisticsapi.listeners.ItemListener;
+import com.logisticscraft.logisticsapi.listener.BlockListener;
+import com.logisticscraft.logisticsapi.listener.ChunkListener;
+import com.logisticscraft.logisticsapi.listener.ItemListener;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
 import com.logisticscraft.logisticsapi.service.PluginService;
-import com.logisticscraft.logisticsapi.service.shutdown.ShutdownHandlerService;
-import com.logisticscraft.logisticsapi.settings.DataFolder;
-import com.logisticscraft.logisticsapi.settings.SettingsProvider;
+import com.logisticscraft.logisticsapi.service.shutdown.ShutdownListenerService;
+import com.logisticscraft.logisticsapi.setting.DataFolder;
+import com.logisticscraft.logisticsapi.setting.SettingsProvider;
 import com.logisticscraft.logisticsapi.utils.Tracer;
-
-import ch.jalu.configme.SettingsManager;
-import ch.jalu.injector.Injector;
-import ch.jalu.injector.InjectorBuilder;
-import co.aikar.commands.BukkitCommandManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bukkit.Chunk;
+import org.bukkit.Server;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import static com.logisticscraft.logisticsapi.setting.SettingsProperties.DEBUG_ENABLE;
 
 @NoArgsConstructor
 public final class LogisticsApi extends JavaPlugin {
@@ -42,7 +39,7 @@ public final class LogisticsApi extends JavaPlugin {
 
     // Internal
     private Injector injector;
-    private ShutdownHandlerService shutdownHandlerService;
+    private ShutdownListenerService shutdownHandlerService;
     private LogisticBlockCache blockCache;
     private LogisticTickManager tickManager;
     private EnergyDisplayManager energyDisplayManager;
@@ -74,7 +71,7 @@ public final class LogisticsApi extends JavaPlugin {
 
         // Enable internal services
         injector.getSingleton(PluginService.class);
-        shutdownHandlerService = injector.getSingleton(ShutdownHandlerService.class);
+        shutdownHandlerService = injector.getSingleton(ShutdownListenerService.class);
         injector.getSingleton(PersistenceStorage.class);
         tickManager = injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
@@ -97,12 +94,12 @@ public final class LogisticsApi extends JavaPlugin {
         Tracer.info("Server version: " + getServer().getVersion(), "Bukkit version: " + getServer().getBukkitVersion());
 
         // Load already loaded worlds
-        for (World world : getServer().getWorlds()) {
+        getServer().getWorlds().forEach(world -> {
             blockCache.registerWorld(world);
             for (Chunk chunk : world.getLoadedChunks()) {
                 blockCache.loadSavedBlocks(chunk);
             }
-        }
+        });
 
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();
@@ -133,12 +130,9 @@ public final class LogisticsApi extends JavaPlugin {
         shutdownHandlerService.shutdownComponents();
 
         // Unload the worlds in the end, to prevent shutdownComponents order issues
-        for (World world : getServer().getWorlds()) {
-            blockCache.unregisterWorld(world);
-        }
+        getServer().getWorlds().forEach(world -> blockCache.unregisterWorld(world));
 
         PluginDescriptionFile description = getDescription();
         Tracer.info(description.getName() + " (v" + description.getVersion() + ") has been disabled.");
     }
-
 }

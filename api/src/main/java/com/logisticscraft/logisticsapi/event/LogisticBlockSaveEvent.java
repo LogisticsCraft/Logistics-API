@@ -19,5 +19,4 @@ public class LogisticBlockSaveEvent extends LogisticBlockEvent {
     public HandlerList getHandlers() {
         return handlerList;
     }
-
 }

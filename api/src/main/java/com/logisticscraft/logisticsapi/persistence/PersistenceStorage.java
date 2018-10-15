@@ -7,16 +7,14 @@ import com.logisticscraft.logisticsapi.data.holder.DataHolder;
 import com.logisticscraft.logisticsapi.persistence.adapters.*;
 import com.logisticscraft.logisticsapi.utils.ReflectionUtils;
 import com.logisticscraft.logisticsapi.utils.Tracer;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import lombok.NonNull;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 public class PersistenceStorage {
 
@@ -43,7 +41,7 @@ public class PersistenceStorage {
     }
 
     public <T> void registerInterfaceConverter(@NonNull Class<T> clazz, @NonNull DataAdapter<? extends T> converter,
-            boolean replace) {
+                                               boolean replace) {
         if (replace) {
             interfaceConverters.put(clazz, converter);
         } else {
@@ -52,7 +50,7 @@ public class PersistenceStorage {
     }
 
     public <T> void registerDataConverter(@NonNull Class<T> clazz, @NonNull DataAdapter<? extends T> converter,
-            boolean replace) {
+                                          boolean replace) {
         if (replace) {
             converters.put(clazz, converter);
         } else {
@@ -62,11 +60,12 @@ public class PersistenceStorage {
 
     public void saveFields(@NonNull Object object, @NonNull NBTCompound nbtCompound) {
         ReflectionUtils.getFieldsRecursively(object.getClass(), Object.class).stream()
-        .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
+                .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
             field.setAccessible(true);
             try {
-                if(field.get(object) != null)
+                if (field.get(object) != null) {
                     saveObject(field.get(object), nbtCompound.addCompound(field.getName()));
+                }
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException(
                         "Unable to save field " + object.getClass().getSimpleName() + "." + field.getName(), e);
@@ -80,17 +79,17 @@ public class PersistenceStorage {
 
     public void loadFieldsDataObject(@NonNull Object parent, @NonNull Object object, @NonNull NBTCompound nbtCompound) {
         ReflectionUtils.getFieldsRecursively(object.getClass(), Object.class).stream()
-        .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
+                .filter(field -> field.getAnnotation(Persistent.class) != null).forEach(field -> {
             field.setAccessible(true);
             if (nbtCompound.hasKey(field.getName())) {
                 try {
                     Object obj = loadObject(parent, field.getType(), nbtCompound.getCompound(field.getName()));
-                    if(obj != null || !(field.getType() == int.class || field.getType() == float.class || field.getType() == double.class))
+                    if (obj != null || !(field.getType() == int.class || field.getType() == float.class || field.getType() == double.class)) {
                         field.set(object, obj);
+                    }
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException(
-                            "Unable to load field " + object.getClass().getSimpleName() + "." + field.getName(),
-                            e);
+                            "Unable to load field " + object.getClass().getSimpleName() + "." + field.getName(), e);
                 }
             }
         });
@@ -106,10 +105,10 @@ public class PersistenceStorage {
             return clazz;
         }
 
-        for (Entry<Class<?>, DataAdapter<?>> ent : interfaceConverters.entrySet()) {
-            if (ent.getKey().isInstance(data)) {
-                ((DataAdapter<Object>) ent.getValue()).store(this, data, nbtCompound);
-                return ent.getKey();
+        for (Entry<Class<?>, DataAdapter<?>> entry : interfaceConverters.entrySet()) {
+            if (entry.getKey().isInstance(data)) {
+                ((DataAdapter<Object>) entry.getValue()).store(this, data, nbtCompound);
+                return entry.getKey();
             }
         }
 
@@ -125,9 +124,9 @@ public class PersistenceStorage {
             return (T) converters.get(type).parse(this, parent, nbtCompound);
         }
 
-        for (Entry<Class<?>, DataAdapter<?>> ent : interfaceConverters.entrySet()) {
-            if (ent.getKey().isAssignableFrom(type)) {
-                return (T) ent.getValue().parse(this, parent, nbtCompound);
+        for (Entry<Class<?>, DataAdapter<?>> entry : interfaceConverters.entrySet()) {
+            if (entry.getKey().isAssignableFrom(type)) {
+                return (T) entry.getValue().parse(this, parent, nbtCompound);
             }
         }
 
@@ -138,5 +137,4 @@ public class PersistenceStorage {
 
         return null;
     }
-
 }

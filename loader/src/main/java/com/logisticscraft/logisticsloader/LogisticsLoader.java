@@ -66,5 +66,4 @@ public class LogisticsLoader {
 
         return true;
     }
-
 }

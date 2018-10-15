@@ -51,5 +51,4 @@ public class PluginService {
     public void registerListener(Listener listener) {
         server.getPluginManager().registerEvents(listener, plugin);
     }
-
 }

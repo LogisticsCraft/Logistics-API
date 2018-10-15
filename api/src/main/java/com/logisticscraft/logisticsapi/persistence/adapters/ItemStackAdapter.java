@@ -1,11 +1,9 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
-import org.bukkit.inventory.ItemStack;
-
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemStackAdapter implements DataAdapter<ItemStack> {
 
@@ -18,5 +16,4 @@ public class ItemStackAdapter implements DataAdapter<ItemStack> {
     public ItemStack parse(PersistenceStorage persistenceStorage, Object parentObject, NBTCompound nbtCompound) {
         return NBTItem.convertNBTtoItem(nbtCompound);
     }
-
 }

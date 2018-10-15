@@ -36,7 +36,5 @@ public interface EnergyOutput extends EnergyStorage {
     @interface EnergyOutputData {
 
         int maxExtract();
-
     }
-
 }

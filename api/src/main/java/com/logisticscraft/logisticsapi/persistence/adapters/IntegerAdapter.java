@@ -1,10 +1,9 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 
-public class IntegerAdapter implements DataAdapter<Integer>{
+public class IntegerAdapter implements DataAdapter<Integer> {
 
     @Override
     public void store(PersistenceStorage persistenceStorage, Integer value, NBTCompound nbtCompound) {
@@ -18,5 +17,4 @@ public class IntegerAdapter implements DataAdapter<Integer>{
         }
         return nbtCompound.getInteger("int");
     }
-
 }

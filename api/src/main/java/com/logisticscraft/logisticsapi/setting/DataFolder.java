@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.settings;
+package com.logisticscraft.logisticsapi.setting;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for specifying the plugin's data folder.
  */
-@Target({ ElementType.PARAMETER, ElementType.FIELD })
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataFolder {
 }

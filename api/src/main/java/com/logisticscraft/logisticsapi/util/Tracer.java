@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.utils;
+package com.logisticscraft.logisticsapi.util;
 
 import lombok.Getter;
 import lombok.NonNull;

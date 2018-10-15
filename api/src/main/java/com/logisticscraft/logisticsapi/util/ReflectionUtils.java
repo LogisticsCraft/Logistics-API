@@ -1,4 +1,4 @@
-package com.logisticscraft.logisticsapi.utils;
+package com.logisticscraft.logisticsapi.util;
 
 import com.google.common.collect.Lists;
 import lombok.NonNull;

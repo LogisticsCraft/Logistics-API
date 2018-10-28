@@ -13,43 +13,12 @@
     <artifactId>logistics-example</artifactId>
     <packaging>jar</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.logisticscraft.logisticsloader</pattern>
-                            <shadedPattern>com.logisticscraft.logisticsexample.libs.logisticsloader</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>com.logisticscraft</groupId>
             <artifactId>logistics-api</artifactId>
             <version>0.0.5-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.logisticscraft</groupId>
-            <artifactId>logistics-loader</artifactId>
-            <version>0.0.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

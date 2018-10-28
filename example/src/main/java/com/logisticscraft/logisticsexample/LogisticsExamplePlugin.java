@@ -21,17 +21,6 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
     
     @Override
     public void onLoad() {
-        /*try {
-            if (LogisticsLoader.install()) {
-                getLogger().info("The required library has been downloaded correctly!");
-            }
-        } catch (LogisticInstallException e) {
-            e.printStackTrace();
-            getLogger().severe("Unable to download the required library, disabling...");
-            setEnabled(false);
-            return;
-        }*/
-
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
         blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new BasicBlockFactory(TestBlock.class));
         blockManager.registerLogisticBlock(this, "testEnergyConsumer", TestEnergyConsumer.class, new BasicBlockFactory(TestEnergyConsumer.class));

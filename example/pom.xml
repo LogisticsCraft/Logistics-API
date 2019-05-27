@@ -17,7 +17,6 @@
         <dependency>
             <groupId>com.logisticscraft</groupId>
             <artifactId>logistics-api</artifactId>
-            <version>0.0.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

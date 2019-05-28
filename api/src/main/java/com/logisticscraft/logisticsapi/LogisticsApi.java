@@ -49,6 +49,8 @@ public final class LogisticsApi extends JavaPlugin {
     private BlockManager blockManager;
     @Getter
     private ItemManager itemManager;
+    @Getter
+    private PersistenceStorage persistenceStorage;
 
     @Override
     public void onLoad() {
@@ -72,7 +74,7 @@ public final class LogisticsApi extends JavaPlugin {
         // Enable internal services
         injector.getSingleton(PluginService.class);
         shutdownHandlerService = injector.getSingleton(ShutdownListenerService.class);
-        injector.getSingleton(PersistenceStorage.class);
+        persistenceStorage = injector.getSingleton(PersistenceStorage.class);
         tickManager = injector.getSingleton(LogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
         blockCache = injector.getSingleton(LogisticBlockCache.class);

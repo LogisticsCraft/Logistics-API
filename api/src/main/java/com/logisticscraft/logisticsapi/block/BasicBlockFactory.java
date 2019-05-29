@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Constructor;
 
+@Deprecated
 public class BasicBlockFactory implements LogisticBlockFactory {
 
     private Constructor<? extends LogisticBlock> constructor;

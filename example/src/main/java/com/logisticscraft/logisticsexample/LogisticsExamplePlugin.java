@@ -3,7 +3,7 @@ package com.logisticscraft.logisticsexample;
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.api.BlockManager;
 import com.logisticscraft.logisticsapi.api.ItemManager;
-import com.logisticscraft.logisticsapi.block.BasicBlockFactory;
+import com.logisticscraft.logisticsapi.block.SimpleLogisticBlockFactory;
 import com.logisticscraft.logisticsapi.item.LogisticBlockItem;
 import com.logisticscraft.logisticsapi.item.ShapedCraftingRecipe;
 import com.logisticscraft.logisticsexample.blocks.TestBlock;
@@ -22,9 +22,9 @@ public final class LogisticsExamplePlugin extends JavaPlugin implements Listener
     @Override
     public void onLoad() {
         BlockManager blockManager = LogisticsApi.getInstance().getBlockManager();
-        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new BasicBlockFactory(TestBlock.class));
-        blockManager.registerLogisticBlock(this, "testEnergyConsumer", TestEnergyConsumer.class, new BasicBlockFactory(TestEnergyConsumer.class));
-        blockManager.registerLogisticBlock(this, "testEnergyProducer", TestEnergyProducer.class, new BasicBlockFactory(TestEnergyProducer.class));
+        blockManager.registerLogisticBlock(this, "testBlock", TestBlock.class, new SimpleLogisticBlockFactory(TestBlock::new));
+        blockManager.registerLogisticBlock(this, "testEnergyConsumer", TestEnergyConsumer.class, new SimpleLogisticBlockFactory(TestEnergyConsumer::new));
+        blockManager.registerLogisticBlock(this, "testEnergyProducer", TestEnergyProducer.class, new SimpleLogisticBlockFactory(TestEnergyProducer::new));
 
         ItemManager itemManager = LogisticsApi.getInstance().getItemManager();
         ItemStack item = new ItemStack(Material.STICK);

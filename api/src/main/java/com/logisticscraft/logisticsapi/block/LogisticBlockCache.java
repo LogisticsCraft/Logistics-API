@@ -37,7 +37,7 @@ public class LogisticBlockCache {
     private PersistenceStorage persistence;
 
     private Map<World, LogisticWorldStorage> worldStorage;
-    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks;
+    private Map<Chunk, Map<Location, LogisticBlock>> logisticBlocks, logisticBlocksView;
 
     @Inject
     LogisticBlockCache(PluginManager pluginManager, LogisticBlockTypeRegister typeRegister,
@@ -49,6 +49,7 @@ public class LogisticBlockCache {
 
         worldStorage = new ConcurrentHashMap<>();
         logisticBlocks = new ConcurrentHashMap<>();
+        logisticBlocksView = Collections.unmodifiableMap(logisticBlocks);
     }
 
     /**
@@ -221,7 +222,7 @@ public class LogisticBlockCache {
 
     @Synchronized
     public Map<Chunk, Map<Location, LogisticBlock>> getAllLogisticBlocks() {
-        return logisticBlocks;
+        return logisticBlocksView;
     }
 
     public Optional<LogisticBlock> injectData(@NonNull LogisticBlock logisticBlock, @NonNull Location location) {

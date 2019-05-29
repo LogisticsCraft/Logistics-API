@@ -9,6 +9,7 @@ import com.logisticscraft.logisticsapi.api.ItemManager;
 import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
 import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
 import com.logisticscraft.logisticsapi.block.LogisticTickManager;
+import com.logisticscraft.logisticsapi.block.SimpleLogisticTickManager;
 import com.logisticscraft.logisticsapi.command.DebugCommands;
 import com.logisticscraft.logisticsapi.energy.EnergyDisplayManager;
 import com.logisticscraft.logisticsapi.item.CraftingManager;
@@ -73,7 +74,7 @@ public final class LogisticsApi extends JavaPlugin {
         injector.getSingleton(PluginService.class);
         shutdownHandlerService = injector.getSingleton(ShutdownListenerService.class);
         injector.getSingleton(PersistenceStorage.class);
-        tickManager = injector.getSingleton(LogisticTickManager.class);
+        tickManager = injector.getSingleton(SimpleLogisticTickManager.class);
         injector.getSingleton(LogisticBlockTypeRegister.class);
         blockCache = injector.getSingleton(LogisticBlockCache.class);
         injector.getSingleton(CraftingManager.class);
@@ -108,7 +109,7 @@ public final class LogisticsApi extends JavaPlugin {
         pluginManager.registerEvents(injector.getSingleton(ItemListener.class), instance);
 
         // Start tasks
-        tickManager.runTaskTimer(this, 20L, 1L);
+        tickManager.start(this);
         energyDisplayManager.runTaskTimer(this, 30L, 30L);
 
         // Register Commands

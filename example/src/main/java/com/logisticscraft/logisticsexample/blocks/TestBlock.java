@@ -1,7 +1,7 @@
 package com.logisticscraft.logisticsexample.blocks;
 
 import com.logisticscraft.logisticsapi.block.LogisticBlock;
-import com.logisticscraft.logisticsapi.block.LogisticTickManager;
+import com.logisticscraft.logisticsapi.block.LogisticTickManager.Ticking;
 import com.logisticscraft.logisticsapi.energy.EnergyInput;
 import com.logisticscraft.logisticsapi.energy.EnergyOutput;
 import com.logisticscraft.logisticsapi.energy.EnergyStorage;
@@ -26,7 +26,7 @@ import java.util.Random;
 public class TestBlock extends LogisticBlock implements EnergyInput, EnergyOutput, InventoryStorage, InventoryHolder {
 
     // Running every 10 ticks
-    @LogisticTickManager.Ticking(ticks = 10)
+    @Ticking(ticks = 10)
     public void update() {
         getBlock().ifPresent(block -> {
             block.setType(Material.WHITE_WOOL);

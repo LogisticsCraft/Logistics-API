@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Constants {
 
-    public static final String[] ASCII_LOGO = {
+    public final String[] ASCII_LOGO = {
             " __                                   __                                 ______  ____    ______     ",
             "/\\ \\                      __         /\\ \\__  __                         /\\  _  \\/\\  _`\\ /\\__  _\\    ",
             "\\ \\ \\        ___      __ /\\_\\    ____\\ \\ ,_\\/\\_\\    ___    ____         \\ \\ \\L\\ \\ \\ \\L\\ \\/_/\\ \\/    ",

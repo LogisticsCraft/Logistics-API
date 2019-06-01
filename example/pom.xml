@@ -15,9 +15,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.logisticscraft</groupId>
             <artifactId>logistics-api</artifactId>
-            <version>0.0.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

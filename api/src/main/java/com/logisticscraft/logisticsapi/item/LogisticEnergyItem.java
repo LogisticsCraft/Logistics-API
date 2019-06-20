@@ -1,9 +1,10 @@
 package com.logisticscraft.logisticsapi.item;
 
-import de.tr7zw.itemnbtapi.NBTItem;
-import lombok.NonNull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import lombok.NonNull;
 
 public abstract class LogisticEnergyItem extends LogisticItem {
 

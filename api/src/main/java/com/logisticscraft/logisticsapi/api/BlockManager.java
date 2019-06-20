@@ -1,15 +1,10 @@
 package com.logisticscraft.logisticsapi.api;
 
-import com.logisticscraft.logisticsapi.block.LogisticBlock;
-import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
-import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
-import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
-import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.util.Tracer;
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,9 +12,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import javax.inject.Inject;
-import java.util.Map;
-import java.util.Optional;
+import com.logisticscraft.logisticsapi.block.LogisticBlock;
+import com.logisticscraft.logisticsapi.block.LogisticBlockCache;
+import com.logisticscraft.logisticsapi.block.LogisticBlockFactory;
+import com.logisticscraft.logisticsapi.block.LogisticBlockTypeRegister;
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.util.Tracer;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * Manages the registered LogisticBlock types.

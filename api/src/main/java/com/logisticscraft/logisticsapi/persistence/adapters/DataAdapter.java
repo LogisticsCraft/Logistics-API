@@ -1,7 +1,8 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-import de.tr7zw.itemnbtapi.NBTCompound;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import lombok.NonNull;
 
 public interface DataAdapter<K> {

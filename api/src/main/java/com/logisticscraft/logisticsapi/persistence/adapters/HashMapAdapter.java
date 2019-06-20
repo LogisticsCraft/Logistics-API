@@ -1,11 +1,12 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
+import java.util.HashMap;
+
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-import de.tr7zw.itemnbtapi.NBTCompound;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-
-import java.util.HashMap;
 
 @NoArgsConstructor
 public class HashMapAdapter implements DataAdapter<HashMap<?, ?>> {

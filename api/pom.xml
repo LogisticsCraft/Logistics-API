@@ -33,8 +33,8 @@
                             <shadedPattern>com.logisticscraft.logisticsapi.libs.configme</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>de.tr7zw.itemnbtapi</pattern>
-                            <shadedPattern>com.logisticscraft.logisticsapi.libs.itemnbt</shadedPattern>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>com.logisticscraft.logisticsapi.libs.nbtapi</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

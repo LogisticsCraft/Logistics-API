@@ -1,20 +1,22 @@
 package com.logisticscraft.logisticsapi.item;
 
-import com.logisticscraft.logisticsapi.data.LogisticKey;
-import com.logisticscraft.logisticsapi.event.ItemRegisterEvent;
-import com.logisticscraft.logisticsapi.util.Tracer;
-import de.tr7zw.itemnbtapi.NBTItem;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+import com.logisticscraft.logisticsapi.event.ItemRegisterEvent;
+import com.logisticscraft.logisticsapi.util.Tracer;
+
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LogisticItemRegister {

@@ -1,10 +1,11 @@
 package com.logisticscraft.logisticsapi.block;
 
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import lombok.NonNull;
 
 /**
  * The LogisticBlockFactory. TODO: document

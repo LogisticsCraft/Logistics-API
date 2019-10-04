@@ -2,7 +2,8 @@ package com.logisticscraft.logisticsapi.persistence.adapters;
 
 import com.logisticscraft.logisticsapi.data.holder.DataHolder;
 import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-import de.tr7zw.itemnbtapi.NBTCompound;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 
 public class DataHolderAdapter implements DataAdapter<DataHolder> {
 

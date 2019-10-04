@@ -1,11 +1,13 @@
 package com.logisticscraft.logisticsapi.persistence.adapters;
 
-import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
-import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
-import de.tr7zw.itemnbtapi.NBTCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
+import com.logisticscraft.logisticsapi.persistence.PersistenceStorage;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 
 public class SafeBlockLocationAdapter implements DataAdapter<SafeBlockLocation> {
 

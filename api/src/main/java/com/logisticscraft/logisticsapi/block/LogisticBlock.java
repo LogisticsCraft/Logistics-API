@@ -1,5 +1,14 @@
 package com.logisticscraft.logisticsapi.block;
 
+import java.util.Optional;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
 import com.logisticscraft.logisticsapi.LogisticsApi;
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.data.SafeBlockLocation;
@@ -8,16 +17,9 @@ import com.logisticscraft.logisticsapi.data.holder.PersistentDataHolder;
 import com.logisticscraft.logisticsapi.data.holder.VolatileDataHolder;
 import com.logisticscraft.logisticsapi.item.LogisticItem;
 import com.logisticscraft.logisticsapi.persistence.Persistent;
-import de.tr7zw.itemnbtapi.NBTCompound;
-import lombok.Getter;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import lombok.Getter;
 
 /**
  * Represents a custom block handled by the API.

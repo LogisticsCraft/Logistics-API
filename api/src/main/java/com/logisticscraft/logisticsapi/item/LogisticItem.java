@@ -1,14 +1,16 @@
 package com.logisticscraft.logisticsapi.item;
 
-import com.logisticscraft.logisticsapi.data.LogisticKey;
-import de.tr7zw.itemnbtapi.NBTItem;
-import lombok.Getter;
-import lombok.NonNull;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import com.logisticscraft.logisticsapi.data.LogisticKey;
+
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import lombok.Getter;
+import lombok.NonNull;
 
 public class LogisticItem {
 

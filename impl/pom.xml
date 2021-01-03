@@ -10,7 +10,7 @@
         <version>0.0.6-SNAPSHOT</version>
     </parent>
 
-    <artifactId>logistics-api</artifactId>
+    <artifactId>logistics-plugin</artifactId>
     <packaging>jar</packaging>
 
     <build>
@@ -55,6 +55,10 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.logisticscraft</groupId>
+            <artifactId>logistics-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

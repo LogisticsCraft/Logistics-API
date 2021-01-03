@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import com.logisticscraft.logisticsapi.data.LogisticKey;
 import com.logisticscraft.logisticsapi.event.ItemRegisterEvent;
@@ -23,7 +22,7 @@ public class LogisticItemRegister {
 
     private Map<LogisticKey, LogisticItem> itemTypes = new HashMap<>();
 
-    public void registerLogisticItem(@NotNull LogisticItem item) {
+    public void registerLogisticItem(@NonNull LogisticItem item) {
         if (itemTypes.putIfAbsent(item.getKey(), item) == null) {
             Tracer.debug("Item register: " + item.getKey());
             Bukkit.getPluginManager().callEvent(new ItemRegisterEvent(item));

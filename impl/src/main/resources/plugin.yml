@@ -1,0 +1,10 @@
+name: LogisticsApi
+main: com.logisticscraft.logisticsapi.LogisticsApi
+version: ${project.version}
+authors: [PROgrm_JARvis, tr7zw, RoboTricker, sgdc3]
+softdepend: [PlaceholderAPI]
+api-version: 1.13
+commands:
+  logisticsapi:
+    description: 'Base command of Logistics-API running at the moment'
+    aliases: [logisticapi, logistics, logistic, lapi, la, l]

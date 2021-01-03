@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.logisticscraft</groupId>
         <artifactId>logistics-parent</artifactId>
-        <version>0.0.5-SNAPSHOT</version>
+        <version>0.0.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>logistics-example</artifactId>
@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.logisticscraft</groupId>
-            <artifactId>logistics-api</artifactId>
+            <artifactId>logistics-plugin</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
